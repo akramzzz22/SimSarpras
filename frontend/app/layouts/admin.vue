@@ -59,6 +59,7 @@ const nav = [
       { title: 'Proli', to: '/admin/master-data/proli', icon: GraduationCap },
       { title: 'Ruangan', to: '/admin/master-data/ruangan', icon: Building2 },
       { title: 'Kategori Barang', to: '/admin/master-data/kategori-barang', icon: Boxes },
+      { title: 'Subkategori Barang', to: '/admin/master-data/subkategori', icon: Boxes },
       { title: 'Vendor', to: '/admin/master-data/vendor', icon: Store }
     ]
   },

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import {
   LayoutDashboard,
   ClipboardList,
@@ -12,15 +12,68 @@ import {
   FileText,
   ArrowLeftRight,
   Menu,
-  X
+  X,
+  Bell,
+  CheckCheck,
+  CalendarClock
 } from 'lucide-vue-next'
 import { useAuthService } from '~/services/api/auth'
+import { useAdminService, type AppNotification } from '~/services/api/admin'
 
 const authStore = useAuthStore()
 const { logout } = useAuthService()
+const admin = useAdminService()
 const route = useRoute()
 
 const sidebarOpen = ref(false)
+
+// ===== Notifikasi =====
+const notifOpen = ref(false)
+const notifs = ref<AppNotification[]>([])
+const unreadCount = ref(0)
+const notifLoading = ref(false)
+
+async function loadNotifications() {
+  try {
+    const res = await admin.notifications.list()
+    notifs.value = res.data
+    unreadCount.value = res.unread_count
+  } catch {
+    // abaikan error — badge hanya tidak muncul
+  }
+}
+
+async function markAllRead() {
+  try {
+    await admin.notifications.markAllRead()
+    notifs.value = notifs.value.map((n) => ({ ...n, read_at: n.read_at ?? new Date().toISOString() }))
+    unreadCount.value = 0
+  } catch {
+    // abaikan
+  }
+}
+
+function openNotification(n: AppNotification) {
+  if (!n.read_at) {
+    admin.notifications.markRead(n.id).catch(() => {})
+    n.read_at = new Date().toISOString()
+    unreadCount.value = Math.max(0, unreadCount.value - 1)
+  }
+  notifOpen.value = false
+  navigateTo('/staff/maintenance')
+}
+
+// Tutup dropdown saat klik di luar
+function onClickOutside(e: Event) {
+  const el = e.target as HTMLElement
+  if (!el.closest('[data-notif]')) notifOpen.value = false
+}
+
+onMounted(() => {
+  loadNotifications()
+  document.addEventListener('click', onClickOutside)
+})
+onUnmounted(() => document.removeEventListener('click', onClickOutside))
 
 const navMap: Record<string, { title: string; to: string; icon: any }[]> = {
   staff_sarpras: [
@@ -119,6 +172,72 @@ async function handleLogout() {
         </button>
         <div class="flex-1">
           <h1 class="text-lg font-semibold text-gray-900">{{ pageTitle }}</h1>
+        </div>
+
+        <!-- Bell notifikasi -->
+        <div class="relative" data-notif>
+          <button
+            class="relative p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition"
+            title="Notifikasi"
+            @click.stop="notifOpen = !notifOpen"
+          >
+            <Bell class="w-5 h-5" />
+            <span
+              v-if="unreadCount > 0"
+              class="absolute -top-0.5 -right-0.5 min-w-[18px] h-[18px] px-1 rounded-full bg-rose-500 text-white text-[10px] font-bold flex items-center justify-center"
+            >
+              {{ unreadCount > 99 ? '99+' : unreadCount }}
+            </span>
+          </button>
+
+          <div
+            v-if="notifOpen"
+            class="absolute right-0 mt-2 w-80 max-w-[90vw] bg-white rounded-2xl border border-gray-100 shadow-xl overflow-hidden z-50"
+          >
+            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+              <div class="flex items-center gap-2 text-sm font-semibold text-gray-900">
+                <Bell class="w-4 h-4 text-emerald-600" />
+                Notifikasi
+              </div>
+              <button
+                v-if="unreadCount > 0"
+                class="inline-flex items-center gap-1 text-xs text-emerald-600 hover:text-emerald-700 font-medium"
+                @click.stop="markAllRead"
+              >
+                <CheckCheck class="w-3.5 h-3.5" />
+                Tandai dibaca
+              </button>
+            </div>
+
+            <div class="max-h-80 overflow-y-auto divide-y divide-gray-50">
+              <button
+                v-for="n in notifs"
+                :key="n.id"
+                class="w-full text-left px-4 py-3 hover:bg-gray-50 transition flex items-start gap-3"
+                @click="openNotification(n)"
+              >
+                <div class="w-8 h-8 rounded-lg shrink-0 flex items-center justify-center" :class="n.read_at ? 'bg-gray-100 text-gray-400' : 'bg-emerald-50 text-emerald-600'">
+                  <CalendarClock class="w-4 h-4" />
+                </div>
+                <div class="min-w-0 flex-1">
+                  <div class="text-sm font-medium text-gray-900 truncate">
+                    {{ n.data?.barang ?? 'Jadwal maintenance' }}
+                  </div>
+                  <div class="text-xs text-gray-500">
+                    {{ n.data?.message ?? 'Jadwal maintenance baru.' }}
+                    <template v-if="n.data?.tanggal_jadwal">• {{ n.data.tanggal_jadwal }}</template>
+                  </div>
+                  <div class="text-[11px] text-gray-400 mt-0.5">
+                    {{ n.created_at ? new Date(n.created_at).toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '' }}
+                  </div>
+                </div>
+                <span v-if="!n.read_at" class="w-2 h-2 rounded-full bg-emerald-500 shrink-0 mt-2" />
+              </button>
+              <div v-if="!notifs.length && !notifLoading" class="px-4 py-8 text-center text-sm text-gray-400">
+                Belum ada notifikasi.
+              </div>
+            </div>
+          </div>
         </div>
       </header>
 

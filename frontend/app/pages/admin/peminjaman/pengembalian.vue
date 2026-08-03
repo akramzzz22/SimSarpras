@@ -46,11 +46,12 @@ function openReturnModal(p: Peminjaman) {
 }
 
 const fotoModalInput = ref<HTMLInputElement | null>(null)
+const fotoUploading = ref(false)
 function pickFoto() {
   fotoModalInput.value?.click()
 }
 
-function onFotoChange(e: Event) {
+async function onFotoChange(e: Event) {
   const file = (e.target as HTMLInputElement).files?.[0]
   if (!file) return
   if (!file.type.startsWith('image/')) {
@@ -61,12 +62,17 @@ function onFotoChange(e: Event) {
     modalError.value = 'Ukuran foto maksimal 5MB.'
     return
   }
-  const reader = new FileReader()
-  reader.onload = () => {
-    fotoKembali.value = String(reader.result)
-    modalError.value = null
+  fotoUploading.value = true
+  modalError.value = null
+  try {
+    const res = await admin.upload(file)
+    fotoKembali.value = res.url
+  } catch (err: any) {
+    modalError.value = err?.data?.message ?? 'Gagal mengunggah foto.'
+  } finally {
+    fotoUploading.value = false
+    ;(e.target as HTMLInputElement).value = ''
   }
-  reader.readAsDataURL(file)
 }
 
 async function confirmReturn() {
@@ -214,11 +220,12 @@ onMounted(load)
         >
           <img v-if="fotoKembali" :src="fotoKembali" class="max-h-40 mx-auto rounded-lg object-cover" alt="Foto pengembalian" />
           <div v-else class="py-4">
-            <Camera class="w-6 h-6 mx-auto mb-1 text-gray-400" />
-            <p class="text-xs text-gray-500">Foto kondisi barang saat dikembalikan (maks 5MB)</p>
+            <Camera v-if="!fotoUploading" class="w-6 h-6 mx-auto mb-1 text-gray-400" />
+            <Loader2 v-else class="w-6 h-6 mx-auto mb-1 text-emerald-500 animate-spin" />
+            <p class="text-xs text-gray-500">{{ fotoUploading ? 'Mengunggah…' : 'Foto kondisi barang saat dikembalikan (maks 5MB)' }}</p>
           </div>
         </div>
-        <input ref="fotoModalInput" type="file" accept="image/*" class="hidden" @change="onFotoChange" />
+        <input ref="fotoModalInput" type="file" accept="image/*" class="hidden" :disabled="fotoUploading" @change="onFotoChange" />
 
         <div v-if="modalError" class="mt-3 flex items-start gap-2 rounded-xl border border-rose-200 bg-rose-50 px-3 py-2.5 text-sm text-rose-700">
           <AlertTriangle class="w-4 h-4 shrink-0 mt-0.5" />

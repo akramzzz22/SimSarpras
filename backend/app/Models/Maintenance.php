@@ -10,7 +10,11 @@ class Maintenance extends Model
 
     protected $fillable = [
         'barang_id', 'tanggal_jadwal', 'staff_id', 'vendor_id',
-        'status', 'dokumentasi_url', 'catatan'
+        'status', 'dokumentasi_url', 'catatan', 'biaya', 'resi_url'
+    ];
+
+    protected $casts = [
+        'biaya' => 'decimal:2',
     ];
 
     public function barang()

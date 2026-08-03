@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { FileText, AlertTriangle, ArrowLeftRight, Wrench, Loader2, RefreshCw } from 'lucide-vue-next'
+import { FileText, AlertTriangle, ArrowLeftRight, Wrench, Loader2, RefreshCw, Download } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
 
 definePageMeta({ layout: 'admin', middleware: ['auth', 'admin'], title: 'Laporan' })
@@ -58,6 +58,23 @@ const badge = (s: string) => {
 
 const fmt = (d?: string) => (d ? new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-')
 
+// Export CSV dari seluruh aktivitas (kerusakan, peminjaman, maintenance)
+function exportCSV() {
+  const rows: string[][] = [['Jenis', 'Deskripsi', 'Tanggal', 'Status']]
+  laporan.value.forEach((l) => rows.push(['Kerusakan', l.barang?.nama ?? 'Barang #' + l.barang_id, fmt(l.created_at), l.status]))
+  peminjaman.value.forEach((p) => rows.push(['Peminjaman', p.barang?.nama ?? 'Barang #' + p.barang_id, fmt(p.created_at), p.status]))
+  maintenance.value.forEach((m) => rows.push(['Maintenance', m.barang?.nama ?? 'Barang #' + m.barang_id, fmt(m.tanggal_jadwal), m.status]))
+
+  const csv = rows.map((r) => r.map((c) => `"${String(c ?? '').replaceAll('"', '""')}"`).join(',')).join('\n')
+  const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `laporan-aset-${new Date().toISOString().slice(0, 10)}.csv`
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
 onMounted(load)
 </script>
 
@@ -68,10 +85,19 @@ onMounted(load)
         <h2 class="text-2xl font-bold text-gray-900">Laporan</h2>
         <p class="text-sm text-gray-500 mt-1">Rekapitulasi aktivitas sistem aset sekolah.</p>
       </div>
-      <button class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition w-fit" @click="load">
-        <RefreshCw class="w-4 h-4" />
-        Muat Ulang
-      </button>
+      <div class="flex gap-2">
+        <button
+          class="inline-flex items-center gap-2 px-3 py-2 rounded-xl bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 transition w-fit"
+          @click="exportCSV"
+        >
+          <Download class="w-4 h-4" />
+          Export CSV
+        </button>
+        <button class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition w-fit" @click="load">
+          <RefreshCw class="w-4 h-4" />
+          Muat Ulang
+        </button>
+      </div>
     </div>
 
     <p v-if="error" class="text-sm text-rose-600 bg-rose-50 border border-rose-100 rounded-xl px-4 py-3">{{ error }}</p>

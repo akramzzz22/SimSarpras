@@ -10,7 +10,7 @@ class Barang extends Model
 
     protected $fillable = [
         'nama', 'deskripsi', 'kode_qr', 'owner_type', 'proli_id',
-        'kategori_id', 'ruangan_id', 'status'
+        'kategori_id', 'subkategori_id', 'ruangan_id', 'status'
     ];
 
     public function proli()
@@ -21,6 +21,11 @@ class Barang extends Model
     public function kategori()
     {
         return $this->belongsTo(KategoriBarang::class, 'kategori_id');
+    }
+
+    public function subkategori()
+    {
+        return $this->belongsTo(Subkategori::class);
     }
 
     public function ruangan()

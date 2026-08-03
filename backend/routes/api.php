@@ -11,10 +11,13 @@ use App\Http\Controllers\Api\LaporanKerusakanController;
 use App\Http\Controllers\Api\PeminjamanController;
 use App\Http\Controllers\Api\MaintenanceController;
 use App\Http\Controllers\Api\MuridController;
+use App\Http\Controllers\Api\NotificationController;
 use App\Http\Controllers\Api\ProliController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\RuanganController;
+use App\Http\Controllers\Api\SubkategoriController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\UploadController;
 use App\Http\Controllers\Api\VendorController;
 
 // Auth
@@ -53,12 +56,21 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('proli', ProliController::class);
     Route::apiResource('ruangan', RuanganController::class);
     Route::apiResource('kategori-barang', KategoriBarangController::class);
+    Route::apiResource('subkategori', SubkategoriController::class);
     Route::apiResource('murid', MuridController::class);
     Route::apiResource('users', UserController::class);
     // Fitur akun (generate/lihat/reset password) — dipakai di halaman Pengaturan Akun
     Route::post('users/{user}/generate-akun', [UserController::class, 'generateAkun']);
     Route::post('users/{user}/reset-password', [UserController::class, 'resetPassword']);
     Route::get('users/{user}/lihat-password', [UserController::class, 'lihatPassword']);
+
+    // Upload gambar (foto resi, dokumentasi, dsb)
+    Route::post('upload', [UploadController::class, 'store']);
+
+    // Notifikasi (staff melihat jadwal maintenance baru)
+    Route::get('notifications', [NotificationController::class, 'index']);
+    Route::post('notifications/{id}/read', [NotificationController::class, 'markRead']);
+    Route::post('notifications/read-all', [NotificationController::class, 'markAllRead']);
 
     // Role Management
     Route::get('roles', [RoleController::class, 'index']);

@@ -19,10 +19,12 @@ export interface Barang {
   owner_type: 'sarpras' | 'proli'
   proli_id?: number | null
   kategori_id?: number | null
+  subkategori_id?: number | null
   ruangan_id?: number | null
   status: 'aktif' | 'rusak' | 'dipinjam' | 'maintenance'
   proli?: { id: number; nama: string } | null
   kategori?: { id: number; nama: string } | null
+  subkategori?: { id: number; nama: string; proli?: { id: number; nama: string } | null } | null
   ruangan?: { id: number; nama: string; gedung?: { id: number; nama: string } | null } | null
   laporanKerusakan?: LaporanKerusakan[]
   peminjaman?: Peminjaman[]
@@ -117,9 +119,27 @@ export interface Maintenance {
   status: 'terjadwal' | 'berlangsung' | 'selesai'
   dokumentasi_url?: string | null
   catatan?: string | null
+  biaya?: number | string | null
+  resi_url?: string | null
   barang?: { id: number; nama: string } | null
   staff?: { id: number; name: string } | null
   vendor?: { id: number; nama: string } | null
+  created_at?: string
+  // state UI lokal (bukan dari backend)
+  showResi?: boolean
+}
+
+// ============ Notifikasi ============
+export interface AppNotification {
+  id: string
+  data: {
+    type?: string
+    maintenance_id?: number
+    barang?: string
+    tanggal_jadwal?: string
+    message?: string
+  }
+  read_at?: string | null
   created_at?: string
 }
 
@@ -127,6 +147,20 @@ export function useAdminService() {
   const api = useApiClient()
 
   return {
+    // Upload gambar → URL publik (foto resi, dokumentasi, dsb)
+    upload: (file: File) => {
+      const form = new FormData()
+      form.append('file', file)
+      return api<{ url: string }>('/upload', { method: 'POST', body: form })
+    },
+
+    // Notifikasi (staff melihat jadwal maintenance baru)
+    notifications: {
+      list: () => api<{ data: AppNotification[]; unread_count: number }>('/notifications'),
+      markRead: (id: string) => api(`/notifications/${id}/read`, { method: 'POST' }),
+      markAllRead: () => api('/notifications/read-all', { method: 'POST' })
+    },
+
     // Fitur akun (generate/lihat/reset password) — halaman Pengaturan Akun
     akun: {
       generate: (id: number) => api<AkunMurid>(`/users/${id}/generate-akun`, { method: 'POST' }),

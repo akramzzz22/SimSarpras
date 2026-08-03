@@ -6,7 +6,7 @@ import {
 } from 'lucide-vue-next'
 import QrScanner from '~/components/qr-scanner.vue'
 import { useAdminService, type Barang } from '~/services/api/admin'
-import { formatTanggal, PINJAM_STATUS, LAPORAN_STATUS } from '~/utils/format'
+import { formatTanggal, PINJAM_STATUS, LAPORAN_STATUS, extractKodeFromScan } from '~/utils/format'
 
 definePageMeta({ layout: 'mobile', middleware: ['auth'], title: 'Scan QR' })
 
@@ -46,6 +46,8 @@ function handleScanned(value: string) {
 }
 
 async function find() {
+  // QR berisi URL publik (/barang/BRG-XXXX) → ambil kodenya dulu agar lookup cocok
+  code.value = extractKodeFromScan(code.value)
   if (!code.value.trim()) return
   searching.value = true
   notFound.value = false

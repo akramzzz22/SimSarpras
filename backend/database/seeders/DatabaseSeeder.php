@@ -13,6 +13,7 @@ use App\Models\Maintenance;
 use App\Models\Peminjaman;
 use App\Models\Proli;
 use App\Models\Ruangan;
+use App\Models\Subkategori;
 use App\Models\User;
 use App\Models\Vendor;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -54,6 +55,24 @@ class DatabaseSeeder extends Seeder
         foreach ($jurusan as $jn => $j) {
             foreach ($tingkatList as $t) {
                 Kelas::firstOrCreate(['nama' => $t.' '.$jn.' 1'], ['jurusan_id' => $j->id]);
+            }
+        }
+
+        // Subkategori per Proli (untuk barang milik proli)
+        $subkategoriByProli = [
+            'Rekayasa Perangkat Lunak' => ['Laptop', 'PC / Komputer', 'Printer', 'Software & Lisensi'],
+            'Teknik Komputer dan Jaringan' => ['Router', 'Switch', 'Kabel Jaringan', 'Server'],
+            'Desain Komunikasi Visual' => ['Kamera', 'PC Desain', 'Printer Cetak'],
+            'Akuntansi dan Keuangan Lembaga' => ['Mesin Kasir', 'Kalkulator', 'Komputer Akuntansi'],
+            'Teknik dan Bisnis Sepeda Motor' => ['Alat Bengkel', 'Mesin Bubut', 'Toolkit'],
+        ];
+        $subkategori = [];
+        foreach ($subkategoriByProli as $pn => $names) {
+            if (! isset($proli[$pn])) {
+                continue;
+            }
+            foreach ($names as $sn) {
+                $subkategori[$sn] = Subkategori::firstOrCreate(['nama' => $sn, 'proli_id' => $proli[$pn]->id]);
             }
         }
 
@@ -250,6 +269,18 @@ class DatabaseSeeder extends Seeder
                 'ruangan_id' => $ruangan[$ruanganName]->id,
                 'status' => 'aktif',
             ]);
+        }
+
+        // Tautkan barang proli ke subkategori milik proli-nya (acak dari daftar proli tsb)
+        foreach ($barangs as $barang) {
+            if ($barang->owner_type !== 'proli' || ! $barang->proli_id) {
+                continue;
+            }
+            $pool = collect($subkategori)->filter(fn ($s) => $s->proli_id === $barang->proli_id)->values();
+            if ($pool->isEmpty()) {
+                continue;
+            }
+            $barang->update(['subkategori_id' => $pool->random()->id]);
         }
 
         // ============ Peminjaman (dengan jam pelajaran) ============

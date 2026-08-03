@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import {
   Boxes,
   Plus,
@@ -24,6 +24,8 @@ const search = ref('')
 const showForm = ref(false)
 const editingId = ref<number | null>(null)
 const filterOwner = ref<'all' | 'sarpras' | 'proli'>('all')
+const filterSubkategori = ref('')
+const filterSubkategoriOptions = ref<Opt[]>([])
 
 const form = ref({
   nama: '',
@@ -31,15 +33,79 @@ const form = ref({
   owner_type: 'sarpras' as 'sarpras' | 'proli',
   kategori_id: '',
   ruangan_id: '',
-  proli_id: ''
+  proli_id: '',
+  subkategori_id: ''
 })
+
+interface Opt {
+  value: number
+  label: string
+}
+
+const optionState = ref({
+  kategori: [] as Opt[],
+  ruangan: [] as Opt[],
+  proli: [] as Opt[],
+  subkategori: [] as Opt[]
+})
+
+const proliLabel = computed(
+  () => optionState.value.proli.find((o) => o.value === Number(form.value.proli_id))?.label ?? ''
+)
+
+async function loadOptions() {
+  const [k, r, p, s] = await Promise.all([
+    admin.master.list('kategori-barang', { per_page: 100 }),
+    admin.master.list('ruangan', { per_page: 100 }),
+    admin.master.list('proli', { per_page: 100 }),
+    admin.master.list('subkategori', { per_page: 100 })
+  ])
+  optionState.value.kategori = k.data.map((x: any) => ({ value: x.id, label: x.nama }))
+  optionState.value.ruangan = r.data.map((x: any) => ({ value: x.id, label: x.nama }))
+  optionState.value.proli = p.data.map((x: any) => ({ value: x.id, label: x.nama }))
+  filterSubkategoriOptions.value = s.data.map((x: any) => ({
+    value: x.id,
+    label: x.proli ? `${x.nama} (${x.proli.nama})` : x.nama
+  }))
+}
+
+// Muat subkategori milik proli yang dipilih (hanya untuk barang proli)
+async function loadSubkategori() {
+  if (form.value.owner_type !== 'proli' || !form.value.proli_id) {
+    optionState.value.subkategori = []
+    form.value.subkategori_id = ''
+    return
+  }
+  try {
+    const res = await admin.master.list('subkategori', { per_page: 100, proli_id: form.value.proli_id })
+    optionState.value.subkategori = res.data.map((x: any) => ({ value: x.id, label: x.nama }))
+    // Kalau subkategori lama tidak cocok dengan proli baru → kosongkan
+    if (
+      form.value.subkategori_id &&
+      !optionState.value.subkategori.some((o) => o.value === Number(form.value.subkategori_id))
+    ) {
+      form.value.subkategori_id = ''
+    }
+  } catch {
+    optionState.value.subkategori = []
+  }
+}
+
+// Saat owner atau proli berubah → muat ulang daftar subkategori
+watch(
+  () => [form.value.owner_type, form.value.proli_id],
+  () => {
+    loadSubkategori()
+  }
+)
 
 const filtered = computed(() => {
   const q = search.value.toLowerCase()
   return items.value.filter((b) => {
     const matchQ = !q || b.nama.toLowerCase().includes(q) || (b.kode_qr ?? '').toLowerCase().includes(q)
     const matchOwner = filterOwner.value === 'all' || b.owner_type === filterOwner.value
-    return matchQ && matchOwner
+    const matchSub = !filterSubkategori.value || b.subkategori_id === Number(filterSubkategori.value)
+    return matchQ && matchOwner && matchSub
   })
 })
 
@@ -66,6 +132,7 @@ async function submit() {
       deskripsi: form.value.deskripsi || null,
       owner_type: form.value.owner_type,
       kategori_id: form.value.kategori_id ? Number(form.value.kategori_id) : null,
+      subkategori_id: form.value.subkategori_id ? Number(form.value.subkategori_id) : null,
       ruangan_id: form.value.ruangan_id ? Number(form.value.ruangan_id) : null,
       proli_id: form.value.proli_id ? Number(form.value.proli_id) : null
     }
@@ -90,10 +157,12 @@ function openForm(b?: Barang) {
   form.value.deskripsi = b?.deskripsi ?? ''
   form.value.owner_type = b?.owner_type ?? 'sarpras'
   form.value.kategori_id = b?.kategori_id != null ? String(b.kategori_id) : ''
+  form.value.subkategori_id = b?.subkategori_id != null ? String(b.subkategori_id) : ''
   form.value.ruangan_id = b?.ruangan_id != null ? String(b.ruangan_id) : ''
   form.value.proli_id = b?.proli_id != null ? String(b.proli_id) : ''
   showForm.value = true
   error.value = null
+  loadSubkategori()
 }
 
 function closeForm() {
@@ -102,8 +171,10 @@ function closeForm() {
   form.value.nama = ''
   form.value.deskripsi = ''
   form.value.kategori_id = ''
+  form.value.subkategori_id = ''
   form.value.ruangan_id = ''
   form.value.proli_id = ''
+  optionState.value.subkategori = []
 }
 
 async function remove(id: number) {
@@ -126,7 +197,10 @@ const statusBadge = (s: string) => {
   return map[s] ?? 'bg-gray-100 text-gray-700'
 }
 
-onMounted(load)
+onMounted(() => {
+  load()
+  loadOptions()
+})
 </script>
 
 <template>
@@ -176,16 +250,39 @@ onMounted(load)
           </select>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Kategori ID (opsional)</label>
-          <input v-model="form.kategori_id" type="number" placeholder="1" class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500" />
+          <label class="block text-sm font-medium text-gray-700 mb-1">Kategori</label>
+          <select v-model="form.kategori_id" class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+            <option value="">— Pilih —</option>
+            <option v-for="o in optionState.kategori" :key="o.value" :value="o.value">{{ o.label }}</option>
+          </select>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Ruangan ID (opsional)</label>
-          <input v-model="form.ruangan_id" type="number" placeholder="1" class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500" />
+          <label class="block text-sm font-medium text-gray-700 mb-1">Ruangan</label>
+          <select v-model="form.ruangan_id" class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+            <option value="">— Pilih —</option>
+            <option v-for="o in optionState.ruangan" :key="o.value" :value="o.value">{{ o.label }}</option>
+          </select>
         </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1">Proli ID (opsional)</label>
-          <input v-model="form.proli_id" type="number" placeholder="1" class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500" />
+        <div v-if="form.owner_type === 'proli'">
+          <label class="block text-sm font-medium text-gray-700 mb-1">Proli</label>
+          <select v-model="form.proli_id" class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+            <option value="">— Pilih —</option>
+            <option v-for="o in optionState.proli" :key="o.value" :value="o.value">{{ o.label }}</option>
+          </select>
+        </div>
+        <div v-if="form.owner_type === 'proli'">
+          <label class="block text-sm font-medium text-gray-700 mb-1">
+            Subkategori{{ proliLabel ? ` (${proliLabel})` : '' }}
+          </label>
+          <select
+            v-model="form.subkategori_id"
+            :disabled="!form.proli_id"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white disabled:bg-gray-100 disabled:text-gray-400"
+          >
+            <option value="">{{ form.proli_id ? '— Pilih —' : 'Pilih proli terlebih dahulu' }}</option>
+            <option v-for="o in optionState.subkategori" :key="o.value" :value="o.value">{{ o.label }}</option>
+          </select>
+          <p class="mt-1 text-xs text-gray-400">Subkategori khusus proli (kelola di Master Data → Subkategori Barang).</p>
         </div>
         <div class="sm:col-span-2 flex gap-3 pt-2">
           <button
@@ -215,6 +312,14 @@ onMounted(load)
         />
       </div>
       <div class="flex gap-2">
+        <select
+          v-model="filterSubkategori"
+          class="rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-600 outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+          title="Filter subkategori"
+        >
+          <option value="">Semua Subkategori</option>
+          <option v-for="o in filterSubkategoriOptions" :key="o.value" :value="o.value">{{ o.label }}</option>
+        </select>
         <button
           v-for="o in ([{v:'all',l:'Semua'},{v:'sarpras',l:'Sarpras'},{v:'proli',l:'Proli'}] as const)"
           :key="o.v"
@@ -252,7 +357,9 @@ onMounted(load)
                   </div>
                   <div>
                     <div class="font-medium text-gray-900">{{ b.nama }}</div>
-                    <div class="text-xs text-gray-400">{{ b.kategori?.nama ?? 'Tanpa kategori' }}</div>
+                    <div class="text-xs text-gray-400">
+                      {{ b.kategori?.nama ?? 'Tanpa kategori' }}{{ b.subkategori?.nama ? ' · ' + b.subkategori.nama : '' }}
+                    </div>
                   </div>
                 </div>
               </td>

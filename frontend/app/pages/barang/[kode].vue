@@ -140,6 +140,14 @@ onMounted(load)
               <dt class="text-xs text-gray-500 w-24">Kategori</dt>
               <dd class="flex-1 text-sm font-medium text-gray-800 text-right">{{ barang.kategori?.nama ?? '—' }}</dd>
             </div>
+            <div v-if="barang.subkategori" class="flex items-center gap-3 px-5 py-3">
+              <Tag class="w-4 h-4 text-gray-400 shrink-0" />
+              <dt class="text-xs text-gray-500 w-24">Subkategori</dt>
+              <dd class="flex-1 text-sm font-medium text-gray-800 text-right">
+                {{ barang.subkategori.nama }}
+                <span v-if="barang.subkategori.proli" class="text-xs text-gray-400">({{ barang.subkategori.proli.nama }})</span>
+              </dd>
+            </div>
             <div class="flex items-center gap-3 px-5 py-3">
               <MapPin class="w-4 h-4 text-gray-400 shrink-0" />
               <dt class="text-xs text-gray-500 w-24">Ruangan</dt>

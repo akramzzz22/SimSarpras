@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
-import { ArrowLeftRight, Search, Loader2, CheckCircle2, QrCode, Camera, X, AlertTriangle } from 'lucide-vue-next'
+import { ref, onMounted, computed, watch } from 'vue'
+import { ArrowLeftRight, Search, Loader2, CheckCircle2, QrCode, Camera, X, AlertTriangle, LayoutGrid, Warehouse, Boxes } from 'lucide-vue-next'
 import { useAdminService, type Barang, type Peminjaman } from '~/services/api/admin'
 
 definePageMeta({ layout: 'mobile', middleware: ['auth'], title: 'Peminjaman' })
@@ -24,13 +24,52 @@ const success = ref(false)
 const error = ref<string | null>(null)
 const loaded = ref(false)
 
-const filtered = computed(() => {
+// Filter sumber barang: Semua / Sarpras / Proli
+const sumberFilter = ref<'all' | 'sarpras' | 'proli'>('all')
+const proliFilter = ref('')
+const proliOptions = ref<{ value: number; label: string }[]>([])
+const subkategoriFilter = ref('')
+const subkategoriOptions = ref<{ value: number; label: string }[]>([])
+
+// Muat subkategori milik proli yang dipilih (untuk filter barang proli)
+async function loadSubkategori() {
+  subkategoriFilter.value = ''
+  subkategoriOptions.value = []
+  if (sumberFilter.value !== 'proli' || !proliFilter.value) return
+  try {
+    const res = await admin.master.list('subkategori', { per_page: 100, proli_id: proliFilter.value })
+    subkategoriOptions.value = res.data.map((x: any) => ({ value: x.id, label: x.nama }))
+  } catch {
+    subkategoriOptions.value = []
+  }
+}
+
+const availableBarang = computed(() => {
   const q = search.value.toLowerCase()
-  if (!q) return barangList.value
-  return barangList.value.filter((b) => b.nama.toLowerCase().includes(q) || (b.kode_qr ?? '').toLowerCase().includes(q))
+  return barangList.value.filter((b) => {
+    if (b.status !== 'aktif') return false
+    if (sumberFilter.value === 'sarpras' && b.owner_type !== 'sarpras') return false
+    if (sumberFilter.value === 'proli') {
+      if (b.owner_type !== 'proli') return false
+      if (proliFilter.value && b.proli_id !== Number(proliFilter.value)) return false
+      if (subkategoriFilter.value && b.subkategori_id !== Number(subkategoriFilter.value)) return false
+    }
+    if (q && !b.nama.toLowerCase().includes(q) && !(b.kode_qr ?? '').toLowerCase().includes(q)) return false
+    return true
+  })
 })
 
-const availableBarang = computed(() => filtered.value.filter((b) => b.status === 'aktif'))
+const sumberOptions = [
+  { v: 'all', l: 'Semua', icon: LayoutGrid },
+  { v: 'sarpras', l: 'Sarpras', icon: Warehouse },
+  { v: 'proli', l: 'Proli', icon: Boxes }
+] as const
+
+// Saat filter sumber/proli berubah, lepas pilihan barang yang mungkin sudah tidak tampil.
+watch([sumberFilter, proliFilter], () => {
+  barangId.value = ''
+  loadSubkategori()
+})
 
 const jamSelesaiOptions = computed(() => {
   const m = Number(jamMulai.value)
@@ -57,11 +96,12 @@ const bentrokInfo = computed(() => {
 const isBentrok = computed(() => !!bentrokInfo.value)
 
 const fotoInput = ref<HTMLInputElement | null>(null)
+const fotoUploading = ref(false)
 function pickFoto() {
   fotoInput.value?.click()
 }
 
-function onFotoChange(e: Event) {
+async function onFotoChange(e: Event) {
   const file = (e.target as HTMLInputElement).files?.[0]
   if (!file) return
   if (!file.type.startsWith('image/')) {
@@ -72,12 +112,17 @@ function onFotoChange(e: Event) {
     error.value = 'Ukuran foto maksimal 5MB.'
     return
   }
-  const reader = new FileReader()
-  reader.onload = () => {
-    fotoPinjam.value = String(reader.result)
-    error.value = null
+  fotoUploading.value = true
+  error.value = null
+  try {
+    const res = await admin.upload(file)
+    fotoPinjam.value = res.url
+  } catch (err: any) {
+    error.value = err?.data?.message ?? 'Gagal mengunggah foto.'
+  } finally {
+    fotoUploading.value = false
+    ;(e.target as HTMLInputElement).value = ''
   }
-  reader.readAsDataURL(file)
 }
 
 const badge = (s: string) => {
@@ -95,13 +140,15 @@ const route = useRoute()
 
 async function load() {
   try {
-    const [b, p] = await Promise.all([
+    const [b, p, pl] = await Promise.all([
       admin.barang.list({ per_page: 100 }),
-      admin.peminjaman.list({ per_page: 100 })
+      admin.peminjaman.list({ per_page: 100 }),
+      admin.master.list('proli', { per_page: 100 })
     ])
     barangList.value = b.data
     allPeminjaman.value = p.data
     myRequests.value = p.data.filter((x) => x.peminjam_id === authStore.user?.id)
+    proliOptions.value = pl.data.map((x: any) => ({ value: x.id, label: x.nama }))
     loaded.value = true
     // Deep-link dari scan QR: pilih barang berdasarkan kode
     const kode = route.query.kode
@@ -175,7 +222,43 @@ onMounted(load)
     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
       <h3 class="font-semibold text-gray-900 text-sm mb-3">Ajukan Peminjaman</h3>
 
-      <label class="block text-sm font-medium text-gray-700 mb-1">Cari Barang</label>
+      <!-- Filter sumber barang: Semua / Sarpras / Proli -->
+      <label class="block text-sm font-medium text-gray-700 mb-1">Sumber Barang</label>
+      <div class="grid grid-cols-3 gap-2">
+        <button
+          v-for="s in sumberOptions"
+          :key="s.v"
+          type="button"
+          class="inline-flex items-center justify-center gap-1.5 px-2 py-2 rounded-lg border text-xs font-semibold transition"
+          :class="sumberFilter === s.v ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
+          @click="sumberFilter = s.v"
+        >
+          <component :is="s.icon" class="w-3.5 h-3.5" />
+          {{ s.l }}
+        </button>
+      </div>
+
+      <div v-if="sumberFilter === 'proli'" class="mt-2">
+        <select
+          v-model="proliFilter"
+          class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+        >
+          <option value="">— Semua Proli —</option>
+          <option v-for="o in proliOptions" :key="o.value" :value="o.value">{{ o.label }}</option>
+        </select>
+      </div>
+
+      <div v-if="sumberFilter === 'proli' && proliFilter" class="mt-2">
+        <select
+          v-model="subkategoriFilter"
+          class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+        >
+          <option value="">— Semua Subkategori —</option>
+          <option v-for="o in subkategoriOptions" :key="o.value" :value="o.value">{{ o.label }}</option>
+        </select>
+      </div>
+
+      <label class="block text-sm font-medium text-gray-700 mb-1 mt-3">Cari Barang</label>
       <div class="relative">
         <Search class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
         <input
@@ -242,8 +325,9 @@ onMounted(load)
         >
           <img v-if="fotoPinjam" :src="fotoPinjam" class="max-h-40 mx-auto rounded-lg object-cover" alt="Foto barang" />
           <div v-else class="py-4">
-            <Camera class="w-6 h-6 mx-auto mb-1 text-gray-400" />
-            <p class="text-xs text-gray-500">Foto barang wajib diunggah (maks 5MB)</p>
+            <Camera v-if="!fotoUploading" class="w-6 h-6 mx-auto mb-1 text-gray-400" />
+            <Loader2 v-else class="w-6 h-6 mx-auto mb-1 text-blue-500 animate-spin" />
+            <p class="text-xs text-gray-500">{{ fotoUploading ? 'Mengunggah…' : 'Foto barang wajib diunggah (maks 5MB)' }}</p>
           </div>
           <button
             v-if="fotoPinjam"
@@ -254,7 +338,7 @@ onMounted(load)
             <X class="w-4 h-4" />
           </button>
         </div>
-        <input ref="fotoInput" type="file" accept="image/*" class="hidden" @change="onFotoChange" />
+        <input ref="fotoInput" type="file" accept="image/*" class="hidden" :disabled="fotoUploading" @change="onFotoChange" />
       </div>
 
       <p v-if="error" class="mt-3 text-sm text-rose-600">{{ error }}</p>

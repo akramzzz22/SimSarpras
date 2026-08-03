@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { AlertTriangle, RefreshCw, Inbox } from 'lucide-vue-next'
+import { AlertTriangle, RefreshCw, Inbox, Download } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
 
 definePageMeta({ layout: 'mobile', middleware: ['auth'], title: 'Laporan' })
@@ -43,6 +43,23 @@ const badge = (s: string) => {
 
 const fmt = (d?: string) => (d ? new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-')
 
+// Export CSV laporan kerusakan
+function exportCSV() {
+  const rows: string[][] = [['Barang', 'Deskripsi', 'Pelapor', 'Tanggal', 'Status']]
+  laporan.value.forEach((l) =>
+    rows.push([l.barang?.nama ?? 'Barang #' + l.barang_id, l.deskripsi ?? '', l.pelapor?.name ?? '', fmt(l.created_at), l.status])
+  )
+
+  const csv = rows.map((r) => r.map((c) => `"${String(c ?? '').replaceAll('"', '""')}"`).join(',')).join('\n')
+  const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `laporan-kerusakan-${new Date().toISOString().slice(0, 10)}.csv`
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
 onMounted(load)
 </script>
 
@@ -50,9 +67,18 @@ onMounted(load)
   <div class="space-y-4">
     <div class="flex items-center justify-between">
       <h2 class="text-lg font-bold text-gray-900">Laporan Kerusakan</h2>
-      <button class="p-2 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 transition" title="Muat ulang" @click="load">
-        <RefreshCw class="w-4 h-4" :class="loading ? 'animate-spin' : ''" />
-      </button>
+      <div class="flex gap-2">
+        <button
+          class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-600 text-white text-xs font-medium hover:bg-emerald-700 transition"
+          @click="exportCSV"
+        >
+          <Download class="w-3.5 h-3.5" />
+          Export CSV
+        </button>
+        <button class="p-2 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 transition" title="Muat ulang" @click="load">
+          <RefreshCw class="w-4 h-4" :class="loading ? 'animate-spin' : ''" />
+        </button>
+      </div>
     </div>
 
     <div class="flex flex-wrap gap-2">
