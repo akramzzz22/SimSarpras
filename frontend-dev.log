@@ -1,0 +1,328 @@
+
+> dev
+> nuxt dev --host 0.0.0.0
+
+│
+●  [32mNuxt [1m4.5.1[22m[39m[90m (with [39m[90mNitro [1m2.13.4[22m[39m[90m, Vite [1m8.1.5[22m[39m[90m and Vue [1m3.5.40[22m[39m[90m)[39m
+
+ 
+              █▀▀▀▀▀▀▀██▀▀▀█▀██▀█▀▀▀▀▀▀▀█
+              █ █▀▀▀█ ██▀▀ ▄▄██▀█ █▀▀▀█ █
+              █ █   █ █ █ ▄▀  ▄▄█ █   █ █
+              █ ▀▀▀▀▀ █▀▄ █▀▄▀█▀█ ▀▀▀▀▀ █
+              █▀▀███▀▀▀█ ▀█ ▀█▀▀███▀▀████
+              ██▄  ▀▄▀██▀▄▀▀▀█ ▄▄▀▀▄ ▄ ▀█
+              █  ▄ ▀▀▀ █▀ ▄██ ▄ ▀▀█▄▄██ █
+              █ ▄ █▄ ▀▀▀▄▄█▄█▄ █▀█▀█▀█ ▀█
+              █ █ ▀▄█▀ ██▄█ ▀▄█ ▀▀▀ █ █▄█
+              █▀▀▀▀▀▀▀█ █▀█▀▀ ▄ █▀█ ▀▄█▀█
+              █ █▀▀▀█ █▄▄▀ ▀▀█▀ ▀▀▀ ▀▀█▄█
+              █ █   █ ██▄▀█▄████▀▄▄█▄▀▄ █
+              █ ▀▀▀▀▀ █ ██▄▀█▀  █ ▄▄▀██ █
+              ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+ 
+[32m  ➜ Local:   [39m [36m[4mhttp://0.0.0.0:[1m3000[22m/[24m[39m
+[35m  ➜ Network: [39m [36m[4mhttp://192.168.0.2:[1m3000[22m/[24m[39m[90m [QR code][39m
+
+[33m  ➜ DevTools: [39m[2mpress [22m[32mShift[39m[2m + [22m[32mAlt[39m[2m + [22m[32mD[39m[2m in the browser (v3.3.1)[22m
+
+[32m✔[39m Vite client built in 123ms
+[32m✔[39m Vite server built in 38ms
+[90m[[90mnitro[90m][39m [32m✔[39m Nuxt Nitro server built in 1884ms
+[36mℹ[39m Vite server warmed up in 26ms
+[36mℹ[39m Vite client warmed up in 29ms
+[36mℹ[39m [32mhmr update [39m[2m/components/master-data-crud.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+[36mℹ[39m [32mhmr update [39m[2m/components/master-data-crud.vue, /assets/css/main.css?direct, /assets/css/main.css[22m[2m (x2)[22m
+[36mℹ[39m [32mhmr update [39m[2m/layouts/admin.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+[36mℹ[39m [32mhmr update [39m[2m/@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m
+[36mℹ[39m [32mhmr update [39m[2m/components/master-data-crud.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+[36mℹ[39m [32mhmr update [39m[2m/assets/css/main.css, /pages/admin/master-data/kelas.vue?macro=true, /@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m
+[90m[[90mnuxt[90m][39m [36mℹ[39m Compiled [36mtypes/plugins.d.ts[39m in 538.72ms
+[90m[[90mnuxt[90m][39m [36mℹ[39m Compiled [36mplugins.server.mjs[39m in 541.25ms
+[90m[[90mnuxt[90m][39m [36mℹ[39m Compiled [36mplugins.client.mjs[39m in 543.28ms
+[36mℹ[39m [32mhmr update [39m[2m/assets/css/main.css?direct, /assets/css/main.css, /pages/admin/index.vue, /pages/admin/asset/data-barang.vue, /pages/admin/asset/stock-opname.vue, /components/master-data-crud.vue, /pages/admin/master-data/murid.vue, /pages/admin/laporan.vue, /pages/admin/peminjaman/pengembalian.vue, /pages/admin/peminjaman/approval.vue, /pages/admin/pengaturan.vue, /pages/admin/pengaturan/akun.vue, /pages/admin/maintenance/penugasan.vue, /pages/barang/[kode].vue, /pages/admin/asset/mutasi-barang.vue and 1 more[22m
+[36mℹ[39m [32mhmr update [39m[2m/pages/admin/master-data/murid.vue, /assets/css/main.css?direct, /assets/css/main.css, /pages/admin/master-data/murid.vue?macro=true, /@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m
+[32m✔[39m Vite server hmr 47 files in 0.943ms
+[36mℹ[39m [32mhmr update [39m[2m/components/master-data-crud.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+[36mℹ[39m [32mhmr update [39m[2m/components/master-data-crud.vue, /assets/css/main.css?direct, /assets/css/main.css[22m[2m (x2)[22m
+[36mℹ[39m [32mhmr update [39m[2m/components/master-data-crud.vue, /assets/css/main.css?direct, /assets/css/main.css[22m[2m (x3)[22m
+[36mℹ[39m [32mhmr update [39m[2m/components/master-data-crud.vue, /assets/css/main.css?direct, /assets/css/main.css[22m[2m (x4)[22m
+[32m✔[39m Vite server hmr 35 files in 1.17ms
+[32m✔[39m Vite server hmr 28 files in 0.617ms
+[32m✔[39m Vite server hmr 25 files in 1.818ms
+[36mℹ[39m [32mhmr update [39m[2m/assets/css/main.css?direct, /assets/css/main.css, /pages/admin/index.vue, /pages/admin/asset/data-barang.vue, /pages/admin/asset/stock-opname.vue, /components/master-data-crud.vue, /pages/admin/master-data/murid.vue, /pages/admin/laporan.vue, /pages/admin/peminjaman/pengembalian.vue, /pages/admin/peminjaman/approval.vue, /pages/admin/pengaturan.vue, /pages/admin/pengaturan/akun.vue, /pages/admin/maintenance/penugasan.vue, /pages/barang/[kode].vue, /pages/admin/asset/mutasi-barang.vue and 6 more[22m
+[36mℹ[39m [32mhmr update [39m[2m/components/master-data-crud.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+[36mℹ[39m [32mhmr update [39m[2m/pages/admin/master-data/murid.vue, /assets/css/main.css?direct, /assets/css/main.css, /pages/admin/master-data/murid.vue?macro=true, /@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m
+[36mℹ[39m [32mhmr update [39m[2m/pages/admin/master-data/murid.vue, /assets/css/main.css?direct, /assets/css/main.css, /pages/admin/master-data/murid.vue?macro=true, /@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m[2m (x2)[22m
+[32m✔[39m Vite server hmr 50 files in 1.307ms
+[32m✔[39m Vite server hmr 27 files in 0.803ms
+[32m✔[39m Vite server hmr 13 files in 2.172ms
+[36mℹ[39m [32mhmr update [39m[2m/components/master-data-crud.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+[36mℹ[39m [32mhmr update [39m[2m/pages/admin/master-data/murid.vue, /assets/css/main.css?direct, /assets/css/main.css, /pages/admin/master-data/murid.vue?macro=true, /@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m
+[90m[[90mnuxt[90m][39m [36mℹ[39m Compiled [36mplugins.client.mjs[39m in 5070.08ms
+[90m[[90mnuxt[90m][39m [36mℹ[39m Compiled [36mtypes/plugins.d.ts[39m in 5080.22ms
+[90m[[90mnuxt[90m][39m [36mℹ[39m Compiled [36mplugins.server.mjs[39m in 5081.85ms
+[36mℹ[39m [32mhmr update [39m[2m/assets/css/main.css?direct, /assets/css/main.css, /pages/admin/index.vue, /pages/admin/asset/data-barang.vue, /pages/admin/asset/stock-opname.vue, /components/master-data-crud.vue, /pages/admin/master-data/murid.vue, /pages/admin/laporan.vue, /pages/admin/peminjaman/pengembalian.vue, /pages/admin/peminjaman/approval.vue, /pages/admin/pengaturan.vue, /pages/admin/pengaturan/akun.vue, /pages/admin/maintenance/penugasan.vue, /pages/barang/[kode].vue, /pages/admin/asset/mutasi-barang.vue and 6 more[22m
+[32m✔[39m Vite server hmr 50 files in 1.24ms
+[32m✔[39m Vite server hmr 28 files in 1.45ms
+[36mℹ[39m [32mhmr update [39m[2m/assets/css/main.css?direct, /assets/css/main.css, /pages/admin/index.vue, /pages/admin/asset/data-barang.vue, /pages/admin/asset/stock-opname.vue, /components/master-data-crud.vue, /pages/admin/master-data/murid.vue, /pages/admin/laporan.vue, /pages/admin/peminjaman/pengembalian.vue, /pages/admin/peminjaman/approval.vue, /pages/admin/pengaturan.vue, /pages/admin/pengaturan/akun.vue, /pages/admin/maintenance/penugasan.vue, /pages/barang/[kode].vue, /pages/admin/asset/mutasi-barang.vue and 6 more[22m[2m (x2)[22m
+[36mℹ[39m [32mhmr update [39m[2m/pages/admin/master-data/murid.vue, /assets/css/main.css?direct, /assets/css/main.css, /pages/admin/master-data/murid.vue?macro=true, /@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m
+[36mℹ[39m [32mhmr update [39m[2m/pages/admin/master-data/murid.vue, /assets/css/main.css?direct, /assets/css/main.css, /pages/admin/master-data/murid.vue?macro=true, /@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m[2m (x2)[22m
+[36mℹ[39m [32mhmr update [39m[2m/pages/admin/master-data/murid.vue, /assets/css/main.css?direct, /assets/css/main.css, /pages/admin/master-data/murid.vue?macro=true, /@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m[2m (x3)[22m
+
+[41m[30m ERROR [39m[49m [31mInternal server error: Duplicate attribute.[39m
+  Plugin: [35mvite:vue[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/pages/admin/master-data/murid.vue[39m:195:13
+[33m  193 |          <div class="px-6 py-5 space-y-3">
+  194 |            <p class="text-sm" :class="akunMode === 'reset' ? 'text-blue-700 bg-blue-50 border-blue-200' : 'text-amber-...
+  195 |              class="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+      |               ^
+  196 |              <strong>{{ akunMode === 'reset' ? 'Password baru:' : 'Catatan:' }}</strong>
+  197 |              {{ akunMode === 'reset'[39m
+      at createCompilerError (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:1378:17)
+      at emitError (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:3035:5)
+      at Object.onattribnameend (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:2520:7)
+      at Tokenizer.handleAttrNameEnd (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:926:14)
+      at Tokenizer.stateInAttrName (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:866:12)
+      at Tokenizer.parse (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:1117:16)
+      at Object.baseParse (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:3074:13)
+      at Object.parse (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-dom\dist\compiler-dom.cjs.js:910:23)
+      at Object.parse$1 [as parse] (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-sfc\dist\compiler-sfc.cjs.js:1824:24)
+      at createDescriptor (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@vitejs/plugin-vue/dist/index.mjs:50:42)
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: Duplicate attribute.[39m
+  Plugin: [35mvite:vue[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/pages/admin/master-data/murid.vue[39m:195:13
+[33m  193 |          <div class="px-6 py-5 space-y-3">
+  194 |            <p class="text-sm" :class="akunMode === 'reset' ? 'text-blue-700 bg-blue-50 border-blue-200' : 'text-amber-...
+  195 |              class="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+      |               ^
+  196 |              <strong>{{ akunMode === 'reset' ? 'Password baru:' : 'Catatan:' }}</strong>
+  197 |              {{ akunMode === 'reset'[39m
+      at createCompilerError (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:1378:17)
+      at emitError (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:3035:5)
+      at Object.onattribnameend (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:2520:7)
+      at Tokenizer.handleAttrNameEnd (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:926:14)
+      at Tokenizer.stateInAttrName (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:866:12)
+      at Tokenizer.parse (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:1117:16)
+      at Object.baseParse (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:3074:13)
+      at Object.parse (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-dom\dist\compiler-dom.cjs.js:910:23)
+      at Object.parse$1 [as parse] (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-sfc\dist\compiler-sfc.cjs.js:1824:24)
+      at createDescriptor (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@vitejs/plugin-vue/dist/index.mjs:50:42)[2m (x2)[22m
+
+
+[41m[30m ERROR [39m[49m Pre-transform error: Duplicate attribute.
+  Plugin: [35mvite:vue[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/pages/admin/master-data/murid.vue[39m:195:13
+[33m  193 |          <div class="px-6 py-5 space-y-3">
+  194 |            <p class="text-sm" :class="akunMode === 'reset' ? 'text-blue-700 bg-blue-50 border-blue-200' : 'text-amber-...
+  195 |              class="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+      |               ^
+  196 |              <strong>{{ akunMode === 'reset' ? 'Password baru:' : 'Catatan:' }}</strong>
+  197 |              {{ akunMode === 'reset'[39m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: Duplicate attribute.[39m
+  Plugin: [35mvite:vue[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/pages/admin/master-data/murid.vue[39m:195:13
+[33m  193 |          <div class="px-6 py-5 space-y-3">
+  194 |            <p class="text-sm" :class="akunMode === 'reset' ? 'text-blue-700 bg-blue-50 border-blue-200' : 'text-amber-...
+  195 |              class="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+      |               ^
+  196 |              <strong>{{ akunMode === 'reset' ? 'Password baru:' : 'Catatan:' }}</strong>
+  197 |              {{ akunMode === 'reset'[39m
+      at createCompilerError (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:1378:17)
+      at emitError (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:3035:5)
+      at Object.onattribnameend (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:2520:7)
+      at Tokenizer.handleAttrNameEnd (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:926:14)
+      at Tokenizer.stateInAttrName (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:866:12)
+      at Tokenizer.parse (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:1117:16)
+      at Object.baseParse (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:3074:13)
+      at Object.parse (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-dom\dist\compiler-dom.cjs.js:910:23)
+      at Object.parse$1 [as parse] (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-sfc\dist\compiler-sfc.cjs.js:1824:24)
+      at createDescriptor (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@vitejs/plugin-vue/dist/index.mjs:50:42)
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: Duplicate attribute.[39m
+  Plugin: [35mvite:vue[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/pages/admin/master-data/murid.vue[39m:195:13
+[33m  193 |          <div class="px-6 py-5 space-y-3">
+  194 |            <p class="text-sm" :class="akunMode === 'reset' ? 'text-blue-700 bg-blue-50 border-blue-200' : 'text-amber-...
+  195 |              class="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+      |               ^
+  196 |              <strong>{{ akunMode === 'reset' ? 'Password baru:' : 'Catatan:' }}</strong>
+  197 |              {{ akunMode === 'reset'[39m
+      at createCompilerError (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:1378:17)
+      at emitError (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:3035:5)
+      at Object.onattribnameend (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:2520:7)
+      at Tokenizer.handleAttrNameEnd (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:926:14)
+      at Tokenizer.stateInAttrName (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:866:12)
+      at Tokenizer.parse (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:1117:16)
+      at Object.baseParse (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:3074:13)
+      at Object.parse (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-dom\dist\compiler-dom.cjs.js:910:23)
+      at Object.parse$1 [as parse] (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-sfc\dist\compiler-sfc.cjs.js:1824:24)
+      at createDescriptor (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@vitejs/plugin-vue/dist/index.mjs:50:42)[2m (x2)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: Duplicate attribute.[39m
+  Plugin: [35mvite:vue[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/pages/admin/master-data/murid.vue[39m:195:13
+[33m  193 |          <div class="px-6 py-5 space-y-3">
+  194 |            <p class="text-sm" :class="akunMode === 'reset' ? 'text-blue-700 bg-blue-50 border-blue-200' : 'text-amber-...
+  195 |              class="text-sm text-amber-700 bg-amber-50 border border-amber-200 rounded-lg px-3 py-2">
+      |               ^
+  196 |              <strong>{{ akunMode === 'reset' ? 'Password baru:' : 'Catatan:' }}</strong>
+  197 |              {{ akunMode === 'reset'[39m
+      at createCompilerError (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:1378:17)
+      at emitError (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:3035:5)
+      at Object.onattribnameend (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:2520:7)
+      at Tokenizer.handleAttrNameEnd (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:926:14)
+      at Tokenizer.stateInAttrName (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:866:12)
+      at Tokenizer.parse (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:1117:16)
+      at Object.baseParse (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-core\dist\compiler-core.cjs.js:3074:13)
+      at Object.parse (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-dom\dist\compiler-dom.cjs.js:910:23)
+      at Object.parse$1 [as parse] (C:\Users\Akram\Project\full-project\frontend\node_modules\@vue\compiler-sfc\dist\compiler-sfc.cjs.js:1824:24)
+      at createDescriptor (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@vitejs/plugin-vue/dist/index.mjs:50:42)[2m (x3)[22m
+
+[36mℹ[39m [32mhmr update [39m[2m/pages/admin/master-data/murid.vue, /assets/css/main.css?direct, /assets/css/main.css, /pages/admin/master-data/murid.vue?macro=true, /@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m
+[36mℹ[39m [32mhmr update [39m[2m/pages/admin/master-data/murid.vue, /assets/css/main.css?direct, /assets/css/main.css, /pages/admin/master-data/murid.vue?macro=true, /@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m[2m (x2)[22m
+[36mℹ[39m [32mhmr update [39m[2m/assets/css/main.css?direct, /assets/css/main.css, /pages/admin/index.vue, /pages/admin/asset/data-barang.vue, /pages/admin/asset/stock-opname.vue, /components/master-data-crud.vue, /pages/admin/master-data/murid.vue, /pages/admin/laporan.vue, /pages/admin/peminjaman/pengembalian.vue, /pages/admin/peminjaman/approval.vue, /pages/admin/pengaturan.vue, /pages/admin/pengaturan/akun.vue, /pages/admin/maintenance/penugasan.vue, /pages/barang/[kode].vue, /pages/admin/asset/mutasi-barang.vue and 6 more[22m
+[36mℹ[39m [32mhmr update [39m[2m/pages/admin/pengaturan/akun.vue, /assets/css/main.css?direct, /assets/css/main.css, /pages/admin/pengaturan/akun.vue?macro=true, /@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m
+[36mℹ[39m [32mhmr update [39m[2m/assets/css/main.css?direct, /assets/css/main.css, /pages/admin/index.vue, /pages/admin/asset/data-barang.vue, /pages/admin/asset/stock-opname.vue, /components/master-data-crud.vue, /pages/admin/master-data/murid.vue, /pages/admin/laporan.vue, /pages/admin/peminjaman/pengembalian.vue, /pages/admin/peminjaman/approval.vue, /pages/admin/pengaturan.vue, /pages/admin/pengaturan/akun.vue, /pages/admin/maintenance/penugasan.vue, /pages/barang/[kode].vue, /pages/admin/asset/mutasi-barang.vue and 6 more[22m
+[32m✔[39m Vite server hmr 51 files in 1.017ms
+[36mℹ[39m [32mhmr update [39m[2m/pages/admin/pengaturan.vue, /assets/css/main.css?direct, /assets/css/main.css, /pages/admin/pengaturan.vue?macro=true, /@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m
+[36mℹ[39m [32mhmr update [39m[2m/@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m
+[36mℹ[39m [32mhmr update [39m[2m/layouts/admin.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+[36mℹ[39m [32mhmr update [39m[2m/assets/css/main.css?direct, /assets/css/main.css, /pages/admin/index.vue, /pages/admin/asset/data-barang.vue, /pages/admin/asset/stock-opname.vue, /components/master-data-crud.vue, /pages/admin/master-data/murid.vue, /pages/admin/laporan.vue, /pages/admin/peminjaman/pengembalian.vue, /pages/admin/peminjaman/approval.vue, /pages/admin/pengaturan/akun.vue, /pages/admin/maintenance/penugasan.vue, /pages/barang/[kode].vue, /pages/admin/asset/mutasi-barang.vue, /pages/admin/asset/qr-code.vue and 6 more[22m
+[32m✔[39m Vite server hmr 56 files in 1.149ms
+[32m✔[39m Vite server hmr 32 files in 1.116ms
+[32m✔[39m Vite server hmr 16 files in 2.009ms
+[36mℹ[39m [32mhmr update [39m[2m/pages/admin/pengaturan.vue, /assets/css/main.css?direct, /assets/css/main.css, /pages/admin/pengaturan.vue?macro=true, /@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m
+[36mℹ[39m [32mhmr update [39m[2m/@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m
+[32m✔[39m Vite server hmr 35 files in 0.735ms
+[32m✔[39m Vite server hmr 32 files in 3.074ms
+[32m✔[39m Vite server hmr 9 files in 2.717ms
+[36mℹ[39m [32mhmr update [39m[2m/layouts/admin.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+[32m✔[39m Vite server hmr 36 files in 3.747ms
+[32m✔[39m Vite server hmr 30 files in 0.452ms
+[36mℹ[39m [32mhmr update [39m[2m/layouts/admin.vue, /assets/css/main.css?direct, /assets/css/main.css[22m[2m (x2)[22m
+[36mℹ[39m [32mhmr update [39m[2m/layouts/admin.vue, /assets/css/main.css?direct, /assets/css/main.css[22m[2m (x3)[22m
+[32m✔[39m Vite server hmr 36 files in 1.376ms
+[32m✔[39m Vite server hmr 30 files in 0.637ms
+
+> dev
+> nuxt dev --host 0.0.0.0
+
+│
+●  [32mNuxt [1m4.5.1[22m[39m[90m (with [39m[90mNitro [1m2.13.4[22m[39m[90m, Vite [1m8.1.5[22m[39m[90m and Vue [1m3.5.40[22m[39m[90m)[39m
+
+ 
+              █▀▀▀▀▀▀▀██▀▀▀█▀██▀█▀▀▀▀▀▀▀█
+              █ █▀▀▀█ ██▀▀ ▄▄██▀█ █▀▀▀█ █
+              █ █   █ █ █ ▄▀  ▄▄█ █   █ █
+              █ ▀▀▀▀▀ █▀▄ █▀▄▀█▀█ ▀▀▀▀▀ █
+              █▀▀███▀▀▀█ ▀█ ▀█▀▀███▀▀████
+              ██▄  ▀▄▀██▀▄▀▀▀█ ▄▄▀▀▄ ▄ ▀█
+              █  ▄ ▀▀▀ █▀ ▄██ ▄ ▀▀█▄▄██ █
+              █ ▄ █▄ ▀▀▀▄▄█▄█▄ █▀█▀█▀█ ▀█
+              █ █ ▀▄█▀ ██▄█ ▀▄█ ▀▀▀ █ █▄█
+              █▀▀▀▀▀▀▀█ █▀█▀▀ ▄ █▀█ ▀▄█▀█
+              █ █▀▀▀█ █▄▄▀ ▀▀█▀ ▀▀▀ ▀▀█▄█
+              █ █   █ ██▄▀█▄████▀▄▄█▄▀▄ █
+              █ ▀▀▀▀▀ █ ██▄▀█▀  █ ▄▄▀██ █
+              ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+ 
+[32m  ➜ Local:   [39m [36m[4mhttp://0.0.0.0:[1m3000[22m/[24m[39m
+[35m  ➜ Network: [39m [36m[4mhttp://192.168.0.2:[1m3000[22m/[24m[39m[90m [QR code][39m
+
+[33m  ➜ DevTools: [39m[2mpress [22m[32mShift[39m[2m + [22m[32mAlt[39m[2m + [22m[32mD[39m[2m in the browser (v3.3.1)[22m
+
+[32m✔[39m Vite client built in 269ms
+[32m✔[39m Vite server built in 56ms
+[90m[[90mnitro[90m][39m [32m✔[39m Nuxt Nitro server built in 2401ms
+[36mℹ[39m Vite server warmed up in 29ms
+[36mℹ[39m Vite client warmed up in 31ms
+[36mℹ[39m [32mhmr update [39m[2m/pages/admin/pengaturan/akun.vue, /assets/css/main.css?direct, /assets/css/main.css, /pages/admin/pengaturan/akun.vue?macro=true, /@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m
+[32m✔[39m Vite server hmr 30 files in 3.715ms
+[32m✔[39m Vite server hmr 26 files in 0.644ms
+[36mℹ[39m nuxt.config.ts updated. Restarting Nuxt...
+[33m  ➜ DevTools: [39m[2mpress [22m[32mShift[39m[2m + [22m[32mAlt[39m[2m + [22m[32mD[39m[2m in the browser (v3.3.1)[22m
+
+[32m✔[39m Vite client built in 95ms
+[32m✔[39m Vite server built in 37ms
+[90m[[90mnitro[90m][39m [32m✔[39m Nuxt Nitro server built in 2690ms
+[36mℹ[39m Vite server warmed up in 6ms
+[36mℹ[39m Vite client warmed up in 7ms
+
+> dev
+> nuxt dev --host 0.0.0.0
+
+│
+●  [32mNuxt [1m4.5.1[22m[39m[90m (with [39m[90mNitro [1m2.13.4[22m[39m[90m, Vite [1m8.1.5[22m[39m[90m and Vue [1m3.5.40[22m[39m[90m)[39m
+
+[41m[30m ERROR [39m[49m s.startsWith is not a function
+
+    [90mat [39misInline ([36m/C:/Users/Akram/Project/full-project/frontend/node_modules/listhen/dist/shared/listhen.tqe5I1Rl.mjs:345:36[39m)
+    [90mat [39mr ([36m/C:/Users/Akram/Project/full-project/frontend/node_modules/listhen/dist/shared/listhen.tqe5I1Rl.mjs:346:22[39m)
+    [90mat [39mresolveCert ([36m/C:/Users/Akram/Project/full-project/frontend/node_modules/listhen/dist/shared/listhen.tqe5I1Rl.mjs:348:18[39m)
+    [90mat [39mresolveCertificate ([36m/C:/Users/Akram/Project/full-project/frontend/node_modules/listhen/dist/shared/listhen.tqe5I1Rl.mjs:297:19[39m)
+    [90mat [39mlisten ([36m/C:/Users/Akram/Project/full-project/frontend/node_modules/listhen/dist/shared/listhen.tqe5I1Rl.mjs:585:19[39m)
+    [90mat [39mprocess.processTicksAndRejections ([36mnode:internal/process/task_queues:104:5[39m)
+    [90mat [39masync #createListener ([36m/C:/Users/Akram/Project/full-project/frontend/node_modules/@nuxt/cli/dist/dev-DHhrJk9w.mjs:462:19[39m)
+    [90mat [39masync NuxtDevServer.init ([36m/C:/Users/Akram/Project/full-project/frontend/node_modules/@nuxt/cli/dist/dev-DHhrJk9w.mjs:406:3[39m)
+    [90mat [39masync initialize ([36m/C:/Users/Akram/Project/full-project/frontend/node_modules/@nuxt/cli/dist/dev-DHhrJk9w.mjs:753:2[39m)
+    [90mat [39masync Object.run ([36m/C:/Users/Akram/Project/full-project/frontend/node_modules/@nuxt/cli/dist/dev-Cbii5ek4.mjs:198:51[39m) 
+
+
+
+> dev
+> nuxt dev --host 0.0.0.0
+
+│
+●  [32mNuxt [1m4.5.1[22m[39m[90m (with [39m[90mNitro [1m2.13.4[22m[39m[90m, Vite [1m8.1.5[22m[39m[90m and Vue [1m3.5.40[22m[39m[90m)[39m
+
+ 
+              █▀▀▀▀▀▀▀██▀██▀▀▀▀▀█▀▀▀▀▀▀▀█
+              █ █▀▀▀█ █ ▀▀  ▄▄▄ █ █▀▀▀█ █
+              █ █   █ █▀▄▄▄█▀█ ▄█ █   █ █
+              █ ▀▀▀▀▀ █ ▄▀▄▀█ ▄▀█ ▀▀▀▀▀ █
+              █▀▀█▀██▀▀▄▄▀█▄▀█▀▀█▀▀▀█▀▀██
+              ███▄▄██▀▄▄▀ ▄██ ███▄▄▀██▀ █
+              █▄ ██▄▄▀ ▀███▀   █▄▀ ▄▀█▀▀█
+              █▀▄  ▄█▀▄▀█▄▄ ▀▄█ ▀ ▀▀▄ █ █
+              █▀ ▀▄▀▀▀ ███▀ ▄ █   ▀ ▀▀▄██
+              █▀▀▀▀▀▀▀█  ▀██▄▀▀ █▀█  █▀ █
+              █ █▀▀▀█ ██▀ █ ▀█▄ ▀▀▀  ▄▀██
+              █ █   █ █▄▀ █▀  ██▄█  ▄ █▀█
+              █ ▀▀▀▀▀ █ █ ██  █ ▄▄▀█▄█▀▀█
+              ▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀
+ 
+[32m  ➜ Local:   [39m [36m[4mhttps://0.0.0.0:[1m3000[22m/[24m[39m
+[35m  ➜ Network: [39m [36m[4mhttps://192.168.0.2:[1m3000[22m/[24m[39m[90m [QR code][39m
+
+[33m  ➜ DevTools: [39m[2mpress [22m[32mShift[39m[2m + [22m[32mAlt[39m[2m + [22m[32mD[39m[2m in the browser (v3.3.1)[22m
+
+
+[43m[30m WARN [39m[49m You might need [36mNODE_TLS_REJECT_UNAUTHORIZED=0[39m environment variable to make https work.
+
+[32m✔[39m Vite client built in 127ms
+[32m✔[39m Vite server built in 22ms
+[90m[[90mnitro[90m][39m [32m✔[39m Nuxt Nitro server built in 2022ms
+[36mℹ[39m Vite server warmed up in 4ms
+[36mℹ[39m Vite client warmed up in 5ms
+[36mℹ[39m [32mhmr update [39m[2m/assets/css/main.css?direct, /assets/css/main.css[22m
+[32m✔[39m Vite server hmr 5 files in 1.09ms
+[32m✔[39m Vite server hmr 25 files in 0.798ms
+[32m✔[39m Vite server hmr 25 files in 0.731ms
+[36mℹ[39m nuxt.config.ts updated. Restarting Nuxt...
+[33m  ➜ DevTools: [39m[2mpress [22m[32mShift[39m[2m + [22m[32mAlt[39m[2m + [22m[32mD[39m[2m in the browser (v3.3.1)[22m
+
+
+[43m[30m WARN [39m[49m You might need [36mNODE_TLS_REJECT_UNAUTHORIZED=0[39m environment variable to make https work.
+
+[32m✔[39m Vite client built in 158ms
+[32m✔[39m Vite server built in 23ms
+[90m[[90mnitro[90m][39m [32m✔[39m Nuxt Nitro server built in 2364ms
+[36mℹ[39m Vite server warmed up in 9ms
+[36mℹ[39m Vite client warmed up in 11ms
