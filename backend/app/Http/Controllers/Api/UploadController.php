@@ -19,8 +19,11 @@ class UploadController extends Controller
 
         $path = $request->file('file')->store('uploads', 'public');
 
+        // Path relatif (bukan URL absolut) — frontend Nuxt mem-proxy /storage/**
+        // ke backend, sehingga tetap aman (no mixed-content) saat dibuka dari HP
+        // via HTTPS LAN (https://192.168.0.2:3000).
         return response()->json([
-            'url' => url('/storage/'.$path),
+            'url' => '/storage/'.$path,
         ], 201);
     }
 }

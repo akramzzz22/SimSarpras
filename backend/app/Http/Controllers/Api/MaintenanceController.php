@@ -105,6 +105,12 @@ class MaintenanceController extends Controller
 
         $maintenance->update($data);
 
+        // Notifikasi ulang jika penanggung jawab staff berubah (reassign)
+        $maintenance->refresh();
+        if ($maintenance->staff_id && $maintenance->staff) {
+            $maintenance->staff->notify(new MaintenanceScheduled($maintenance));
+        }
+
         return response()->json($maintenance->load(['barang', 'staff', 'vendor']));
     }
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
 import {
   LayoutDashboard,
   ClipboardList,
@@ -31,7 +31,6 @@ const sidebarOpen = ref(false)
 const notifOpen = ref(false)
 const notifs = ref<AppNotification[]>([])
 const unreadCount = ref(0)
-const notifLoading = ref(false)
 
 async function loadNotifications() {
   try {
@@ -40,6 +39,20 @@ async function loadNotifications() {
     unreadCount.value = res.unread_count
   } catch {
     // abaikan error — badge hanya tidak muncul
+  }
+}
+
+// Polling ringan: muat ulang notifikasi tiap 30 detik agar staff melihat
+// jadwal baru tanpa harus reload halaman.
+let pollTimer: ReturnType<typeof setInterval> | null = null
+function startPolling() {
+  stopPolling()
+  pollTimer = setInterval(loadNotifications, 30000)
+}
+function stopPolling() {
+  if (pollTimer) {
+    clearInterval(pollTimer)
+    pollTimer = null
   }
 }
 
@@ -71,9 +84,18 @@ function onClickOutside(e: Event) {
 
 onMounted(() => {
   loadNotifications()
+  startPolling()
   document.addEventListener('click', onClickOutside)
 })
-onUnmounted(() => document.removeEventListener('click', onClickOutside))
+onActivated(() => {
+  loadNotifications()
+  startPolling()
+})
+onDeactivated(stopPolling)
+onUnmounted(() => {
+  stopPolling()
+  document.removeEventListener('click', onClickOutside)
+})
 
 const navMap: Record<string, { title: string; to: string; icon: any }[]> = {
   staff_sarpras: [
@@ -233,7 +255,7 @@ async function handleLogout() {
                 </div>
                 <span v-if="!n.read_at" class="w-2 h-2 rounded-full bg-emerald-500 shrink-0 mt-2" />
               </button>
-              <div v-if="!notifs.length && !notifLoading" class="px-4 py-8 text-center text-sm text-gray-400">
+              <div v-if="!notifs.length" class="px-4 py-8 text-center text-sm text-gray-400">
                 Belum ada notifikasi.
               </div>
             </div>

@@ -43,10 +43,10 @@ const badge = (s: string) => {
 
 const fmt = (d?: string) => (d ? new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-')
 
-// Export CSV laporan kerusakan
+// Export CSV laporan kerusakan (sesuai filter yang sedang aktif)
 function exportCSV() {
   const rows: string[][] = [['Barang', 'Deskripsi', 'Pelapor', 'Tanggal', 'Status']]
-  laporan.value.forEach((l) =>
+  filtered.value.forEach((l) =>
     rows.push([l.barang?.nama ?? 'Barang #' + l.barang_id, l.deskripsi ?? '', l.pelapor?.name ?? '', fmt(l.created_at), l.status])
   )
 

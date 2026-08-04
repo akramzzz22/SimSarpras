@@ -109,6 +109,12 @@ class BarangController extends Controller
         $subId = $data['subkategori_id'] ?? null;
         $proliId = $data['proli_id'] ?? null;
 
+        // Subkategori hanya boleh dipakai oleh barang milik proli —
+        // tidak boleh dipasang pada barang sarpras (tanpa proli).
+        if ($subId && ! $proliId) {
+            abort(422, 'Subkategori hanya bisa dipilih untuk barang milik proli.');
+        }
+
         if (! $subId || ! $proliId) {
             return;
         }

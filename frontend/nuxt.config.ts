@@ -46,10 +46,13 @@ export default defineNuxtConfig({
     https
   },
 
-  // Proxy /api ke backend Laravel di origin yang sama (tidak ada mixed-content,
-  // dan tidak perlu CORS). Berlaku untuk mode HTTP maupun HTTPS.
+  // Proxy /api dan /storage ke backend Laravel di origin yang sama (tidak ada
+  // mixed-content, dan tidak perlu CORS). Berlaku untuk mode HTTP maupun HTTPS.
+  // /storage dipakai untuk gambar hasil upload (foto resi, dokumentasi, dsb)
+  // yang URL-nya disimpan relatif di backend.
   routeRules: {
-    '/api/**': { proxy: 'http://localhost:8000/api/**' }
+    '/api/**': { proxy: 'http://localhost:8000/api/**' },
+    '/storage/**': { proxy: 'http://localhost:8000/storage/**' }
   },
 
   // Pendekatan Responsive + PWA: satu codebase untuk

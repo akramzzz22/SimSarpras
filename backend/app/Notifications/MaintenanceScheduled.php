@@ -3,14 +3,10 @@
 namespace App\Notifications;
 
 use App\Models\Maintenance;
-use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-class MaintenanceScheduled extends Notification implements ShouldQueue
+class MaintenanceScheduled extends Notification
 {
-    use Queueable;
-
     public function __construct(public Maintenance $maintenance)
     {
     }
