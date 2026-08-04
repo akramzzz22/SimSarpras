@@ -8,7 +8,8 @@ import {
   Pencil,
   Trash2,
   Loader2,
-  RefreshCw
+  RefreshCw,
+  FolderTree
 } from 'lucide-vue-next'
 import { useAdminService, type Barang } from '~/services/api/admin'
 
@@ -23,7 +24,11 @@ const error = ref<string | null>(null)
 const search = ref('')
 const showForm = ref(false)
 const editingId = ref<number | null>(null)
+
+// ---- Filter: Owner (Semua/Sarpras/Proli) → Proli → Subkategori ----
 const filterOwner = ref<'all' | 'sarpras' | 'proli'>('all')
+const filterProli = ref('')
+const filterProliOptions = ref<Opt[]>([])
 const filterSubkategori = ref('')
 const filterSubkategoriOptions = ref<Opt[]>([])
 
@@ -53,6 +58,9 @@ const proliLabel = computed(
   () => optionState.value.proli.find((o) => o.value === Number(form.value.proli_id))?.label ?? ''
 )
 
+// Semua subkategori (untuk filter) — milik proli mana pun
+const allSubkategori = ref<{ id: number; nama: string; proli_id?: number | null; proli?: { nama: string } | null }[]>([])
+
 async function loadOptions() {
   const [k, r, p, s] = await Promise.all([
     admin.master.list('kategori-barang', { per_page: 100 }),
@@ -63,13 +71,33 @@ async function loadOptions() {
   optionState.value.kategori = k.data.map((x: any) => ({ value: x.id, label: x.nama }))
   optionState.value.ruangan = r.data.map((x: any) => ({ value: x.id, label: x.nama }))
   optionState.value.proli = p.data.map((x: any) => ({ value: x.id, label: x.nama }))
-  filterSubkategoriOptions.value = s.data.map((x: any) => ({
-    value: x.id,
-    label: x.proli ? `${x.nama} (${x.proli.nama})` : x.nama
+  filterProliOptions.value = p.data.map((x: any) => ({ value: x.id, label: x.nama }))
+  allSubkategori.value = s.data.map((x: any) => ({
+    id: x.id,
+    nama: x.nama,
+    proli_id: x.proli_id,
+    proli: x.proli ?? null
   }))
 }
 
-// Muat subkategori milik proli yang dipilih (hanya untuk barang proli)
+// Muat subkategori milik proli yang dipilih (untuk filter & form)
+async function loadFilterSubkategori() {
+  filterSubkategori.value = ''
+  if (filterOwner.value !== 'proli' || !filterProli.value) {
+    filterSubkategoriOptions.value = []
+    return
+  }
+  filterSubkategoriOptions.value = allSubkategori.value
+    .filter((x) => x.proli_id === Number(filterProli.value))
+    .map((x) => ({ value: x.id, label: x.nama }))
+}
+
+// Saat filter owner/proli berubah → muat ulang daftar subkategori filter
+watch([filterOwner, filterProli], () => {
+  loadFilterSubkategori()
+})
+
+// Muat subkategori milik proli yang dipilih (form tambah/edit)
 async function loadSubkategori() {
   if (form.value.owner_type !== 'proli' || !form.value.proli_id) {
     optionState.value.subkategori = []
@@ -91,7 +119,7 @@ async function loadSubkategori() {
   }
 }
 
-// Saat owner atau proli berubah → muat ulang daftar subkategori
+// Saat owner atau proli berubah (form) → muat ulang daftar subkategori
 watch(
   () => [form.value.owner_type, form.value.proli_id],
   () => {
@@ -104,10 +132,37 @@ const filtered = computed(() => {
   return items.value.filter((b) => {
     const matchQ = !q || b.nama.toLowerCase().includes(q) || (b.kode_qr ?? '').toLowerCase().includes(q)
     const matchOwner = filterOwner.value === 'all' || b.owner_type === filterOwner.value
+    const matchProli = !filterProli.value || b.proli_id === Number(filterProli.value)
     const matchSub = !filterSubkategori.value || b.subkategori_id === Number(filterSubkategori.value)
-    return matchQ && matchOwner && matchSub
+    return matchQ && matchOwner && matchProli && matchSub
   })
 })
+
+// Kelompokkan barang per subkategori biar rapi; yang tanpa subkategori masuk grup terakhir
+const groups = computed(() => {
+  const map = new Map<string, Barang[]>()
+  const noSub: Barang[] = []
+  for (const b of filtered.value) {
+    const key = b.subkategori?.nama
+    if (key) {
+      if (!map.has(key)) map.set(key, [])
+      map.get(key)!.push(b)
+    } else {
+      noSub.push(b)
+    }
+  }
+  const result: { label: string; proli?: string; items: Barang[] }[] = []
+  for (const [label, list] of map) {
+    result.push({ label, proli: filtered.value.find((b) => b.subkategori?.nama === label)?.subkategori?.proli?.nama, items: list })
+  }
+  result.sort((a, b) => a.label.localeCompare(b.label))
+  if (noSub.length) {
+    result.push({ label: 'Tanpa Subkategori', items: noSub })
+  }
+  return result
+})
+
+const totalShown = computed(() => filtered.value.length)
 
 async function load() {
   loading.value = true
@@ -209,7 +264,7 @@ onMounted(() => {
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div>
         <h2 class="text-2xl font-bold text-gray-900">Data Barang</h2>
-        <p class="text-sm text-gray-500 mt-1">Kelola seluruh aset barang sekolah.</p>
+        <p class="text-sm text-gray-500 mt-1">Kelola seluruh aset barang sekolah, dikelompokkan per subkategori.</p>
       </div>
       <button
         class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition shadow-sm"
@@ -302,7 +357,7 @@ onMounted(() => {
     </div>
 
     <!-- Toolbar -->
-    <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
+    <div class="flex flex-col lg:flex-row gap-3 lg:items-center">
       <div class="relative flex-1 max-w-sm">
         <Search class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
         <input
@@ -311,15 +366,8 @@ onMounted(() => {
           class="w-full rounded-xl border border-gray-200 pl-9 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-      <div class="flex gap-2">
-        <select
-          v-model="filterSubkategori"
-          class="rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-600 outline-none focus:ring-2 focus:ring-blue-500 bg-white"
-          title="Filter subkategori"
-        >
-          <option value="">Semua Subkategori</option>
-          <option v-for="o in filterSubkategoriOptions" :key="o.value" :value="o.value">{{ o.label }}</option>
-        </select>
+      <div class="flex flex-wrap items-center gap-2">
+        <!-- Pilihan Owner: Semua / Sarpras / Proli -->
         <button
           v-for="o in ([{v:'all',l:'Semua'},{v:'sarpras',l:'Sarpras'},{v:'proli',l:'Proli'}] as const)"
           :key="o.v"
@@ -329,13 +377,41 @@ onMounted(() => {
         >
           {{ o.l }}
         </button>
+
+        <!-- Pilihan Proli (muncul saat filter Proli) -->
+        <select
+          v-if="filterOwner === 'proli'"
+          v-model="filterProli"
+          class="rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-600 outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+          title="Filter proli"
+        >
+          <option value="">Semua Proli</option>
+          <option v-for="o in filterProliOptions" :key="o.value" :value="o.value">{{ o.label }}</option>
+        </select>
+
+        <!-- Pilihan Subkategori (muncul saat filter Proli + proli dipilih) -->
+        <select
+          v-if="filterOwner === 'proli' && filterProli"
+          v-model="filterSubkategori"
+          class="rounded-xl border border-gray-200 px-3 py-2 text-sm text-gray-600 outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+          title="Filter subkategori"
+        >
+          <option value="">Semua Subkategori</option>
+          <option v-for="o in filterSubkategoriOptions" :key="o.value" :value="o.value">{{ o.label }}</option>
+        </select>
+
         <button class="p-2 rounded-xl border border-gray-200 text-gray-500 hover:bg-gray-50" title="Muat ulang" @click="load">
           <RefreshCw class="w-4 h-4" />
         </button>
       </div>
     </div>
 
-    <!-- Table -->
+    <!-- Info jumlah -->
+    <p class="text-xs text-gray-400">
+      Menampilkan {{ totalShown }} barang{{ filterOwner === 'proli' && filterProli ? ' dari proli ' + (filterProliOptions.find((o) => o.value === Number(filterProli))?.label ?? '') : filterOwner === 'proli' ? ' dari proli' : filterOwner === 'sarpras' ? ' milik sarpras' : '' }}.
+    </p>
+
+    <!-- Table (dikelompokkan per subkategori) -->
     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
       <div class="overflow-x-auto">
         <table class="w-full text-sm">
@@ -349,45 +425,58 @@ onMounted(() => {
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">
-            <tr v-for="b in filtered" :key="b.id" class="hover:bg-gray-50/50 transition">
-              <td class="px-5 py-3.5">
-                <div class="flex items-center gap-3">
-                  <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
-                    <Boxes class="w-4 h-4 text-blue-600" />
+            <!-- Baris header grup per subkategori -->
+            <template v-for="(g, gi) in groups" :key="g.label">
+              <tr class="bg-blue-50/60">
+                <td colspan="5" class="px-5 py-2.5">
+                  <div class="flex items-center gap-2">
+                    <FolderTree class="w-4 h-4 text-blue-600 shrink-0" />
+                    <span class="font-semibold text-blue-900">{{ g.label }}</span>
+                    <span v-if="g.proli" class="text-xs text-violet-600 bg-violet-100 px-2 py-0.5 rounded-full">{{ g.proli }}</span>
+                    <span class="text-xs text-gray-400">({{ g.items.length }})</span>
                   </div>
-                  <div>
-                    <div class="font-medium text-gray-900">{{ b.nama }}</div>
-                    <div class="text-xs text-gray-400">
-                      {{ b.kategori?.nama ?? 'Tanpa kategori' }}{{ b.subkategori?.nama ? ' · ' + b.subkategori.nama : '' }}
+                </td>
+              </tr>
+              <tr v-for="b in g.items" :key="b.id" class="hover:bg-gray-50/50 transition">
+                <td class="px-5 py-3.5">
+                  <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center shrink-0">
+                      <Boxes class="w-4 h-4 text-blue-600" />
+                    </div>
+                    <div>
+                      <div class="font-medium text-gray-900">{{ b.nama }}</div>
+                      <div class="text-xs text-gray-400">
+                        {{ b.kategori?.nama ?? 'Tanpa kategori' }}{{ b.subkategori?.nama ? ' · ' + b.subkategori.nama : '' }}
+                      </div>
                     </div>
                   </div>
-                </div>
-              </td>
-              <td class="px-5 py-3.5">
-                <span class="inline-flex items-center gap-1.5 text-xs font-mono text-gray-600">
-                  <QrCode class="w-3.5 h-3.5 text-gray-400" />
-                  {{ b.kode_qr }}
-                </span>
-              </td>
-              <td class="px-5 py-3.5">
-                <span class="text-xs px-2 py-1 rounded-full" :class="b.owner_type === 'sarpras' ? 'bg-blue-100 text-blue-800' : 'bg-violet-100 text-violet-800'">
-                  {{ b.owner_type }}
-                </span>
-              </td>
-              <td class="px-5 py-3.5">
-                <span class="text-xs px-2 py-1 rounded-full" :class="statusBadge(b.status)">
-                  {{ b.status }}
-                </span>
-              </td>
-              <td class="px-5 py-3.5 text-right">
-                <button class="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition" title="Edit" @click="openForm(b)">
-                  <Pencil class="w-4 h-4" />
-                </button>
-                <button class="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition ml-1" title="Hapus" @click="remove(b.id)">
-                  <Trash2 class="w-4 h-4" />
-                </button>
-              </td>
-            </tr>
+                </td>
+                <td class="px-5 py-3.5">
+                  <span class="inline-flex items-center gap-1.5 text-xs font-mono text-gray-600">
+                    <QrCode class="w-3.5 h-3.5 text-gray-400" />
+                    {{ b.kode_qr }}
+                  </span>
+                </td>
+                <td class="px-5 py-3.5">
+                  <span class="text-xs px-2 py-1 rounded-full" :class="b.owner_type === 'sarpras' ? 'bg-blue-100 text-blue-800' : 'bg-violet-100 text-violet-800'">
+                    {{ b.owner_type === 'proli' ? (b.proli?.nama ?? 'Proli') : 'Sarpras' }}
+                  </span>
+                </td>
+                <td class="px-5 py-3.5">
+                  <span class="text-xs px-2 py-1 rounded-full" :class="statusBadge(b.status)">
+                    {{ b.status }}
+                  </span>
+                </td>
+                <td class="px-5 py-3.5 text-right">
+                  <button class="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition" title="Edit" @click="openForm(b)">
+                    <Pencil class="w-4 h-4" />
+                  </button>
+                  <button class="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition ml-1" title="Hapus" @click="remove(b.id)">
+                    <Trash2 class="w-4 h-4" />
+                  </button>
+                </td>
+              </tr>
+            </template>
             <tr v-if="!filtered.length && !loading">
               <td colspan="5" class="px-5 py-12 text-center text-gray-400">
                 <Boxes class="w-8 h-8 mx-auto mb-2 text-gray-300" />
