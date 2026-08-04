@@ -18,6 +18,7 @@ const barangId = ref('')
 const tanggalPinjam = ref('')
 const jamMulai = ref('')
 const jamSelesai = ref('')
+const keperluan = ref('')
 const fotoPinjam = ref('')
 const saving = ref(false)
 const success = ref(false)
@@ -190,6 +191,7 @@ async function submit() {
       tanggal_pinjam: tanggalPinjam.value,
       jam_mulai: Number(jamMulai.value),
       jam_selesai: Number(jamSelesai.value),
+      keperluan: keperluan.value.trim() || null,
       foto_pinjam: fotoPinjam.value
     })
     success.value = true
@@ -197,6 +199,7 @@ async function submit() {
     tanggalPinjam.value = ''
     jamMulai.value = ''
     jamSelesai.value = ''
+    keperluan.value = ''
     fotoPinjam.value = ''
     await load()
   } catch (e: any) {
@@ -304,6 +307,17 @@ onMounted(load)
             </select>
           </div>
         </div>
+      </div>
+
+      <!-- Keperluan (otomatis masuk ke surat peminjaman) -->
+      <div class="mt-3">
+        <label class="block text-sm font-medium text-gray-700 mb-1">Keperluan</label>
+        <input
+          v-model="keperluan"
+          placeholder="Contoh: Praktik mata pelajaran Jaringan"
+          class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <p class="mt-1 text-xs text-gray-400">Akan otomatis tercantum di surat peminjaman barang.</p>
       </div>
 
       <!-- Peringatan bentrok jadwal -->

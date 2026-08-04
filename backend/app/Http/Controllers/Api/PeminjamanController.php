@@ -14,7 +14,7 @@ class PeminjamanController extends Controller
 
     public function index(Request $request)
     {
-        return Peminjaman::with(['barang', 'peminjam', 'penyetuju'])
+        return Peminjaman::with(['barang.kategori', 'barang.subkategori', 'barang.ruangan', 'peminjam', 'penyetuju'])
             ->when($request->status, fn ($q, $v) => $q->where('status', $v))
             ->latest()
             ->paginate($request->integer('per_page', 15));
@@ -32,6 +32,7 @@ class PeminjamanController extends Controller
             'tanggal_pinjam' => ['required', 'date'],
             'jam_mulai' => ['required', 'integer', 'min:1', 'max:'.self::MAX_JAM],
             'jam_selesai' => ['required', 'integer', 'min:1', 'max:'.self::MAX_JAM, 'gte:jam_mulai'],
+            'keperluan' => ['nullable', 'string', 'max:255'],
             'foto_pinjam' => ['required', 'string'],
         ]);
 
@@ -59,12 +60,20 @@ class PeminjamanController extends Controller
             'status' => 'menunggu',
         ]);
 
-        return response()->json($peminjaman->load('barang'), 201);
+        return response()->json($peminjaman->load(['barang', 'peminjam']), 201);
     }
 
-    public function show(Peminjaman $peminjaman)
+    public function show(Request $request, Peminjaman $peminjaman)
     {
-        return $peminjaman->load(['barang', 'peminjam', 'penyetuju']);
+        // Surat peminjaman hanya boleh dilihat oleh peminjamnya sendiri,
+        // atau oleh admin / ketua proli / staff sarpras.
+        $user = $request->user();
+        $allowed = $user->id === $peminjaman->peminjam_id
+            || $user->hasRole(['admin', 'kaproli', 'staff_sarpras']);
+
+        abort_unless($allowed, 403, 'Anda tidak berhak melihat peminjaman ini.');
+
+        return $peminjaman->load(['barang.kategori', 'barang.subkategori', 'barang.ruangan', 'peminjam', 'penyetuju']);
     }
 
     public function approve(Request $request, $id)

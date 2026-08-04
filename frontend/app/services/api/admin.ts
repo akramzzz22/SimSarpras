@@ -100,11 +100,12 @@ export interface Peminjaman {
   tanggal_pinjam?: string
   jam_mulai?: number | null
   jam_selesai?: number | null
+  keperluan?: string | null
   foto_pinjam?: string | null
   foto_kembali?: string | null
   disetujui_oleh?: number | null
-  barang?: { id: number; nama: string } | null
-  peminjam?: { id: number; name: string } | null
+  barang?: { id: number; nama: string; kode_qr?: string; kategori?: { id: number; nama: string } | null; ruangan?: { id: number; nama: string } | null } | null
+  peminjam?: { id: number; name: string; kelas?: string | null; jurusan?: { id: number; nama: string } | null } | null
   penyetuju?: { id: number; name: string } | null
   created_at?: string
 }
@@ -203,6 +204,7 @@ export function useAdminService() {
     // Peminjaman
     peminjaman: {
       list: (params?: Record<string, any>) => api<Paginated<Peminjaman>>('/peminjaman', { params }),
+      show: (id: number) => api<Peminjaman>(`/peminjaman/${id}`),
       create: (body: Record<string, any>) => api<Peminjaman>('/peminjaman', { method: 'POST', body }),
       approve: (id: number) => api(`/peminjaman/${id}/approve`, { method: 'POST' }),
       reject: (id: number) => api(`/peminjaman/${id}/reject`, { method: 'POST' }),

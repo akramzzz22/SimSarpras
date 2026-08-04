@@ -9,7 +9,8 @@ import {
   RotateCcw,
   Loader2,
   Camera,
-  AlertTriangle
+  AlertTriangle,
+  FileText
 } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
 
@@ -184,6 +185,9 @@ onMounted(load)
             <div class="text-xs text-gray-400 mt-1">
               {{ formatTanggal(p.tanggal_pinjam) }} • Jam ke-{{ p.jam_mulai }} – {{ p.jam_selesai }}
             </div>
+            <div v-if="p.keperluan" class="text-xs text-gray-500 mt-1">
+              <span class="font-medium text-gray-600">Keperluan:</span> {{ p.keperluan }}
+            </div>
           </div>
           <span class="text-xs px-2 py-1 rounded-full shrink-0" :class="statusBadge(p.status)">{{ p.status }}</span>
         </div>
@@ -216,6 +220,13 @@ onMounted(load)
             >
               {{ p.showFoto ? 'Sembunyikan foto' : 'Lihat foto pinjam' }}
             </button>
+            <NuxtLink
+              :to="`/surat-peminjaman/${p.id}`"
+              class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-blue-200 text-blue-600 text-xs font-semibold hover:bg-blue-50 transition"
+            >
+              <FileText class="w-3.5 h-3.5" />
+              Cetak Surat
+            </NuxtLink>
             <button
               class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition disabled:opacity-60"
               :disabled="actionId === p.id"
@@ -226,6 +237,14 @@ onMounted(load)
               Kembalikan
             </button>
           </template>
+          <NuxtLink
+            v-else-if="p.status === 'dikembalikan'"
+            :to="`/surat-peminjaman/${p.id}`"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-blue-200 text-blue-600 text-xs font-semibold hover:bg-blue-50 transition"
+          >
+            <FileText class="w-3.5 h-3.5" />
+            Cetak Surat
+          </NuxtLink>
           <span v-else class="inline-flex items-center gap-1.5 text-xs text-gray-400">
             <PackageCheck class="w-3.5 h-3.5" />
             {{ p.status === 'dikembalikan' ? 'Sudah dikembalikan' : 'Diproses' }}

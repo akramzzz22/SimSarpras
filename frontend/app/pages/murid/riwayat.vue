@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
-import { AlertTriangle, ArrowLeftRight, RefreshCw, Inbox } from 'lucide-vue-next'
+import { AlertTriangle, ArrowLeftRight, RefreshCw, Inbox, FileText } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
 
 definePageMeta({ layout: 'mobile', middleware: ['auth'], title: 'Riwayat' })
@@ -92,7 +92,17 @@ onMounted(load)
             <div class="text-sm font-medium text-gray-900 truncate">{{ p.barang?.nama ?? 'Barang #' + p.barang_id }}</div>
             <div class="text-xs text-gray-400">{{ fmt(p.tanggal_pinjam) }} • Jam ke-{{ p.jam_mulai }} – {{ p.jam_selesai }}</div>
           </div>
-          <span class="text-xs px-2 py-1 rounded-full shrink-0" :class="badge(p.status)">{{ p.status }}</span>
+          <div class="flex flex-col items-end gap-1.5 shrink-0">
+            <span class="text-xs px-2 py-1 rounded-full" :class="badge(p.status)">{{ p.status }}</span>
+            <NuxtLink
+              v-if="['disetujui', 'dipinjam', 'dikembalikan'].includes(p.status)"
+              :to="`/surat-peminjaman/${p.id}`"
+              class="inline-flex items-center gap-1 text-[11px] font-medium text-blue-600 hover:text-blue-700"
+            >
+              <FileText class="w-3 h-3" />
+              Cetak Surat
+            </NuxtLink>
+          </div>
         </div>
         <div v-if="!myPeminjaman.length && !loading" class="py-10 text-center text-gray-400 text-sm">
           <Inbox class="w-8 h-8 mx-auto mb-2 text-gray-300" /> Belum ada riwayat peminjaman.

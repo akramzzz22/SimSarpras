@@ -137,6 +137,78 @@ class AssetApiTest extends TestCase
         ])->assertStatus(403);
     }
 
+    public function test_peminjaman_stores_keperluan(): void
+    {
+        $this->actingAsRole('guru');
+        $barang = Barang::create([
+            'nama' => 'Proyektor Test',
+            'kode_qr' => 'BRG-KEP01',
+            'owner_type' => 'sarpras',
+            'status' => 'aktif',
+        ]);
+
+        $response = $this->postJson('/api/peminjaman', [
+            'barang_id' => $barang->id,
+            'tanggal_pinjam' => now()->format('Y-m-d'),
+            'jam_mulai' => 1,
+            'jam_selesai' => 2,
+            'keperluan' => 'Praktik mata pelajaran Jaringan',
+            'foto_pinjam' => 'data:image/png;base64,iVBORw0KGgo=',
+        ]);
+
+        $response->assertCreated()
+            ->assertJsonPath('keperluan', 'Praktik mata pelajaran Jaringan');
+
+        $this->assertDatabaseHas('peminjaman', [
+            'barang_id' => $barang->id,
+            'keperluan' => 'Praktik mata pelajaran Jaringan',
+        ]);
+    }
+
+    public function test_other_user_cannot_view_someone_elses_peminjaman(): void
+    {
+        $this->actingAsRole('guru');
+        $barang = Barang::create([
+            'nama' => 'Proyektor Test',
+            'kode_qr' => 'BRG-OTH01',
+            'owner_type' => 'sarpras',
+            'status' => 'aktif',
+        ]);
+        $peminjaman = \App\Models\Peminjaman::create([
+            'barang_id' => $barang->id,
+            'peminjam_id' => $this->userWithRole('murid')->id,
+            'status' => 'menunggu',
+            'tanggal_pinjam' => now()->format('Y-m-d'),
+            'jam_mulai' => 1,
+            'jam_selesai' => 2,
+        ]);
+
+        $this->getJson("/api/peminjaman/{$peminjaman->id}")->assertStatus(403);
+    }
+
+    public function test_peminjam_can_view_own_peminjaman(): void
+    {
+        $peminjam = $this->actingAsRole('murid');
+        $barang = Barang::create([
+            'nama' => 'Proyektor Test',
+            'kode_qr' => 'BRG-OWN01',
+            'owner_type' => 'sarpras',
+            'status' => 'aktif',
+        ]);
+        $peminjaman = \App\Models\Peminjaman::create([
+            'barang_id' => $barang->id,
+            'peminjam_id' => $peminjam->id,
+            'status' => 'menunggu',
+            'tanggal_pinjam' => now()->format('Y-m-d'),
+            'jam_mulai' => 1,
+            'jam_selesai' => 2,
+        ]);
+
+        $this->getJson("/api/peminjaman/{$peminjaman->id}")
+            ->assertOk()
+            ->assertJsonPath('id', $peminjaman->id);
+    }
+
     public function test_maintenance_requires_penanggung_jawab(): void
     {
         $this->actingAsRole('admin');

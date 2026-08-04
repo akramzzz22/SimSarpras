@@ -291,6 +291,13 @@ class DatabaseSeeder extends Seeder
             $jamMulai = rand(1, 9);
             $jamSelesai = min($jamMulai + rand(1, 3), 12);
             $status = $statusLoop[array_rand($statusLoop)];
+            $keperluan = [
+                'Praktik mata pelajaran produktif',
+                'Kegiatan pembelajaran di kelas',
+                'Persiapan lomba dan ekstrakurikuler',
+                'Praktikum laboratorium',
+                'Rapat dan kegiatan organisasi siswa',
+            ];
             Peminjaman::create([
                 'barang_id' => $barang->id,
                 'peminjam_id' => $peminjamPool[array_rand($peminjamPool)]->id,
@@ -298,6 +305,7 @@ class DatabaseSeeder extends Seeder
                 'tanggal_pinjam' => now()->subDays(rand(0, 20))->format('Y-m-d'),
                 'jam_mulai' => $jamMulai,
                 'jam_selesai' => $jamSelesai,
+                'keperluan' => $keperluan[array_rand($keperluan)],
                 'foto_pinjam' => null,
                 'foto_kembali' => null,
                 'disetujui_oleh' => in_array($status, ['disetujui', 'dipinjam', 'dikembalikan']) ? $admin->id : null,
