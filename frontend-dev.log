@@ -1309,3 +1309,984 @@
       at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
       at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x3)[22m
 
+[32m✔[39m Vite server hmr 60 files in 2.415ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)
+
+[32m✔[39m Vite server hmr 36 files in 1.094ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x2)[22m
+
+[32m✔[39m Vite server hmr 13 files in 1.303ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x3)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x4)[22m
+
+[36mℹ[39m [32mhmr update [39m[2m/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css, /layouts/admin.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x2)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x3)[22m
+
+[32m✔[39m Vite server hmr 44 files in 0.948ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)
+
+[32m✔[39m Vite server hmr 36 files in 1.268ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x2)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x3)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x4)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x5)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x6)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x7)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x8)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x9)[22m
+
+[36mℹ[39m [32mhmr update [39m[2m/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css, /layouts/admin.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x2)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x3)[22m
+
+[32m✔[39m Vite server hmr 44 files in 1.252ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)
+
+[32m✔[39m Vite server hmr 37 files in 0.719ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x2)[22m
+
+[36mℹ[39m [32mhmr update [39m[2m/assets/css/main.css?direct, /assets/css/main.css, /layouts/admin.vue, /pages/login.vue, /pages/admin/pengaturan/index.vue, /pages/admin/pengaturan/logo.vue, /layouts/mobile.vue[22m
+[32m✔[39m Vite server hmr 28 files in 0.865ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)
+
+[36mℹ[39m [32mhmr update [39m[2m/assets/css/main.css?direct, /assets/css/main.css, /layouts/admin.vue, /pages/login.vue, /pages/admin/pengaturan/index.vue, /pages/admin/pengaturan/logo.vue, /layouts/mobile.vue[22m
+[36mℹ[39m [32mhmr update [39m[2m/pages/admin/pengaturan/logo.vue, /assets/css/main.css?direct, /assets/css/main.css, /pages/admin/pengaturan/logo.vue?macro=true, /@id/virtual:nuxt:.nuxt%2Froutes.mjs[22m
+[36mℹ[39m [32mhmr update [39m[2m/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css, /layouts/admin.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x2)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x3)[22m
+
+[36mℹ[39m [32mhmr update [39m[2m/assets/css/main.css?direct, /assets/css/main.css[22m
+[32m✔[39m Vite server hmr 52 files in 1.091ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)
+
+[36mℹ[39m [32mhmr update [39m[2m/layouts/mobile.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+[32m✔[39m Vite server hmr 49 files in 0.789ms
+[32m✔[39m Vite server hmr 41 files in 2.484ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x2)[22m
+
+[36mℹ[39m [32mhmr update [39m[2m/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css, /layouts/admin.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+[36mℹ[39m [32mhmr update [39m[2m/assets/css/main.css?direct, /assets/css/main.css[22m
+[36mℹ[39m [32mhmr update [39m[2m/layouts/mobile.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x2)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x3)[22m
+
+[32m✔[39m Vite server hmr 48 files in 1.013ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)
+
+[36mℹ[39m [32mhmr update [39m[2m/assets/css/main.css?direct, /assets/css/main.css[22m
+[32m✔[39m Vite server hmr 43 files in 1.651ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)
+
+[32m✔[39m Vite server hmr 13 files in 0.885ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x2)[22m
+
+[32m✔[39m Vite server hmr 4 files in 0.806ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x3)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x4)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x5)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x6)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x7)[22m
+
+[36mℹ[39m [32mhmr update [39m[2m/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css, /layouts/admin.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+[36mℹ[39m [32mhmr update [39m[2m/assets/css/main.css?direct, /assets/css/main.css[22m
+[36mℹ[39m [32mhmr update [39m[2m/layouts/mobile.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x2)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x3)[22m
+
+[32m✔[39m Vite server hmr 48 files in 0.994ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)
+
+[32m✔[39m Vite server hmr 40 files in 5.268ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x2)[22m
+
+[32m✔[39m Vite server hmr 13 files in 0.877ms
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x3)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x4)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x5)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x6)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x7)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x8)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x9)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x10)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x11)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x12)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x13)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x14)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x15)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x16)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x17)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x18)[22m
+
+[36mℹ[39m [32mhmr update [39m[2m/components/theme-switcher.vue, /assets/css/main.css, /assets/css/main.css?direct[22m
+[36mℹ[39m [32mhmr update [39m[2m/layouts/admin.vue?direct&vue&type=style&index=0&scoped=c80892e0&lang.css, /layouts/admin.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x2)[22m
+
+
+[41m[30m ERROR [39m[49m [31mInternal server error: C:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=:2:10: Invalid declaration: [36mref, computed, watch, onMounted, onUnmounted, onActivated, onDeactivated[39m[39m
+  Plugin: [35m@tailwindcss/vite:generate:serve[39m
+  File: [36mC:/Users/Akram/Project/full-project/frontend/app/layouts/admin.vue?vue=&type=style&index=0&scoped=c80892e0&lang.css=[39m
+      at Te (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:3:5329)
+      at zf (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/tailwindcss/dist/lib.mjs:38:1384)
+      at fu (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/node/dist/index.mjs:10:3464)
+      at z.generate (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:6019)
+      at TransformPluginContext.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/@tailwindcss/vite/dist/index.mjs:1:3141)
+      at file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:403:26
+      at hook.handler (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite-plugin-inspect/dist/shared/vite-plugin-inspect.Fv_Ybe1U.mjs:376:14)
+      at EnvironmentPluginContainer.transform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:30201:51)
+      at loadAndTransform (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:20124:48)
+      at async viteTransformMiddleware (file:///C:/Users/Akram/Project/full-project/frontend/node_modules/vite/dist/node/chunks/node.js:24604:20)[2m (x3)[22m
+
+[36mℹ[39m [32mhmr update [39m[2m/layouts/mobile.vue, /assets/css/main.css?direct, /assets/css/main.css[22m
