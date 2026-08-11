@@ -41,7 +41,7 @@ function isParentActive(item: QuickNavItem) {
 
 <template>
   <nav
-    class="flex items-center gap-2 overflow-x-auto py-2.5 px-3 lg:px-6"
+    class="flex items-center gap-1.5 overflow-x-auto py-1.5 px-3 lg:px-6"
     style="background-color: var(--app-bg, #F8F9FA); border-bottom: 1px solid var(--app-border, #D1D5DB);"
     aria-label="Navigasi modul"
   >
@@ -49,17 +49,17 @@ function isParentActive(item: QuickNavItem) {
       v-for="item in items"
       :key="item.to"
       :to="item.to"
-      class="group inline-flex items-center gap-2 px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap transition shrink-0"
+      class="group inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md text-2xs font-semibold whitespace-nowrap transition shrink-0"
       :class="isParentActive(item) ? 'quick-nav-card-active' : ''"
       :style="isParentActive(item)
         ? { border: '1px solid' }
         : { backgroundColor: 'var(--app-surface, #ffffff)', border: '1px solid var(--app-border-light, #E5E7EB)', color: 'var(--app-text-2, #374151)' }"
     >
-      <component :is="item.icon" class="w-4 h-4 shrink-0" />
+      <component :is="item.icon" class="w-3.5 h-3.5 shrink-0" />
       <span>{{ item.title }}</span>
       <span
         v-if="isParentActive(item)"
-        class="w-1.5 h-1.5 rounded-full shrink-0"
+        class="w-1 h-1 rounded-full shrink-0"
         style="background-color: #1D4ED8;"
       />
     </NuxtLink>

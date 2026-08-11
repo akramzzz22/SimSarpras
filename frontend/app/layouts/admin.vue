@@ -47,7 +47,8 @@ import {
   Gauge,
   CircleDot,
   Ruler,
-  Briefcase
+  Briefcase,
+  User
 } from 'lucide-vue-next'
 import { useAuthService } from '~/services/api/auth'
 import { useAdminService, type AppNotification } from '~/services/api/admin'
@@ -207,9 +208,10 @@ const modules: Module[] = [
     title: 'Pengaturan',
     icon: Settings,
     to: '/admin/pengaturan',
-    prefix: ['/admin/pengaturan'],
+    prefix: ['/admin/pengaturan', '/admin/profil'],
     children: [
       { title: 'Profil Sekolah', to: '/admin/pengaturan/logo', icon: ImageIcon },
+      { title: 'Profil Saya', to: '/admin/profil', icon: User },
       { title: 'Pengaturan Sistem', to: '/admin/pengaturan', icon: Settings },
       { title: 'Log Aktivitas', to: '/admin/pengaturan/log-aktivitas', icon: History },
       { title: 'Tahun Ajaran', to: '/admin/pengaturan/tahun-ajaran', icon: CalendarDays }
@@ -650,8 +652,12 @@ watch(
               <Menu class="w-5 h-5" />
             </button>
 
-            <!-- Profil user -->
-            <div class="hidden sm:flex items-center gap-2.5 shrink-0">
+            <!-- Profil user (klik → halaman profil) -->
+            <NuxtLink
+              to="/admin/profil"
+              class="hidden sm:flex items-center gap-2.5 shrink-0 rounded-lg px-1.5 py-1 -mx-1.5 transition hover:bg-gray-500/10"
+              title="Lihat profil"
+            >
               <div class="w-12 h-12 rounded-full flex items-center justify-center text-base font-semibold text-white overflow-hidden" style="background-color: #1D4ED8;">
                 <img v-if="authStore.user?.foto" :src="authStore.user.foto" class="w-full h-full object-cover" alt="Foto profil" />
                 <span v-else>{{ (authStore.user?.name ?? 'A').charAt(0).toUpperCase() }}</span>
@@ -660,7 +666,7 @@ watch(
                 <div class="font-display text-sm font-semibold text-gray-900 truncate max-w-[140px]">{{ authStore.user?.name ?? 'Admin' }}</div>
                 <div class="text-2xs text-gray-400">{{ roleLabel }}</div>
               </div>
-            </div>
+            </NuxtLink>
 
             <!-- Bagian kanan header: area di samping profil -->
             <div class="flex-1 min-w-0 h-full flex items-center gap-2">
