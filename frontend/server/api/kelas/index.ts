@@ -1,5 +1,4 @@
-import { q } from '../../utils/db'
-import { crudIndex, type CrudOptions } from '../../utils/crud'
+import { crudIndex, type CrudOptions, uniqueNameCheck } from '../../utils/crud'
 import { attachSimple } from '../../utils/relations'
 
 const opts: CrudOptions = {
@@ -12,17 +11,12 @@ const opts: CrudOptions = {
   withRelations: async (rows) => {
     await attachSimple(rows, 'jurusan_id', 'jurusan', 'jurusan')
   },
-  uniqueCheck: async (body, id) => {
-    const nama = String(body?.nama ?? '').trim()
-    const jurusanId = body?.jurusan_id != null ? Number(body.jurusan_id) : undefined
-    if (!nama || !jurusanId) return false
-    const rows = await q(
-      `SELECT 1 FROM kelas WHERE nama = $1 AND jurusan_id = $2 ${id ? 'AND id <> $3' : ''} LIMIT 1`,
-      id ? [nama, jurusanId, id] : [nama, jurusanId]
-    )
-    return rows.length > 0
-  },
-  uniqueMessage: 'Kelas dengan nama tersebut sudah ada di jurusan ini.'
+  // Kelas unik per jurusan (boleh ada nama sama di jurusan berbeda).
+  ...uniqueNameCheck(
+    'kelas',
+    { field: 'jurusan_id', getValue: (b) => (b?.jurusan_id != null ? Number(b.jurusan_id) : null) },
+    'Kelas dengan nama tersebut sudah ada di jurusan ini.'
+  )
 }
 
 export default crudIndex(opts)

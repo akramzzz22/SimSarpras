@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CrudColumn, CrudField, CrudOption } from '~/components/master-data-crud.vue'
+import type { CrudColumn, CrudField, CrudOption } from '~/components/widgets/master-data-crud.vue'
 import { useAdminService } from '~/services/api/admin'
 
 definePageMeta({ layout: 'admin', middleware: ['auth', 'admin'], title: 'Kelas' })

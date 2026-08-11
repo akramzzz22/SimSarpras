@@ -4,7 +4,7 @@ import {
   QrCode, Search, Loader2, CheckCircle2, AlertTriangle, ArrowLeftRight, X, Camera,
   MapPin, Tag, Building2, Landmark, Calendar, Users
 } from 'lucide-vue-next'
-import QrScanner from '~/components/qr-scanner.vue'
+import QrScanner from '~/components/qr/qr-scanner.vue'
 import { useAdminService, type Barang } from '~/services/api/admin'
 import { formatTanggal, extractKodeFromScan } from '~/utils/format'
 

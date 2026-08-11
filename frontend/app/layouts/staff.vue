@@ -125,7 +125,8 @@ const navMap: Record<string, { title: string; to: string; icon: any }[]> = {
     { title: 'Data Barang', to: '/kaproli/data-barang', icon: Boxes },
     { title: 'Laporan Kerusakan', to: '/kaproli/laporan-kerusakan', icon: FileText },
     { title: 'Peminjaman', to: '/kaproli/peminjaman', icon: ArrowLeftRight },
-    { title: 'Riwayat', to: '/kaproli/riwayat', icon: History }
+    { title: 'Riwayat', to: '/kaproli/riwayat', icon: History },
+    { title: 'Profil', to: '/kaproli/profil', icon: User }
   ]
 }
 
@@ -198,15 +199,22 @@ async function handleLogout() {
       </nav>
 
       <div class="p-3 border-t border-gray-100">
-        <div class="flex items-center gap-3 px-2 py-2">
-          <div class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-sm font-semibold text-gray-600">
-            {{ (authStore.user?.name ?? 'U').charAt(0).toUpperCase() }}
-          </div>
-          <div class="min-w-0 flex-1">
-            <div class="text-sm font-medium text-gray-900 truncate">{{ authStore.user?.name ?? 'User' }}</div>
-            <div class="text-xs text-gray-400 capitalize">{{ (authStore.roles[0] ?? authStore.role)?.replace('_', ' ') }}</div>
-          </div>
-          <button class="p-2 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition" title="Keluar" @click="handleLogout">
+        <div class="flex items-center gap-2">
+          <NuxtLink
+            :to="activeRole === 'kaproli' ? '/kaproli/profil' : '/staff/profil'"
+            class="flex items-center gap-3 px-2 py-2 flex-1 min-w-0 rounded-lg transition hover:bg-gray-50"
+            title="Lihat profil"
+          >
+            <div class="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-sm font-semibold text-gray-600 overflow-hidden shrink-0">
+              <img v-if="authStore.user?.foto" :src="authStore.user.foto" class="w-full h-full object-cover" alt="Foto profil" />
+              <span v-else>{{ (authStore.user?.name ?? 'U').charAt(0).toUpperCase() }}</span>
+            </div>
+            <div class="min-w-0 flex-1">
+              <div class="text-sm font-medium text-gray-900 truncate">{{ authStore.user?.name ?? 'User' }}</div>
+              <div class="text-xs text-gray-400 capitalize">{{ (authStore.roles[0] ?? authStore.role)?.replace('_', ' ') }}</div>
+            </div>
+          </NuxtLink>
+          <button class="p-2 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition shrink-0" title="Keluar" @click="handleLogout">
             <LogOut class="w-4 h-4" />
           </button>
         </div>

@@ -2,7 +2,7 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import { FileText, AlertTriangle, RefreshCw, Wrench, CheckCircle2, XCircle } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
-import Pagination from '~/components/pagination.vue'
+import Pagination from '~/components/ui/pagination.vue'
 
 definePageMeta({ layout: 'admin', middleware: ['auth', 'admin'], title: 'Laporan Kerusakan' })
 

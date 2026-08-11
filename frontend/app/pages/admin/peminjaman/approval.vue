@@ -14,8 +14,8 @@ import {
 } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
 import { fmtJam } from '~/utils/format'
-import SlotJamIndicator from '~/components/slot-jam-indicator.vue'
-import Pagination from '~/components/pagination.vue'
+import SlotJamIndicator from '~/components/ui/slot-jam-indicator.vue'
+import Pagination from '~/components/ui/pagination.vue'
 
 definePageMeta({ layout: 'admin', middleware: ['auth', 'admin'], title: 'Peminjaman' })
 

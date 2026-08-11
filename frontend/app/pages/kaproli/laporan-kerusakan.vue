@@ -2,7 +2,7 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import { AlertTriangle, CheckCircle2, RefreshCw, Inbox, Wrench } from 'lucide-vue-next'
 import { useAdminService, type LaporanKerusakan } from '~/services/api/admin'
-import Pagination from '~/components/pagination.vue'
+import Pagination from '~/components/ui/pagination.vue'
 
 definePageMeta({ layout: 'staff', middleware: ['auth', 'kaproli'], title: 'Laporan Kerusakan' })
 

@@ -1,4 +1,4 @@
-import { crudIndex, type CrudOptions } from '../../utils/crud'
+import { crudIndex, type CrudOptions, uniqueNameCheck } from '../../utils/crud'
 import { attachCount, attachBarangList } from '../../utils/relations'
 
 const opts: CrudOptions = {
@@ -7,7 +7,8 @@ const opts: CrudOptions = {
   withRelations: async (rows) => {
     await attachCount(rows, 'barang', 'kategori_id', 'barang_count')
     await attachBarangList(rows, 'kategori_id', 'barang')
-  }
+  },
+  ...uniqueNameCheck('kategori_barang', undefined, 'Kategori dengan nama tersebut sudah ada.')
 }
 
 export default crudIndex(opts)

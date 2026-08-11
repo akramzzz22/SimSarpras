@@ -3,7 +3,7 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { Wrench, CheckCircle2, Play, RefreshCw, Inbox, X, Camera, Loader2, Receipt } from 'lucide-vue-next'
 import { useAdminService, type Maintenance } from '~/services/api/admin'
 import { formatRupiah } from '~/utils/format'
-import Pagination from '~/components/pagination.vue'
+import Pagination from '~/components/ui/pagination.vue'
 
 definePageMeta({ layout: 'staff', middleware: ['auth', 'staff'], title: 'Maintenance' })
 

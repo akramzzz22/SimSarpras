@@ -11,7 +11,8 @@ import {
   Wallet,
   LogOut,
   ShieldCheck,
-  ChevronLeft
+  ChevronLeft,
+  User
 } from 'lucide-vue-next'
 import { useAuthService } from '~/services/api/auth'
 import { useSekolah } from '~/composables/useSekolah'
@@ -68,6 +69,12 @@ const activeRole = computed(() => {
 const nav = computed(() => navMap[activeRole.value] ?? navMap.guru)
 const pageTitle = computed(() => (route.meta.title as string | undefined) || 'Beranda')
 
+// Halaman profil sesuai role aktif (layout mobile hanya dipakai guru/murid/kepsek)
+const profilePath = computed(() => {
+  const r = activeRole.value
+  return r === 'murid' || r === 'kepsek' || r === 'guru' ? `/${r}/profil` : '/guru/profil'
+})
+
 function isActive(to: string) {
   return route.path === to
 }
@@ -112,6 +119,16 @@ async function handleLogout() {
       <h1 class="font-display text-sm font-semibold truncate" style="color: var(--app-text, #0F172A);">{{ pageTitle }}</h1>
       <div class="flex-1" />
       <span class="text-2xs" style="color: var(--app-faint, #9CA3AF);">{{ sekolah.namaAplikasi }}</span>
+      <!-- Avatar profil (klik → halaman profil role aktif) -->
+      <NuxtLink
+        :to="profilePath"
+        class="w-7 h-7 rounded-full flex items-center justify-center shrink-0 overflow-hidden transition"
+        title="Profil saya"
+        :style="{ backgroundColor: '#EFF6FF', border: '1px solid #BFDBFE' }"
+      >
+        <img v-if="authStore.user?.foto" :src="authStore.user.foto" class="w-full h-full object-cover" alt="Profil" />
+        <User v-else class="w-4 h-4" style="color: #1D4ED8;" />
+      </NuxtLink>
     </header>
 
     <!-- Konten -->

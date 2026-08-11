@@ -1,3 +1,6 @@
+// Tipe client $fetch — dipakai modul-modul service (admin.ts, modules/*).
+export type ApiClient = ReturnType<typeof useApiClient>
+
 // Base API client menggunakan $fetch (ofetch) bawaan Nuxt
 export function useApiClient() {
   const config = useRuntimeConfig()

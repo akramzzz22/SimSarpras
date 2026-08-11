@@ -3,8 +3,8 @@ import { ref, onMounted, computed, watch } from 'vue'
 import { PackageCheck, RefreshCw, Loader2, Inbox, Camera, X, AlertTriangle } from 'lucide-vue-next'
 import { useAdminService, type Peminjaman } from '~/services/api/admin'
 import { fmtJam } from '~/utils/format'
-import SlotJamIndicator from '~/components/slot-jam-indicator.vue'
-import Pagination from '~/components/pagination.vue'
+import SlotJamIndicator from '~/components/ui/slot-jam-indicator.vue'
+import Pagination from '~/components/ui/pagination.vue'
 
 definePageMeta({ layout: 'admin', middleware: ['auth', 'admin'], title: 'Pengembalian' })
 

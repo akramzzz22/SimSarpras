@@ -34,6 +34,13 @@ export default defineNuxtConfig({
     '@vueuse/nuxt'
   ],
 
+  // Auto-import komponen memakai NAMA FILE saja (tanpa prefix folder),
+  // sehingga struktur folder bebas diatur (ui/, navigation/, qr/, widgets/)
+  // tanpa mengubah pemakaian <Pagination>, <ThemeSwitcher>, dsb.
+  components: [
+    { path: '~/components', pathPrefix: false }
+  ],
+
   css: ['~/assets/css/main.css'],
 
   vite: {

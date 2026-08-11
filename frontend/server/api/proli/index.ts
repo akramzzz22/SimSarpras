@@ -1,4 +1,4 @@
-import { crudIndex, type CrudOptions } from '../../utils/crud'
+import { crudIndex, type CrudOptions, uniqueNameCheck } from '../../utils/crud'
 import { attachSimple, attachUser, attachBarangList } from '../../utils/relations'
 
 const opts: CrudOptions = {
@@ -9,7 +9,10 @@ const opts: CrudOptions = {
     await attachSimple(rows, 'jurusan_id', 'jurusan', 'jurusan')
     await attachUser(rows, 'ketua_proli_id', 'ketuaProli')
     await attachBarangList(rows, 'proli_id', 'barang')
-  }
+  },
+  // Nama proli tidak boleh ganda. CATATAN: ketua_proli_id TIDAK di-unik-kan —
+  // satu kaproli boleh menjadi ketua beberapa proli (double job).
+  ...uniqueNameCheck('proli', undefined, 'Proli dengan nama tersebut sudah ada.')
 }
 
 export default crudIndex(opts)

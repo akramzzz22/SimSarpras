@@ -6,7 +6,8 @@ import { q, one, run, type Row } from './db'
 const USER_COLUMNS = `
   id, name, email, email_verified_at, kelas, jurusan_id, foto, jenis_kelamin,
   is_active, failed_login_count, nip, nuptk, tempat_lahir, tanggal_lahir, alamat,
-  no_hp, created_at, updated_at
+  no_hp, created_at, updated_at,
+  (SELECT nis FROM murid WHERE murid.user_id = users.id LIMIT 1) AS nis
 `
 
 export interface AuthUser extends Row {

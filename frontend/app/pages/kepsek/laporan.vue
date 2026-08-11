@@ -2,7 +2,7 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import { AlertTriangle, RefreshCw, Inbox, Download } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
-import Pagination from '~/components/pagination.vue'
+import Pagination from '~/components/ui/pagination.vue'
 
 definePageMeta({ layout: 'mobile', middleware: ['auth', 'kepsek'], title: 'Laporan' })
 

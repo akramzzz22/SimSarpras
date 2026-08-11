@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { CrudColumn, CrudField } from '~/components/master-data-crud.vue'
+import type { CrudColumn, CrudField } from '~/components/widgets/master-data-crud.vue'
 
 definePageMeta({ layout: 'admin', middleware: ['auth', 'admin'], title: 'Kategori Barang' })
 

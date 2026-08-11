@@ -2,7 +2,7 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { Search, RefreshCw, Inbox, CheckCircle2, XCircle, PackageCheck, AlertTriangle, Loader2 } from 'lucide-vue-next'
 import { useAdminService, type Peminjaman } from '~/services/api/admin'
-import Pagination from '~/components/pagination.vue'
+import Pagination from '~/components/ui/pagination.vue'
 
 const props = defineProps<{
   mode: 'semua' | 'sedang' | 'terlambat' | 'riwayat'

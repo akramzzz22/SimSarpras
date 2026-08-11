@@ -14,7 +14,7 @@ import {
   UserRound
 } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
-import Pagination from '~/components/pagination.vue'
+import Pagination from '~/components/ui/pagination.vue'
 import { formatTanggal } from '~/utils/format'
 
 definePageMeta({ layout: 'admin', middleware: ['auth', 'admin'], title: 'Data Murid' })

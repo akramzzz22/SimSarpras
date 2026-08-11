@@ -1,4 +1,4 @@
-import { crudIndex, type CrudOptions } from '../../utils/crud'
+import { crudIndex, type CrudOptions, uniqueNameCheck } from '../../utils/crud'
 import { attachMaintenanceList } from '../../utils/relations'
 
 const opts: CrudOptions = {
@@ -7,7 +7,8 @@ const opts: CrudOptions = {
   optionalFields: ['kontak', 'alamat', 'keterangan'],
   withRelations: async (rows) => {
     await attachMaintenanceList(rows, 'vendor_id', 'maintenance')
-  }
+  },
+  ...uniqueNameCheck('vendor', undefined, 'Vendor dengan nama tersebut sudah ada.')
 }
 
 export default crudIndex(opts)

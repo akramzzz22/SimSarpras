@@ -9,10 +9,17 @@ import {
   RefreshCw,
   X,
   Inbox,
-  Download
+  Download,
+  Upload,
+  FileDown,
+  FileUp,
+  AlertTriangle,
+  CheckCircle2,
+  XCircle
 } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
-import Pagination from '~/components/pagination.vue'
+import Pagination from '~/components/ui/pagination.vue'
+import { parseCSV, toCSV } from '~/utils/csv'
 
 export interface CrudOption {
   value: string | number
@@ -86,6 +93,20 @@ const editingId = ref<number | null>(null)
 const form = ref<Record<string, any>>({})
 const optionCache = ref<Record<string, CrudOption[]>>({})
 const formError = ref<string | null>(null)
+
+/** ================= Import CSV ================= */
+const showImport = ref(false)
+const importFileName = ref('')
+const importHeaders = ref<string[]>([]) // kolom yang dikenali (label field)
+const importRows = ref<Record<string, string>[]>([]) // baris data: header → nilai
+const unknownHeaders = ref<string[]>([]) // kolom tak dikenal (diabaikan)
+const missingRequired = ref<string[]>([]) // kolom wajib yang tidak ada di file
+const importing = ref(false)
+const importDone = ref(0)
+const importTotal = ref(0)
+const importOk = ref(0)
+const importErrors = ref<{ row: number; message: string }[]>([])
+const fileInput = ref<HTMLInputElement | null>(null)
 
 /** Opsi select dinamis yang bergantung pada field lain (mis. kelas per jurusan) */
 const optionDeps = ref<Record<string, Record<string, any>>>({})
@@ -327,21 +348,19 @@ async function exportCSV() {
       page++
     }
 
-    const rows = all.filter(matchesSearch)
-    if (!rows.length) {
+    const exportRows = all.filter(matchesSearch)
+    if (!exportRows.length) {
       alert('Tidak ada data yang cocok untuk diexport.')
       return
     }
 
     const header = props.columns.map((c) => c.label)
-    const csv = [
+    const csv = toCSV([
       header,
-      ...rows.map((item) => props.columns.map((c) => cellValue(c, item)))
-    ]
-      .map((r) => r.map((c) => `"${String(c ?? '').replaceAll('"', '""')}"`).join(','))
-      .join('\n')
+      ...exportRows.map((item) => props.columns.map((c) => cellValue(c, item)))
+    ])
 
-    const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8;' })
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
@@ -353,6 +372,177 @@ async function exportCSV() {
   } finally {
     exporting.value = false
   }
+}
+
+/** Reset state modal import (dipanggil saat membuka / ganti file). */
+function openImport() {
+  showImport.value = true
+  importFileName.value = ''
+  importHeaders.value = []
+  importRows.value = []
+  unknownHeaders.value = []
+  missingRequired.value = []
+  importing.value = false
+  importDone.value = 0
+  importTotal.value = 0
+  importOk.value = 0
+  importErrors.value = []
+}
+
+/**
+ * Kumpulkan opsi select (statis / loader) untuk resolusi label → nilai.
+ * Dipakai bersama oleh template & proses import.
+ */
+async function loadSelectOptions(): Promise<Map<string, CrudOption[]>> {
+  const map = new Map<string, CrudOption[]>()
+  for (const f of props.fields) {
+    if (f.type !== 'select') continue
+    let opts = f.options ?? []
+    const loader = props.optionLoaders?.[f.optionLoaderKey ?? '']
+    if (!opts.length && loader) {
+      try {
+        opts = await loader()
+      } catch {
+        opts = []
+      }
+    }
+    map.set(f.key, opts)
+  }
+  return map
+}
+
+/**
+ * Unduh template CSV: header = label field, satu baris contoh
+ * (placeholder teks / opsi pertama untuk select).
+ */
+async function downloadTemplate() {
+  // Muat opsi select (mis. daftar jurusan) agar contoh baris terisi
+  const optionMap = await loadSelectOptions()
+
+  const header = props.fields.map((f) => f.label)
+  const example = props.fields.map((f) => {
+    if (f.type === 'select') return String(optionMap.get(f.key)?.[0]?.label ?? '')
+    return (f.placeholder ?? '').replace(/^Contoh:\s*/i, '')
+  })
+
+  const blob = new Blob([toCSV([header, example])], { type: 'text/csv;charset=utf-8;' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `template-${props.resource}.csv`
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
+/** File CSV dipilih → parse & siapkan baris import. */
+function onFileSelected(e: Event) {
+  const input = e.target as HTMLInputElement
+  const file = input.files?.[0]
+  if (!file) return
+  const reader = new FileReader()
+  reader.onload = () => {
+    const parsed = parseCSV(String(reader.result ?? ''))
+    if (parsed.length < 2) {
+      alert('File kosong atau hanya berisi header. Gunakan template yang disediakan.')
+      return
+    }
+    const headerRow = (parsed[0] ?? []).map((h) => h.trim())
+    importFileName.value = file.name
+
+    // Kolom dikenali bila cocok dengan LABEL atau KEY field
+    const known = props.fields
+      .map((f) => ({ f, header: headerRow.find((h) => h === f.label || h === f.key) }))
+      .filter((k) => k.header)
+    unknownHeaders.value = headerRow.filter(
+      (h) => !props.fields.some((f) => f.label === h || f.key === h)
+    )
+    missingRequired.value = props.fields
+      .filter((f) => f.required && !known.some((k) => k.f === f))
+      .map((f) => f.label)
+    importHeaders.value = known.map((k) => k.header!)
+
+    importRows.value = parsed
+      .slice(1)
+      .map((cells) => {
+        const obj: Record<string, string> = {}
+        headerRow.forEach((h, i) => {
+          obj[h] = cells[i] ?? ''
+        })
+        return obj
+      })
+      .filter((r) => Object.values(r).some((v) => String(v).trim() !== ''))
+  }
+  reader.readAsText(file, 'utf-8')
+  input.value = '' // izinkan memilih file yang sama lagi
+}
+
+/** Resolusi nilai select: cocokkan label (atau ID) → value. */
+function resolveOption(opts: CrudOption[], raw: string): string | number | null {
+  const v = String(raw).trim()
+  const byLabel = opts.find((o) => String(o.label).trim().toLowerCase() === v.toLowerCase())
+  if (byLabel) return byLabel.value
+  const byValue = opts.find((o) => String(o.value) === v)
+  if (byValue) return byValue.value
+  return null
+}
+
+/** Baris CSV → payload create (konversi angka & resolusi select). */
+function buildRowPayload(
+  row: Record<string, string>,
+  optionMap: Map<string, CrudOption[]>
+): { payload: Record<string, any>; error?: string } {
+  const payload: Record<string, any> = {}
+  for (const f of props.fields) {
+    const raw = String(row[f.label] ?? row[f.key] ?? '').trim()
+    if (raw === '') continue
+    if (f.type === 'number') {
+      payload[f.key] = Number(raw)
+      continue
+    }
+    if (f.type === 'select') {
+      const resolved = resolveOption(optionMap.get(f.key) ?? [], raw)
+      if (resolved === null) return { payload: {}, error: `${f.label} "${raw}" tidak dikenali` }
+      payload[f.key] = resolved
+      continue
+    }
+    payload[f.key] = raw
+  }
+  return { payload }
+}
+
+/** Proses import: kirim tiap baris ke API (validasi server per baris). */
+async function processImport() {
+  if (importing.value || !importRows.value.length) return
+  importing.value = true
+  importErrors.value = []
+  importOk.value = 0
+  importTotal.value = importRows.value.length
+  importDone.value = 0
+
+  const optionMap = await loadSelectOptions()
+  const rows = importRows.value
+  for (let i = 0; i < rows.length; i++) {
+    const { payload, error } = buildRowPayload(rows[i]!, optionMap)
+    if (error) {
+      importErrors.value.push({ row: i + 2, message: error })
+    } else {
+      try {
+        await admin.master.create(props.resource, payload)
+        importOk.value++
+      } catch (e: any) {
+        const err = e?.data?.errors
+        const firstKey = err ? Object.keys(err)[0] : null
+        const msg = (firstKey && err[firstKey]?.[0]) || e?.data?.message || 'Gagal menyimpan data.'
+        importErrors.value.push({ row: i + 2, message: msg })
+      }
+    }
+    importDone.value++
+    await nextTick() // biarkan progress bar ter-update
+  }
+  importing.value = false
+  await load()
 }
 
 /** Fokus input pencarian → border biru + shadow */
@@ -436,6 +626,14 @@ defineExpose({ load })
         @click="load"
       >
         <RefreshCw class="w-4 h-4" />
+      </button>
+      <button
+        class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition w-fit"
+        title="Import data dari file CSV (format sesuai template)"
+        @click="openImport"
+      >
+        <Upload class="w-4 h-4" />
+        Import CSV
       </button>
       <button
         class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition w-fit disabled:opacity-50"
@@ -624,6 +822,196 @@ defineExpose({ load })
             </button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- Modal Import CSV -->
+    <div
+      v-if="showImport"
+      class="fixed inset-0 z-50 flex items-center justify-center p-4"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" @click="showImport = false" />
+      <div class="relative bg-white rounded-2xl shadow-xl w-full max-w-xl max-h-[90vh] flex flex-col">
+        <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <h3 class="font-semibold text-gray-900 flex items-center gap-2">
+            <Upload class="w-4 h-4" style="color: #1D4ED8;" />
+            Import {{ title }}
+          </h3>
+          <button class="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100" @click="showImport = false">
+            <X class="w-5 h-5" />
+          </button>
+        </div>
+
+        <div class="px-6 py-5 overflow-y-auto space-y-4">
+          <!-- Belum pilih file -->
+          <template v-if="!importRows.length && !importing && !importTotal">
+            <p class="text-sm text-gray-500 leading-relaxed">
+              Unggah file <b>CSV</b> berisi data {{ title.toLowerCase() }}. Kolom harus mengikuti template —
+              unduh template dulu, isi, lalu unggah kembali.
+            </p>
+            <button
+              class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition w-fit"
+              @click="downloadTemplate"
+            >
+              <FileDown class="w-4 h-4" />
+              Unduh Template CSV
+            </button>
+            <div
+              class="border-2 border-dashed rounded-xl p-8 text-center"
+              style="border-color: #D1D5DB;"
+            >
+              <FileUp class="w-8 h-8 mx-auto mb-2" style="color: #D1D5DB;" />
+              <p class="text-sm text-gray-500 mb-3">Pilih file CSV yang sudah diisi</p>
+              <input
+                ref="fileInput"
+                type="file"
+                accept=".csv,text/csv"
+                class="hidden"
+                @change="onFileSelected"
+              />
+              <button
+                class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition shadow-sm"
+                style="background-color: #1D4ED8; border: 1px solid #1D4ED8;"
+                @click="fileInput?.click()"
+              >
+                <Upload class="w-4 h-4" />
+                Pilih File
+              </button>
+            </div>
+          </template>
+
+          <!-- File sudah di-parse: pratinjau & konfirmasi -->
+          <template v-else-if="!importing && !importTotal">
+            <div class="flex items-center justify-between gap-3">
+              <p class="text-sm text-gray-600">
+                File: <b>{{ importFileName }}</b> — <b>{{ importRows.length }}</b> baris siap diimport.
+              </p>
+              <button
+                class="text-xs font-medium text-gray-400 hover:text-gray-600 transition"
+                @click="openImport"
+              >
+                Ganti File
+              </button>
+            </div>
+
+            <div
+              v-if="missingRequired.length"
+              class="flex items-start gap-2 text-xs rounded-lg px-3 py-2"
+              style="border: 1px solid #FECACA; background-color: #FEF2F2; color: #B91C1C;"
+            >
+              <AlertTriangle class="w-4 h-4 shrink-0 mt-0.5" />
+              <span>Kolom wajib tidak ada di file: <b>{{ missingRequired.join(', ') }}</b>. Lengkapi dulu.</span>
+            </div>
+            <div
+              v-if="unknownHeaders.length"
+              class="flex items-start gap-2 text-xs rounded-lg px-3 py-2"
+              style="border: 1px solid #FDE68A; background-color: #FFFBEB; color: #92400E;"
+            >
+              <AlertTriangle class="w-4 h-4 shrink-0 mt-0.5" />
+              <span>Kolom diabaikan (tidak dikenali): {{ unknownHeaders.join(', ') }}</span>
+            </div>
+
+            <div class="text-xs text-gray-500">Kolom dikenali: <b>{{ importHeaders.join(', ') }}</b></div>
+
+            <!-- Pratinjau 5 baris pertama -->
+            <div class="overflow-x-auto rounded-lg border" style="border-color: #E5E7EB;">
+              <table class="w-full text-xs">
+                <thead>
+                  <tr style="background-color: #F8F9FA;">
+                    <th class="font-semibold" style="padding: 8px 10px; color: #374151;">#</th>
+                    <th
+                      v-for="h in importHeaders"
+                      :key="h"
+                      class="font-semibold"
+                      style="padding: 8px 10px; color: #374151;"
+                    >
+                      {{ h }}
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(r, i) in importRows.slice(0, 5)" :key="i" style="border-top: 1px solid #E5E7EB;">
+                    <td style="padding: 8px 10px; color: #9CA3AF;">{{ i + 1 }}</td>
+                    <td v-for="h in importHeaders" :key="h" style="padding: 8px 10px;">{{ r[h] }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <div v-if="importRows.length > 5" class="px-3 py-2 text-xs" style="color: #9CA3AF;">
+                …dan {{ importRows.length - 5 }} baris lainnya
+              </div>
+            </div>
+
+            <div class="flex gap-3">
+              <button
+                :disabled="!importRows.length || !!missingRequired.length"
+                class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition shadow-sm disabled:opacity-50"
+                style="background-color: #1D4ED8; border: 1px solid #1D4ED8;"
+                @click="processImport"
+              >
+                <Upload class="w-4 h-4" />
+                Proses Import ({{ importRows.length }})
+              </button>
+              <button
+                class="px-4 py-2.5 rounded-xl border border-gray-200 text-sm font-medium hover:bg-gray-50 transition"
+                @click="showImport = false"
+              >
+                Batal
+              </button>
+            </div>
+          </template>
+
+          <!-- Proses berjalan -->
+          <div v-else-if="importing" class="space-y-3">
+            <p class="text-sm text-gray-600">
+              <Loader2 class="w-4 h-4 inline animate-spin mr-2" />
+              Mengimport… {{ importDone }}/{{ importTotal }}
+            </p>
+            <div class="h-2 rounded-full overflow-hidden" style="background-color: #E5E7EB;">
+              <div
+                class="h-full transition-all duration-150"
+                :style="{ width: (importDone / importTotal) * 100 + '%', backgroundColor: '#1D4ED8' }"
+              />
+            </div>
+          </div>
+
+          <!-- Hasil import -->
+          <div v-else-if="importTotal" class="space-y-3">
+            <div class="flex items-center gap-2 text-sm font-medium" style="color: #047857;">
+              <CheckCircle2 class="w-4 h-4" />
+              {{ importOk }} dari {{ importTotal }} baris berhasil diimport.
+            </div>
+            <div v-if="importErrors.length" class="space-y-1">
+              <div class="flex items-center gap-2 text-sm font-medium" style="color: #B91C1C;">
+                <XCircle class="w-4 h-4" />
+                {{ importErrors.length }} baris gagal:
+              </div>
+              <ul class="text-xs max-h-40 overflow-y-auto rounded-lg px-3 py-2 space-y-1" style="border: 1px solid #FECACA; background-color: #FEF2F2;">
+                <li v-for="e in importErrors" :key="e.row" style="color: #B91C1C;">
+                  Baris {{ e.row }}: {{ e.message }}
+                </li>
+              </ul>
+            </div>
+            <div class="flex gap-3 pt-1">
+              <button
+                class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold text-white transition shadow-sm"
+                style="background-color: #1D4ED8; border: 1px solid #1D4ED8;"
+                @click="showImport = false"
+              >
+                <CheckCircle2 class="w-4 h-4" />
+                Selesai
+              </button>
+              <button
+                class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl border border-gray-200 text-sm font-medium hover:bg-gray-50 transition"
+                @click="openImport"
+              >
+                <Upload class="w-4 h-4" />
+                Import Lagi
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>

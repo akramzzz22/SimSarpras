@@ -2,7 +2,7 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import { QrCode, Search, RefreshCw, Printer, Inbox, Download, ExternalLink } from 'lucide-vue-next'
 import { useAdminService, type Barang } from '~/services/api/admin'
-import Pagination from '~/components/pagination.vue'
+import Pagination from '~/components/ui/pagination.vue'
 
 definePageMeta({ layout: 'admin', middleware: ['auth', 'admin'], title: 'QR Code' })
 

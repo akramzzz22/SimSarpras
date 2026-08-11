@@ -26,6 +26,46 @@ export interface CrudOptions {
   denyMessage?: string
 }
 
+/**
+ * Helper cek duplikat NAMA (case-insensitive) untuk master data.
+ *
+ * - Tanpa scope      → nama unik global (mis. jurusan, proli, gedung).
+ * - Dengan scope     → nama unik per induk, mis. kelas unik per jurusan
+ *   (field jurusan_id) atau ruangan unik per gedung (field gedung_id).
+ *   Scope memakai IS NOT DISTINCT FROM, jadi induk NULL ikut dicocokkan.
+ *
+ * Dipakai bersama oleh semua resource master data — satu sumber kebenaran.
+ * CATATAN: hanya NAMA yang dicek; kolom relasi (mis. ketua_proli_id)
+ * TIDAK ikut di-unik-kan agar kaproli tetap bisa double job.
+ */
+export function uniqueNameCheck(
+  table: string,
+  scope?: { field: string; getValue: (body: any) => number | null },
+  message = 'Nama tersebut sudah terdaftar.'
+): { uniqueCheck: NonNullable<CrudOptions['uniqueCheck']>; uniqueMessage: string } {
+  return {
+    uniqueMessage: message,
+    uniqueCheck: async (body, id) => {
+      const nama = String(body?.nama ?? '').trim()
+      if (!nama) return false
+
+      let sql = `SELECT 1 FROM ${table} WHERE LOWER(nama) = LOWER($1)`
+      const params: unknown[] = [nama]
+      if (scope) {
+        sql += ` AND ${scope.field} IS NOT DISTINCT FROM $2`
+        params.push(scope.getValue(body))
+      }
+      if (id) {
+        params.push(id)
+        sql += ` AND id <> $${params.length}`
+      }
+
+      const rows = await q(`${sql} LIMIT 1`, params)
+      return rows.length > 0
+    }
+  }
+}
+
 export function crudIndex(opts: CrudOptions) {
   return defineEventHandler(async (event) => {
     if (getMethod(event) === 'GET') {

@@ -18,7 +18,7 @@ import {
   GraduationCap
 } from 'lucide-vue-next'
 import { useAdminService, type UserItem, type AkunMurid } from '~/services/api/admin'
-import Pagination from '~/components/pagination.vue'
+import Pagination from '~/components/ui/pagination.vue'
 
 definePageMeta({ layout: 'admin', middleware: ['auth', 'admin'], title: 'User PTK' })
 
