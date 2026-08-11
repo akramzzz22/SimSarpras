@@ -112,23 +112,27 @@ onMounted(load)
         <!-- Kop surat -->
         <header class="border-b-4 border-double border-gray-900 pb-4">
           <div class="flex items-center justify-center gap-4">
-            <img
-              v-if="sekolah.fotoDinas"
-              :src="sekolah.fotoDinas"
-              class="h-12 w-auto max-w-[56px] object-contain shrink-0"
-              alt="Logo Dinas Pendidikan"
-            />
+            <div class="logo-plate w-14 h-14 rounded-lg flex items-center justify-center overflow-hidden shrink-0">
+              <img
+                v-if="sekolah.fotoDinas"
+                :src="sekolah.fotoDinas"
+                class="h-10 w-auto max-w-[44px] object-contain"
+                alt="Logo Dinas Pendidikan"
+              />
+            </div>
             <div class="text-center">
               <h1 class="text-xl font-bold text-gray-900 uppercase tracking-wide">{{ sekolah.nama }}</h1>
               <p class="text-sm text-gray-600 mt-1">{{ sekolah.alamat }}</p>
               <p class="text-xs text-gray-500 mt-0.5">NPSN: {{ sekolah.npsn }} • Telp: {{ sekolah.telepon }}</p>
             </div>
-            <img
-              v-if="sekolah.fotoSekolah"
-              :src="sekolah.fotoSekolah"
-              class="h-12 w-auto max-w-[56px] object-contain shrink-0"
-              alt="Logo Sekolah"
-            />
+            <div class="logo-plate w-14 h-14 rounded-lg flex items-center justify-center overflow-hidden shrink-0">
+              <img
+                v-if="sekolah.fotoSekolah"
+                :src="sekolah.fotoSekolah"
+                class="h-10 w-auto max-w-[44px] object-contain"
+                alt="Logo Sekolah"
+              />
+            </div>
           </div>
         </header>
 

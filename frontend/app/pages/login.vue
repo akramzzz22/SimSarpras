@@ -80,7 +80,7 @@ async function submit() {
         />
 
         <div class="relative z-10 flex items-center gap-3">
-          <div class="w-11 h-11 rounded-lg bg-white/10 border border-white/20 flex items-center justify-center overflow-hidden">
+          <div class="logo-plate w-11 h-11 rounded-lg flex items-center justify-center overflow-hidden">
             <img
               v-if="sekolah.fotoSekolah"
               :src="sekolah.fotoSekolah"

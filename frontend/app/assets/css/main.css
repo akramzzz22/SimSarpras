@@ -477,6 +477,17 @@
 }
 
 /* ============================================================
+   PLATE LOGO — piring bersih di belakang logo instansi
+   (latar permukaan + border halus + bayangan tipis)
+   Dipakai konsisten: header admin, halaman login, & kop surat
+   ============================================================ */
+.logo-plate {
+  background-color: var(--app-surface, #ffffff);
+  border: 1px solid var(--app-border-light, #E5E7EB);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+/* ============================================================
    PATTERN HEADER — garis diagonal halus di latar header
    ============================================================ */
 .header-pattern {

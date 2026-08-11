@@ -3,3 +3,4 @@
 node_modules/ 
 # Script lokal — tidak ikut di-commit / di-push
 auto-push.sh
+ap.cmd

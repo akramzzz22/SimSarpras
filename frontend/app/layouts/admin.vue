@@ -680,12 +680,19 @@ watch(
                   <div class="font-bold text-gray-800">{{ sekolah.nama }}</div>
                 </div>
                 <div class="flex items-center gap-2">
-                  <img v-if="sekolah.fotoPemprov" :src="sekolah.fotoPemprov" class="img-instansi w-12 h-12 object-contain" title="Provinsi Jawa Barat" />
-                  <div v-else class="w-12 h-12 rounded-full bg-white border border-gray-300 flex items-center justify-center text-[11px] font-bold text-gray-500 leading-none" title="Provinsi Jawa Barat">PB</div>
-                  <img v-if="sekolah.fotoDinas" :src="sekolah.fotoDinas" class="img-instansi w-12 h-12 object-contain" title="Dinas Pendidikan" />
-                  <div v-else class="w-12 h-12 rounded-full bg-white border border-gray-300 flex items-center justify-center text-[11px] font-bold text-gray-500 leading-none" title="Dinas Pendidikan">DD</div>
-                  <img v-if="sekolah.fotoSekolah" :src="sekolah.fotoSekolah" class="img-instansi w-12 h-12 object-contain" title="Sekolah" />
-                  <div v-else class="w-12 h-12 rounded-full bg-white border border-gray-300 flex items-center justify-center text-[11px] font-bold text-gray-500 leading-none" title="Sekolah">SK</div>
+                  <!-- Setiap logo duduk di atas piring bersih (plate) agar TIDAK ber-blend dengan pattern di belakangnya -->
+                  <div class="logo-plate w-12 h-12 rounded-lg flex items-center justify-center overflow-hidden">
+                    <img v-if="sekolah.fotoPemprov" :src="sekolah.fotoPemprov" class="w-10 h-10 object-contain" title="Provinsi Jawa Barat" />
+                    <span v-else class="text-[11px] font-bold text-gray-400" title="Provinsi Jawa Barat">PB</span>
+                  </div>
+                  <div class="logo-plate w-12 h-12 rounded-lg flex items-center justify-center overflow-hidden">
+                    <img v-if="sekolah.fotoDinas" :src="sekolah.fotoDinas" class="w-10 h-10 object-contain" title="Dinas Pendidikan" />
+                    <span v-else class="text-[11px] font-bold text-gray-400" title="Dinas Pendidikan">DD</span>
+                  </div>
+                  <div class="logo-plate w-12 h-12 rounded-lg flex items-center justify-center overflow-hidden">
+                    <img v-if="sekolah.fotoSekolah" :src="sekolah.fotoSekolah" class="w-10 h-10 object-contain" title="Sekolah" />
+                    <span v-else class="text-[11px] font-bold text-gray-400" title="Sekolah">SK</span>
+                  </div>
                 </div>
               </div>
 
