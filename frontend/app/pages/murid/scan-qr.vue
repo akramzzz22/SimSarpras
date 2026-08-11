@@ -2,7 +2,7 @@
 import { ref, computed } from 'vue'
 import {
   QrCode, Search, Loader2, CheckCircle2, AlertTriangle, ArrowLeftRight, X, Camera,
-  MapPin, Tag, Building2, Landmark, Calendar, Users
+  MapPin, Tag, Building2, Landmark, Calendar, Users, Boxes
 } from 'lucide-vue-next'
 import QrScanner from '~/components/qr/qr-scanner.vue'
 import { useAdminService, type Barang } from '~/services/api/admin'
@@ -109,6 +109,11 @@ function reset() {
       </div>
 
       <dl class="border-t border-gray-100 divide-y divide-gray-50">
+        <div class="flex items-center gap-3 px-4 py-2.5">
+          <Boxes class="w-4 h-4 text-gray-400 shrink-0" />
+          <dt class="text-xs text-gray-500 w-20">Stok</dt>
+          <dd class="flex-1 text-sm font-medium text-gray-800 text-right">{{ result.jumlah ?? 1 }} unit</dd>
+        </div>
         <div class="flex items-center gap-3 px-4 py-2.5">
           <Tag class="w-4 h-4 text-gray-400 shrink-0" />
           <dt class="text-xs text-gray-500 w-20">Kategori</dt>

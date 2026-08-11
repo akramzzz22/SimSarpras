@@ -14,10 +14,11 @@ const myRequests = ref<Peminjaman[]>([])
 const search = ref('')
 const selectedBarangIds = ref<number[]>([])
 const tanggalPinjam = ref('')
-const selectedSlot = ref<BarangJadwal | null>(null)
+const selectedSlots = ref<BarangJadwal[]>([])
 const slotList = ref<BarangJadwal[]>([])
 const loadingSlots = ref(false)
 const keperluan = ref('')
+const jumlahMap = ref<Record<number, number>>({})
 const fotoPinjam = ref('')
 const saving = ref(false)
 const success = ref(false)
@@ -45,6 +46,7 @@ const availableBarang = computed(() => {
   return barangList.value.filter((b) => {
     if (b.status !== 'aktif') return false
     if (b.bisa_dipinjam === false) return false
+    if ((b.jumlah ?? 1) <= 0) return false
     if (sumberFilter.value === 'sarpras' && b.owner_type !== 'sarpras') return false
     if (sumberFilter.value === 'proli') {
       if (b.owner_type !== 'proli') return false
@@ -54,6 +56,10 @@ const availableBarang = computed(() => {
     return true
   })
 })
+
+// Helper stok & nama barang (untuk panel "Jumlah per Barang")
+const stokBarang = (id: number) => barangList.value.find((x) => x.id === id)?.jumlah ?? 1
+const namaBarang = (id: number) => barangList.value.find((x) => x.id === id)?.nama ?? `Barang #${id}`
 
 const sumberOptions = [
   { v: 'all', l: 'Semua', icon: LayoutGrid },
@@ -69,21 +75,24 @@ function toggleBarang(id: number) {
       return
     }
     error.value = null
+    jumlahMap.value[id] = 1
+    selectedBarangIds.value = [...selectedBarangIds.value, id]
+  } else {
+    delete jumlahMap.value[id]
+    selectedBarangIds.value = selectedBarangIds.value.filter((x) => x !== id)
   }
-  selectedBarangIds.value = selectedBarangIds.value.includes(id)
-    ? selectedBarangIds.value.filter((x) => x !== id)
-    : [...selectedBarangIds.value, id]
 }
 
 // Saat filter sumber/proli berubah, lepas pilihan barang yang mungkin sudah tidak tampil.
 watch([sumberFilter, proliFilter], () => {
   selectedBarangIds.value = []
+  jumlahMap.value = {}
 })
 
 // Muat slot ketersediaan mengikuti barang pertama yang dipilih + tanggal (pola booking).
 // Slot harus tersedia untuk SEMUA barang dalam paket — dicek lagi oleh server saat mengajukan.
 async function loadSlots() {
-  selectedSlot.value = null
+  selectedSlots.value = []
   slotList.value = []
   if (!selectedBarangIds.value.length || !tanggalPinjam.value) return
   loadingSlots.value = true
@@ -118,9 +127,65 @@ const slotBadge = (s: BarangJadwal) => {
 
 const slotBtnCls = (s: BarangJadwal) => {
   if (s.status !== 'available') return 'border-gray-200 bg-gray-50 opacity-70 cursor-not-allowed'
-  if (selectedSlot.value?.id === s.id) return 'border-blue-600 bg-blue-600 text-white shadow-md'
+  if (selectedSlots.value.some((x) => x.id === s.id)) return 'border-blue-600 bg-blue-600 text-white shadow-md'
   return 'border-gray-200 bg-white hover:border-blue-400 hover:bg-blue-50'
 }
+
+// Pilih beberapa slot berurutan (mis. 08:00–09:00 + 09:00–10:00 = pinjam 08:00–10:00).
+// Slot baru hanya bisa disambung di ujung kiri/kanan rentang yang sudah dipilih.
+function toggleSlot(s: BarangJadwal) {
+  if (s.status !== 'available') return
+  const idx = selectedSlots.value.findIndex((x) => x.id === s.id)
+  if (idx >= 0) {
+    const tersisa = selectedSlots.value.filter((x) => x.id !== s.id)
+    // Cek ulang kekontiguan: membatalkan slot tengah bisa memutus rentang.
+    let berurutan = true
+    for (let i = 1; i < tersisa.length; i++) {
+      const prev = tersisa[i - 1]
+      const cur = tersisa[i]
+      if (!prev || !cur || cur.jam_mulai !== prev.jam_selesai) {
+        berurutan = false
+        break
+      }
+    }
+    if (berurutan) {
+      selectedSlots.value = tersisa
+      error.value = null
+    } else {
+      selectedSlots.value = []
+      error.value = 'Rentang terputus — pilih ulang slot yang berurutan.'
+    }
+    return
+  }
+  const list = selectedSlots.value
+  if (!list.length) {
+    selectedSlots.value = [s]
+    error.value = null
+    return
+  }
+  const first = list[0]
+  const last = list[list.length - 1]
+  if (!first || !last) return
+  if (s.jam_selesai === first.jam_mulai) {
+    selectedSlots.value = [s, ...list]
+    error.value = null
+  } else if (s.jam_mulai === last.jam_selesai) {
+    selectedSlots.value = [...list, s]
+    error.value = null
+  } else {
+    error.value = 'Slot harus berurutan — pilih slot yang bersambung langsung dengan rentang yang sudah dipilih.'
+  }
+}
+
+// Rentang gabungan slot yang dipilih (urutan sudah pasti berurutan & terkunci).
+const slotRange = computed(() => {
+  const list = selectedSlots.value
+  if (!list.length) return null
+  const first = list[0]
+  const last = list[list.length - 1]
+  if (!first || !last) return null
+  return { mulai: first.jam_mulai, selesai: last.jam_selesai }
+})
 
 const fotoInput = ref<HTMLInputElement | null>(null)
 const fotoUploading = ref(false)
@@ -188,7 +253,9 @@ async function load() {
     if (kode) {
       const found = barangList.value.find((x) => (x.kode_qr ?? '').toLowerCase() === String(kode).toLowerCase())
       if (found) {
-        if (found.bisa_dipinjam === false) {
+        if ((found.jumlah ?? 1) <= 0) {
+          error.value = 'Stok barang ini sedang habis (0 unit).'
+        } else if (found.bisa_dipinjam === false) {
           error.value = 'Barang ini tidak bisa dipinjam.'
         } else {
           toggleBarang(found.id)
@@ -202,7 +269,7 @@ async function load() {
 }
 
 async function submit() {
-  if (!selectedBarangIds.value.length || !tanggalPinjam.value || !selectedSlot.value) {
+  if (!selectedBarangIds.value.length || !tanggalPinjam.value || !selectedSlots.value.length) {
     error.value = 'Pilih minimal satu barang, tanggal, dan slot waktu yang tersedia.'
     return
   }
@@ -214,11 +281,32 @@ async function submit() {
   error.value = null
   success.value = false
   try {
+    const jumlahs: number[] = []
+    for (const id of selectedBarangIds.value) {
+      const stok = stokBarang(id)
+      const v = Math.floor(Number(jumlahMap.value[id]))
+      if (!Number.isFinite(v) || v < 1) {
+        error.value = 'Jumlah minimal 1 unit untuk setiap barang.'
+        return
+      }
+      if (v > stok) {
+        error.value = `Jumlah "${namaBarang(id)}" melebihi stok tersedia (${stok} unit).`
+        return
+      }
+      jumlahs.push(v)
+    }
+    const slotAwal = selectedSlots.value[0]?.jam_mulai
+    const slotAkhir = selectedSlots.value[selectedSlots.value.length - 1]?.jam_selesai
+    if (!slotAwal || !slotAkhir) {
+      error.value = 'Pilih slot waktu terlebih dahulu.'
+      return
+    }
     await admin.peminjaman.create({
       barang_ids: selectedBarangIds.value,
+      jumlahs,
       tanggal_pinjam: tanggalPinjam.value,
-      jam_mulai: selectedSlot.value.jam_mulai,
-      jam_selesai: selectedSlot.value.jam_selesai,
+      jam_mulai: slotAwal,
+      jam_selesai: slotAkhir,
       jenis: 'pembelajaran',
       penanggung_jawab: null,
       keperluan: keperluan.value.trim() || null,
@@ -227,9 +315,10 @@ async function submit() {
     success.value = true
     selectedBarangIds.value = []
     tanggalPinjam.value = ''
-    selectedSlot.value = null
+    selectedSlots.value = []
     slotList.value = []
     keperluan.value = ''
+    jumlahMap.value = {}
     fotoPinjam.value = ''
     await load()
   } catch (e: any) {
@@ -320,6 +409,12 @@ onMounted(load)
             <span class="block font-medium">{{ b.nama }}</span>
             <span class="text-xs text-gray-400 flex items-center gap-1"><QrCode class="w-3 h-3" /> {{ b.kode_qr }}</span>
           </span>
+          <span
+            class="ml-auto shrink-0 inline-flex items-center gap-1 text-[10px] font-semibold px-2 py-1 rounded"
+            :class="(b.jumlah ?? 1) > 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-rose-50 text-rose-600'"
+          >
+            <Boxes class="w-3 h-3" /> {{ b.jumlah ?? 1 }} unit
+          </span>
         </label>
         <div v-if="!availableBarang.length" class="py-6 text-center text-sm text-gray-400">Tidak ada barang tersedia.</div>
       </div>
@@ -366,19 +461,53 @@ onMounted(load)
             :disabled="s.status !== 'available'"
             class="w-full flex items-center justify-between gap-2 rounded-xl border px-3 py-2.5 text-sm transition"
             :class="slotBtnCls(s)"
-            @click="selectedSlot = s"
+            @click="toggleSlot(s)"
           >
             <span class="font-semibold tabular-nums">{{ fmtJam(s.jam_mulai) }} – {{ fmtJam(s.jam_selesai) }}</span>
             <span class="text-2xs px-2 py-0.5 rounded shrink-0" :class="slotBadge(s).cls">
               {{ slotBadge(s).label }}
             </span>
           </button>
+          <p v-if="slotRange && selectedSlots.length > 1" class="text-2xs font-medium text-blue-700 bg-blue-50 border border-blue-100 rounded-lg px-3 py-2">
+            Rentang dipilih: <b>{{ fmtJam(slotRange.mulai) }} – {{ fmtJam(slotRange.selesai) }}</b> ({{ selectedSlots.length }} slot berurutan) — otomatis jadi 1 pengajuan.
+          </p>
           <p class="text-2xs text-gray-400 leading-relaxed">
             <span class="text-emerald-600 font-medium">Hijau</span> = tersedia •
             <span class="text-rose-500 font-medium">Merah</span> = sudah dibooking •
+            klik slot yang <b>berurutan</b> untuk pinjam lebih lama (mis. 2 jam) •
             slot harus tersedia untuk semua barang (dicek saat mengajukan).
           </p>
         </div>
+      </div>
+
+      <!-- Jumlah per barang (paket: tiap barang bisa beda jumlah, mis. 3 bola + 2 cone) -->
+      <div v-if="selectedBarangIds.length" class="mt-3">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Jumlah per Barang</label>
+        <div class="space-y-2">
+          <div
+            v-for="id in selectedBarangIds"
+            :key="id"
+            class="flex items-center gap-3 rounded-xl border border-gray-200 px-3 py-2.5"
+          >
+            <div class="min-w-0 flex-1">
+              <div class="text-sm font-medium text-gray-800 truncate">{{ namaBarang(id) }}</div>
+              <div class="text-xs text-gray-400">Stok tersedia: {{ stokBarang(id) }} unit</div>
+            </div>
+            <div class="flex items-center gap-1.5 shrink-0">
+              <input
+                v-model.number="jumlahMap[id]"
+                type="number"
+                min="1"
+                :max="stokBarang(id)"
+                class="w-20 rounded-lg border border-gray-300 px-2 py-1.5 text-sm text-center outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <span class="text-xs text-gray-400">unit</span>
+            </div>
+          </div>
+        </div>
+        <p class="mt-1.5 text-xs text-gray-400">
+          Setiap barang bisa dipinjam dengan jumlah berbeda — stok otomatis berkurang saat pengajuan disetujui.
+        </p>
       </div>
 
       <!-- Keperluan (otomatis masuk ke surat peminjaman) -->
@@ -441,6 +570,7 @@ onMounted(load)
           <div class="min-w-0 flex-1">
             <div class="text-sm font-medium text-gray-900 truncate flex items-center gap-1.5">
               {{ p.barang?.nama ?? 'Barang #' + p.barang_id }}
+              <span v-if="p.jumlah && p.jumlah > 1" class="text-2xs px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 font-semibold shrink-0">×{{ p.jumlah }}</span>
               <span class="text-2xs px-1.5 py-0.5 rounded shrink-0" :class="jenisBadge(p.jenis).cls">{{ jenisBadge(p.jenis).label }}</span>
             </div>
             <div class="text-xs text-gray-400">

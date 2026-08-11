@@ -136,6 +136,11 @@ onMounted(load)
 
           <dl class="border-t border-gray-100 divide-y divide-gray-50">
             <div class="flex items-center gap-3 px-5 py-3">
+              <Package class="w-4 h-4 text-gray-400 shrink-0" />
+              <dt class="text-xs text-gray-500 w-24">Stok</dt>
+              <dd class="flex-1 text-sm font-medium text-gray-800 text-right">{{ barang.jumlah ?? 1 }} unit</dd>
+            </div>
+            <div class="flex items-center gap-3 px-5 py-3">
               <Tag class="w-4 h-4 text-gray-400 shrink-0" />
               <dt class="text-xs text-gray-500 w-24">Kategori</dt>
               <dd class="flex-1 text-sm font-medium text-gray-800 text-right">{{ barang.kategori?.nama ?? '—' }}</dd>

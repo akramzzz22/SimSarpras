@@ -83,6 +83,7 @@ onMounted(load)
             <tr class="bg-gray-50 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
               <th class="px-5 py-3">Barang</th>
               <th class="px-5 py-3">Kode QR</th>
+              <th class="px-5 py-3">Stok</th>
               <th class="px-5 py-3">Status</th>
             </tr>
           </thead>
@@ -105,11 +106,14 @@ onMounted(load)
                 </span>
               </td>
               <td class="px-5 py-3.5">
+                <span class="text-xs px-2 py-1 rounded bg-gray-100 text-gray-700">{{ b.jumlah ?? 1 }} unit</span>
+              </td>
+              <td class="px-5 py-3.5">
                 <span class="text-xs px-2 py-1 rounded" :class="statusBadge(b.status)">{{ b.status }}</span>
               </td>
             </tr>
             <tr v-if="!filtered.length && !loading">
-              <td colspan="3" class="px-5 py-12 text-center text-gray-400">
+              <td colspan="4" class="px-5 py-12 text-center text-gray-400">
                 <Inbox class="w-8 h-8 mx-auto mb-2 text-gray-300" />
                 {{ proliBarang.length ? 'Tidak ada barang yang cocok.' : 'Belum ada barang milik proli.' }}
               </td>

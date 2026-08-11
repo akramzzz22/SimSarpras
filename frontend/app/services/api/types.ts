@@ -27,6 +27,8 @@ export interface Barang {
   ruangan_id?: number | null
   status: 'aktif' | 'rusak' | 'dipinjam' | 'maintenance'
   bisa_dipinjam?: boolean
+  /** Jumlah/stok unit (model stok berbasis jumlah: 1 baris = banyak unit) */
+  jumlah?: number
   satuan_id?: number | null
   kondisi_id?: number | null
   sumber_dana_id?: number | null
@@ -36,6 +38,8 @@ export interface Barang {
   satuan?: { id: number; nama: string } | null
   kondisi?: { id: number; nama: string } | null
   sumberDana?: { id: number; nama: string } | null
+  /** Tahun pengadaan/masuk barang (info saja — aset fisik permanen lintas tahun ajaran) */
+  tahunAjaran?: { id: number; nama: string } | null
   laporanKerusakan?: LaporanKerusakan[]
   peminjaman?: Peminjaman[]
   created_at?: string
@@ -125,6 +129,8 @@ export interface Peminjaman {
   jenis?: 'pembelajaran' | 'eskul'
   /** Penanggung jawab kegiatan, mis. "Divisi Logistik — Andi" */
   penanggung_jawab?: string | null
+  /** Jumlah unit yang dipinjam (stok berkurang saat disetujui, kembali saat dikembalikan) */
+  jumlah?: number
   /** ID kelompok pengajuan paket (beberapa barang dalam satu pengajuan) */
   kelompok_id?: string | null
   foto_pinjam?: string | null

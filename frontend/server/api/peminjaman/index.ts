@@ -32,12 +32,22 @@ async function slotDalamJadwal(barangId: number, tanggal: string, jamMulai: stri
   const hari = ((d.getDay() + 6) % 7) + 1 // 1=Senin ... 7=Minggu (date('N'))
 
   const slots = await q<Row>(
-    `SELECT 1 FROM barang_jadwal
-     WHERE barang_id = $1 AND hari = $2 AND status = 'available'
-       AND jam_mulai <= $3::time AND jam_selesai >= $4::time LIMIT 1`,
-    [barangId, hari, jamMulai, jamSelesai]
+    `SELECT to_char(jam_mulai, 'HH24:MI') AS jam_mulai, to_char(jam_selesai, 'HH24:MI') AS jam_selesai
+     FROM barang_jadwal
+     WHERE barang_id = $1 AND hari = $2 AND status = 'available' ORDER BY jam_mulai`,
+    [barangId, hari]
   )
-  return slots.length > 0
+
+  // Rentang [jamMulai, jamSelesai] harus tertutup penuh oleh rantai slot 'available'
+  // yang berurutan tanpa celah (mendukung pinjam beberapa slot sekaligus, mis. 2 jam).
+  let covered = jamMulai
+  for (const s of slots) {
+    if (s.jam_mulai <= covered && s.jam_selesai > covered) {
+      covered = s.jam_selesai
+      if (covered >= jamSelesai) return true
+    }
+  }
+  return false
 }
 
 export default defineEventHandler(async (event) => {
@@ -92,6 +102,32 @@ export default defineEventHandler(async (event) => {
     errors.jam_selesai = ['Jam selesai harus setelah jam mulai.']
   }
   if (!body?.foto_pinjam) errors.foto_pinjam = ['Foto barang wajib diunggah.']
+  // Jumlah per barang: body.jumlahs (array paralel dengan barang_ids) untuk paket beda jumlah,
+  // atau body.jumlah (seragam untuk semua barang) sebagai kompatibilitas lama.
+  const jumlahsByBarang = new Map<number, number>()
+  if (Array.isArray(body?.jumlahs)) {
+    if (body.jumlahs.length !== barangIds.length) {
+      errors.jumlah = ['Jumlah per barang tidak lengkap (jumlahs harus paralel dengan barang_ids).']
+    } else {
+      for (let i = 0; i < barangIds.length; i++) {
+        const id = barangIds[i]
+        if (id === undefined) continue
+        const v = Number(body.jumlahs[i])
+        if (!Number.isInteger(v) || v < 1) {
+          errors.jumlah = ['Jumlah minimal 1 untuk setiap barang.']
+        } else {
+          jumlahsByBarang.set(id, v)
+        }
+      }
+    }
+  } else {
+    const v = Number(body?.jumlah ?? 1)
+    if (!Number.isInteger(v) || v < 1) {
+      errors.jumlah = ['Jumlah minimal 1.']
+    } else {
+      for (const id of barangIds) jumlahsByBarang.set(id, v)
+    }
+  }
   if (Object.keys(errors).length) throw validationError('Validasi gagal.', errors)
 
   const tanggal = String(body.tanggal_pinjam)
@@ -108,6 +144,11 @@ export default defineEventHandler(async (event) => {
     if (barang.bisa_dipinjam === false) { masalah.push(`Barang "${barang.nama}" tidak bisa dipinjam.`); continue }
     if (barang.status === 'rusak' || barang.status === 'maintenance') {
       masalah.push(`Barang "${barang.nama}" sedang ${barang.status === 'rusak' ? 'rusak' : 'dalam maintenance'} dan tidak dapat dipinjam.`)
+      continue
+    }
+    const jumlah = jumlahsByBarang.get(id) ?? 1
+    if ((barang.jumlah ?? 1) < jumlah) {
+      masalah.push(`Stok "${barang.nama}" hanya ${barang.jumlah ?? 1} unit, tidak cukup untuk ${jumlah} unit.`)
       continue
     }
     const cocok = await slotDalamJadwal(id, tanggal, jamMulai, jamSelesai)
@@ -127,15 +168,15 @@ export default defineEventHandler(async (event) => {
 
   for (const barangId of barangIds) {
     const res = await run(
-      `INSERT INTO peminjaman (barang_id, peminjam_id, status, tanggal_pinjam, jam_mulai, jam_selesai, keperluan, jenis, penanggung_jawab, foto_pinjam, kelompok_id, tahun_ajaran_id, created_at, updated_at)
-       VALUES ($1,$2,'menunggu',$3,$4,$5,$6,$7,$8,$9,$10,$11,now(),now()) RETURNING id`,
+      `INSERT INTO peminjaman (barang_id, peminjam_id, status, tanggal_pinjam, jam_mulai, jam_selesai, keperluan, jenis, penanggung_jawab, foto_pinjam, jumlah, kelompok_id, tahun_ajaran_id, created_at, updated_at)
+       VALUES ($1,$2,'menunggu',$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,now(),now()) RETURNING id`,
       [
         barangId, user.id, tanggal, jamMulai, jamSelesai,
         body?.keperluan ?? null,
         body?.jenis === 'eskul' ? 'eskul' : 'pembelajaran',
         body?.penanggung_jawab ?? null,
         String(body.foto_pinjam),
-        kelompokId, tahunAktifId
+        jumlahsByBarang.get(barangId) ?? 1, kelompokId, tahunAktifId
       ]
     )
     created.push((await q<Row>(`SELECT ${PEMINJAMAN_COLS} FROM peminjaman WHERE id = $1`, [res.rows[0].id]))[0]!)

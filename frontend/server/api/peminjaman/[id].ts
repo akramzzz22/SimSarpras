@@ -1,4 +1,4 @@
-import { q, run, type Row } from '../../utils/db'
+import { q, run, withTransaction, type Row } from '../../utils/db'
 import { requireAuth, requireRoles, hasRole } from '../../utils/auth'
 import { notFound, validationError } from '../../utils/helpers'
 import { PEMINJAMAN_COLS, attachBarang, attachUser } from '../../utils/relations'
@@ -9,15 +9,16 @@ async function loadPeminjaman(id: number): Promise<Row | null> {
   return (await q<Row>(`SELECT ${PEMINJAMAN_COLS} FROM peminjaman WHERE id = $1`, [id]))[0] ?? null
 }
 
-async function restoreBarangStatus(peminjaman: Row): Promise<void> {
-  const masihAktif = await q(
+/** Restore status barang ke 'aktif' bila tidak ada peminjaman aktif lain (dalam transaksi). */
+async function restoreBarangStatus(tx: { q: typeof q; run: typeof run }, peminjaman: Row): Promise<void> {
+  const masihAktif = await tx.q(
     `SELECT 1 FROM peminjaman WHERE barang_id = $1 AND id <> $2 AND status = ANY($3) LIMIT 1`,
     [peminjaman.barang_id, peminjaman.id, ['disetujui', 'dipinjam']]
   )
   if (masihAktif.length) return
-  const barang = (await q<Row>(`SELECT id, status FROM barang WHERE id = $1`, [peminjaman.barang_id]))[0]!
+  const barang = (await tx.q<Row>(`SELECT id, status FROM barang WHERE id = $1`, [peminjaman.barang_id]))[0]!
   if (barang && !STATUS_BARANG_TERLARANG.includes(barang.status)) {
-    await run(`UPDATE barang SET status = 'aktif', updated_at = now() WHERE id = $1`, [peminjaman.barang_id])
+    await tx.run(`UPDATE barang SET status = 'aktif', updated_at = now() WHERE id = $1`, [peminjaman.barang_id])
   }
 }
 
@@ -49,13 +50,20 @@ export default defineEventHandler(async (event) => {
     return peminjaman
   }
 
-  // ===== DELETE: hapus (admin/staff) + restore status barang =====
+  // ===== DELETE: hapus (admin/staff) + restore status & stok barang =====
   if (method === 'DELETE') {
     requireRoles(event, user, ['admin', 'staff_sarpras'], 'Hanya Admin / Staff Sarpras yang dapat menghapus peminjaman.')
     if (['disetujui', 'dipinjam'].includes(peminjaman.status)) {
-      await restoreBarangStatus(peminjaman)
+      await withTransaction(async (tx) => {
+        // Stok yang tadi dikurangi saat approve dikembalikan
+        const perlu = Number(peminjaman.jumlah ?? 1)
+        await tx.run(`UPDATE barang SET jumlah = jumlah + $1, updated_at = now() WHERE id = $2`, [perlu, peminjaman.barang_id])
+        await restoreBarangStatus(tx, peminjaman)
+        await tx.run(`DELETE FROM peminjaman WHERE id = $1`, [id])
+      })
+    } else {
+      await run(`DELETE FROM peminjaman WHERE id = $1`, [id])
     }
-    await run(`DELETE FROM peminjaman WHERE id = $1`, [id])
     return null
   }
 

@@ -10,10 +10,11 @@ import {
   Loader2,
   Camera,
   AlertTriangle,
-  FileText
+  FileText,
+  Clock
 } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
-import { fmtJam } from '~/utils/format'
+import { fmtJam, durasiPinjam } from '~/utils/format'
 import SlotJamIndicator from '~/components/ui/slot-jam-indicator.vue'
 import Pagination from '~/components/ui/pagination.vue'
 
@@ -196,6 +197,7 @@ const statusBadge = (s: string) => {
 
 const formatTanggal = (d?: string) =>
   d ? new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'
+const durasi = (p?: any) => durasiPinjam(p?.jam_mulai, p?.jam_selesai)
 
 onMounted(load)
 </script>
@@ -256,6 +258,12 @@ onMounted(load)
               </div>
               <div class="text-xs text-gray-400 mt-0.5">
                 {{ formatTanggal(g.items[0].tanggal_pinjam) }} • {{ fmtJam(g.items[0].jam_mulai) }} – {{ fmtJam(g.items[0].jam_selesai) }}
+                <span
+                  v-if="durasi(g.items[0])"
+                  class="ml-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 font-semibold"
+                >
+                  <Clock class="w-3 h-3" /> {{ durasi(g.items[0]) }}
+                </span>
               </div>
               <div v-if="g.penanggungJawab" class="text-xs text-gray-500 mt-0.5">
                 <span class="font-medium text-gray-600">PJ:</span> {{ g.penanggungJawab }}
@@ -277,7 +285,10 @@ onMounted(load)
           >
             <div class="flex items-start justify-between gap-3">
               <div class="min-w-0">
-                <div class="text-sm font-semibold text-gray-900 truncate">{{ p.barang?.nama ?? 'Barang #' + p.barang_id }}</div>
+                <div class="flex items-center gap-1.5">
+                  <div class="text-sm font-semibold text-gray-900 truncate">{{ p.barang?.nama ?? 'Barang #' + p.barang_id }}</div>
+                  <span v-if="p.jumlah && p.jumlah > 1" class="shrink-0 text-2xs px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 font-semibold">×{{ p.jumlah }}</span>
+                </div>
                 <div class="text-xs text-gray-400 mt-0.5">{{ p.barang?.kode_qr ?? '' }}</div>
               </div>
               <span class="text-xs px-2 py-1 rounded shrink-0" :class="statusBadge(p.status)">{{ p.status }}</span>
@@ -376,8 +387,11 @@ onMounted(load)
           </button>
         </div>
 
-        <p class="text-sm text-gray-600 mb-1">Barang: <b>{{ modalTarget?.barang?.nama }}</b></p>
-        <p class="text-xs text-gray-400 mb-4">Tanggal {{ formatTanggal(modalTarget?.tanggal_pinjam) }} • {{ fmtJam(modalTarget?.jam_mulai) }} – {{ fmtJam(modalTarget?.jam_selesai) }}</p>
+        <p class="text-sm text-gray-600 mb-1">
+          Barang: <b>{{ modalTarget?.barang?.nama }}</b>
+          <span v-if="modalTarget?.jumlah && modalTarget.jumlah > 1" class="text-xs px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 font-semibold ml-1">×{{ modalTarget.jumlah }}</span>
+        </p>
+        <p class="text-xs text-gray-400 mb-4">Tanggal {{ formatTanggal(modalTarget?.tanggal_pinjam) }} • {{ fmtJam(modalTarget?.jam_mulai) }} – {{ fmtJam(modalTarget?.jam_selesai) }}<span v-if="durasi(modalTarget)" class="ml-1.5 font-semibold text-gray-600">({{ durasi(modalTarget) }})</span></p>
 
         <label class="block text-sm font-medium text-gray-700 mb-1">Foto Barang Dikembalikan <span class="text-rose-500">*</span></label>
         <div

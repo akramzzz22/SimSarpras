@@ -3,6 +3,7 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { Search, RefreshCw, Inbox, CheckCircle2, XCircle, PackageCheck, AlertTriangle, Loader2 } from 'lucide-vue-next'
 import { useAdminService, type Peminjaman } from '~/services/api/admin'
 import Pagination from '~/components/ui/pagination.vue'
+import { durasiPinjam } from '~/utils/format'
 
 const props = defineProps<{
   mode: 'semua' | 'sedang' | 'terlambat' | 'riwayat'
@@ -112,6 +113,7 @@ const statusBadge = (s: string) => {
 
 const fmtTanggal = (d?: string) => (d ? new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-')
 const fmtJam = (j?: string | null) => j ?? '-'
+const durasi = (p: Peminjaman) => durasiPinjam(p.jam_mulai, p.jam_selesai)
 
 onMounted(load)
 </script>
@@ -152,7 +154,10 @@ onMounted(load)
           <tbody class="divide-y divide-gray-50">
             <tr v-for="p in pagedFiltered" :key="p.id" class="hover:bg-gray-50/50 transition">
               <td class="px-5 py-3.5">
-                <div class="font-medium text-gray-900">{{ p.barang?.nama ?? 'Barang #' + p.barang_id }}</div>
+                <div class="flex items-center gap-1.5">
+                  <div class="font-medium text-gray-900 truncate">{{ p.barang?.nama ?? 'Barang #' + p.barang_id }}</div>
+                  <span v-if="p.jumlah && p.jumlah > 1" class="shrink-0 text-2xs px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 font-semibold">×{{ p.jumlah }}</span>
+                </div>
                 <div class="text-xs text-gray-400 mt-0.5">
                   {{ p.keperluan ?? 'Peminjaman' }}
                   <span v-if="p.jenis === 'eskul'" class="text-violet-500">• Eskul</span>
@@ -165,6 +170,7 @@ onMounted(load)
               <td class="px-5 py-3.5 text-gray-600">
                 {{ fmtTanggal(p.tanggal_pinjam) }}
                 <span class="text-xs text-gray-400">• {{ fmtJam(p.jam_mulai) }}-{{ fmtJam(p.jam_selesai) }}</span>
+                <span v-if="durasi(p)" class="ml-1.5 inline-flex items-center text-2xs px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 font-semibold shrink-0">{{ durasi(p) }}</span>
               </td>
               <td class="px-5 py-3.5">
                 <div class="flex flex-wrap items-center gap-1.5">

@@ -1,4 +1,4 @@
-import { q, run, type Row } from '../../utils/db'
+import { q, withTransaction, type Row } from '../../utils/db'
 import { requireAuth, requireRoles } from '../../utils/auth'
 import { paginate, validationError, logActivity } from '../../utils/helpers'
 import { MUTASI_COLS, attachBarang, attachUser, attachSimple } from '../../utils/relations'
@@ -42,29 +42,55 @@ export default defineEventHandler(async (event) => {
 
   const jenis = String(body.jenis)
   const ruanganTujuan = body?.ruangan_tujuan_id ? Number(body.ruangan_tujuan_id) : null
+  const jumlah = Number(body?.jumlah ?? 1)
+  if (!Number.isInteger(jumlah) || jumlah < 1) {
+    throw validationError('Jumlah minimal 1.', { jumlah: ['Jumlah minimal 1.'] })
+  }
   if (jenis === 'pindah' && !ruanganTujuan) {
     throw validationError('Ruangan tujuan wajib diisi untuk mutasi pindah.', {
       ruangan_tujuan_id: ['Ruangan tujuan wajib diisi untuk mutasi pindah.']
     })
   }
 
-  const res = await run(
-    `INSERT INTO mutasi_barang (barang_id, jenis, tanggal, jumlah, keterangan, ruangan_asal_id, ruangan_tujuan_id, user_id, created_at, updated_at)
-     VALUES ($1,$2,$3,$4,$5,$6,$7,$8,now(),now()) RETURNING id`,
-    [
-      Number(body.barang_id), jenis, String(body.tanggal),
-      Number(body?.jumlah ?? 1),
-      body?.keterangan ?? null,
-      body?.ruangan_asal_id ? Number(body.ruangan_asal_id) : null,
-      ruanganTujuan,
-      user.id
-    ]
-  )
-  const id = res.rows[0].id
+  const barangId = Number(body.barang_id)
 
-  if (jenis === 'pindah') {
-    await run(`UPDATE barang SET ruangan_id = $1, updated_at = now() WHERE id = $2`, [ruanganTujuan, Number(body.barang_id)])
-  }
+  // Model stok: 1 baris barang = banyak unit. Barang masuk menambah stok,
+  // barang keluar mengurangi stok (harus cukup), pindah tidak mengubah stok.
+  // Semua dalam satu transaksi + FOR UPDATE agar atomik & bebas race.
+  const id = await withTransaction(async (tx) => {
+    const stok = (await tx.q<{ jumlah: number | null }>(
+      `SELECT jumlah FROM barang WHERE id = $1 FOR UPDATE`, [barangId]
+    ))[0]
+    if (!stok) throw validationError('Barang tidak ditemukan.', { barang_id: ['Barang tidak ditemukan.'] })
+    if (jenis === 'keluar' && (stok.jumlah ?? 0) < jumlah) {
+      throw validationError(`Stok tidak mencukupi — tersisa ${stok.jumlah ?? 0} unit.`, {
+        jumlah: [`Stok tersedia ${stok.jumlah ?? 0} unit.`]
+      })
+    }
+
+    const res = await tx.run(
+      `INSERT INTO mutasi_barang (barang_id, jenis, tanggal, jumlah, keterangan, ruangan_asal_id, ruangan_tujuan_id, user_id, created_at, updated_at)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,now(),now()) RETURNING id`,
+      [
+        barangId, jenis, String(body.tanggal),
+        jumlah,
+        body?.keterangan ?? null,
+        body?.ruangan_asal_id ? Number(body.ruangan_asal_id) : null,
+        ruanganTujuan,
+        user.id
+      ]
+    )
+    const mid = res.rows[0].id
+
+    if (jenis === 'masuk') {
+      await tx.run(`UPDATE barang SET jumlah = jumlah + $1, updated_at = now() WHERE id = $2`, [jumlah, barangId])
+    } else if (jenis === 'keluar') {
+      await tx.run(`UPDATE barang SET jumlah = GREATEST(0, jumlah - $1), updated_at = now() WHERE id = $2`, [jumlah, barangId])
+    } else if (jenis === 'pindah') {
+      await tx.run(`UPDATE barang SET ruangan_id = $1, updated_at = now() WHERE id = $2`, [ruanganTujuan, barangId])
+    }
+    return mid
+  })
 
   await logActivity('mutasi', `Mencatat mutasi barang (${jenis})`, { type: 'App\\Models\\MutasiBarang', id }, user.id)
 

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue'
-import { ClipboardCheck, CheckCircle2, XCircle, Inbox, Loader2, PackageCheck } from 'lucide-vue-next'
+import { ClipboardCheck, CheckCircle2, XCircle, Inbox, Loader2, PackageCheck, Clock } from 'lucide-vue-next'
 import { useAdminService, type Peminjaman } from '~/services/api/admin'
-import { fmtJam } from '~/utils/format'
+import { fmtJam, durasiPinjam } from '~/utils/format'
 import SlotJamIndicator from '~/components/ui/slot-jam-indicator.vue'
 import Pagination from '~/components/ui/pagination.vue'
 
@@ -98,6 +98,7 @@ async function reject(p: Peminjaman) {
 }
 
 const fmt = (d?: string) => (d ? new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-')
+const durasi = (p?: any) => durasiPinjam(p?.jam_mulai, p?.jam_selesai)
 
 onMounted(load)
 </script>
@@ -137,6 +138,12 @@ onMounted(load)
             <div class="font-semibold text-gray-900 mt-0.5 truncate">Peminjam: {{ g.items[0].peminjam?.name ?? 'User' }}</div>
             <div class="text-xs text-gray-400 mt-0.5">
               {{ fmt(g.items[0].tanggal_pinjam) }} • {{ fmtJam(g.items[0].jam_mulai) }} – {{ fmtJam(g.items[0].jam_selesai) }}
+              <span
+                v-if="durasi(g.items[0])"
+                class="ml-1.5 inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 font-semibold"
+              >
+                <Clock class="w-3 h-3" /> {{ durasi(g.items[0]) }}
+              </span>
             </div>
             <div v-if="g.items[0].penanggung_jawab" class="text-xs text-gray-500 mt-0.5">
               PJ: {{ g.items[0].penanggung_jawab }}

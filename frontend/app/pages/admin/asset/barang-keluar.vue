@@ -17,8 +17,15 @@ const search = ref('')
 const showForm = ref(false)
 
 const barangOptions = ref<{ value: number; label: string }[]>([])
+// Stok tersedia tiap barang — untuk info & validasi di form
+const stokMap = ref<Record<number, number>>({})
 
 const form = ref({ barang_id: '', tanggal: new Date().toISOString().slice(0, 10), jumlah: '1', keterangan: '' })
+
+const selectedStok = computed(() => stokMap.value[Number(form.value.barang_id)] ?? 0)
+// Sisa stok mentah (bisa negatif) — dipakai untuk deteksi 'melebihi stok'
+const afterStok = computed(() => selectedStok.value - (Number(form.value.jumlah) || 0))
+const overStok = computed(() => afterStok.value < 0)
 
 const filtered = computed(() => {
   const q = search.value.toLowerCase()
@@ -46,10 +53,16 @@ async function load() {
 async function loadOptions() {
   const res = await admin.barang.list({ per_page: 100 })
   barangOptions.value = res.data.map((b: any) => ({ value: b.id, label: b.nama }))
+  stokMap.value = Object.fromEntries(res.data.map((b: any) => [b.id, b.jumlah ?? 1]))
 }
 
 async function submit() {
   if (!form.value.barang_id) { formError.value = 'Pilih barang terlebih dahulu.'; return }
+  const jml = Number(form.value.jumlah) || 1
+  if (jml > selectedStok.value) {
+    formError.value = `Jumlah melebihi stok tersedia (${selectedStok.value} unit).`
+    return
+  }
   saving.value = true
   formError.value = null
   try {
@@ -57,7 +70,7 @@ async function submit() {
       barang_id: Number(form.value.barang_id),
       jenis: 'keluar',
       tanggal: form.value.tanggal,
-      jumlah: Number(form.value.jumlah) || 1,
+      jumlah: jml,
       keterangan: form.value.keterangan || null
     })
     showForm.value = false
@@ -113,6 +126,14 @@ onMounted(() => { load(); loadOptions().catch(() => {}) })
             <option value="">— Pilih Barang —</option>
             <option v-for="o in barangOptions" :key="o.value" :value="o.value">{{ o.label }}</option>
           </select>
+          <p v-if="form.barang_id" class="text-xs mt-1.5" :style="{ color: overStok ? '#DC2626' : '#B45309' }">
+            <template v-if="overStok">
+              ⚠ Jumlah melebihi stok tersedia ({{ selectedStok }} unit) — tidak bisa disimpan.
+            </template>
+            <template v-else>
+              Stok tersedia <b>{{ selectedStok }} unit</b> → setelah keluar: <b>{{ afterStok }} unit</b>
+            </template>
+          </p>
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Keluar</label>

@@ -31,3 +31,32 @@ export async function one<T = Row>(text: string, params: unknown[] = []): Promis
 export async function run(text: string, params: unknown[] = []) {
   return pool.query(text, params)
 }
+
+export interface Tx {
+  q: <R = Row>(text: string, params?: unknown[]) => Promise<R[]>
+  run: (text: string, params?: unknown[]) => Promise<pg.QueryResult>
+}
+
+/**
+ * Jalankan callback dalam satu transaksi — commit otomatis bila sukses,
+ * rollback bila error. Dipakai untuk operasi multi-tabel yang harus atomik
+ * (mis. catat mutasi + ubah stok barang).
+ */
+export async function withTransaction<T>(fn: (tx: Tx) => Promise<T>): Promise<T> {
+  const client = await pool.connect()
+  try {
+    await client.query('BEGIN')
+    const tx: Tx = {
+      q: (text, params = []) => client.query(text, params).then((r) => r.rows as any[]),
+      run: (text, params = []) => client.query(text, params)
+    }
+    const result = await fn(tx)
+    await client.query('COMMIT')
+    return result
+  } catch (e) {
+    await client.query('ROLLBACK')
+    throw e
+  } finally {
+    client.release()
+  }
+}

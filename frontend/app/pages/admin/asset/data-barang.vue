@@ -42,6 +42,7 @@ const form = ref({
   satuan_id: '',
   kondisi_id: '',
   sumber_dana_id: '',
+  jumlah: 1,
   bisa_dipinjam: true
 })
 
@@ -162,6 +163,7 @@ async function submit() {
       satuan_id: form.value.satuan_id ? Number(form.value.satuan_id) : null,
       kondisi_id: form.value.kondisi_id ? Number(form.value.kondisi_id) : null,
       sumber_dana_id: form.value.sumber_dana_id ? Number(form.value.sumber_dana_id) : null,
+      jumlah: Math.max(1, Number(form.value.jumlah) || 1),
       bisa_dipinjam: form.value.bisa_dipinjam
     }
     if (editingId.value) {
@@ -190,6 +192,7 @@ function openForm(b?: Barang) {
   form.value.satuan_id = b?.satuan_id != null ? String(b.satuan_id) : ''
   form.value.kondisi_id = b?.kondisi_id != null ? String(b.kondisi_id) : ''
   form.value.sumber_dana_id = b?.sumber_dana_id != null ? String(b.sumber_dana_id) : ''
+  form.value.jumlah = b?.jumlah ?? 1
   form.value.bisa_dipinjam = b?.bisa_dipinjam !== false
   showForm.value = true
   error.value = null
@@ -207,6 +210,7 @@ function closeForm() {
   form.value.satuan_id = ''
   form.value.kondisi_id = ''
   form.value.sumber_dana_id = ''
+  form.value.jumlah = 1
   form.value.bisa_dipinjam = true
 }
 
@@ -223,17 +227,18 @@ async function remove(id: number) {
 // Export CSV seluruh barang — dikelompokkan per jurusan (Sarpras / nama proli)
 function exportCSV() {
   const rows: string[][] = [
-    ['Nama Barang', 'Kode QR', 'Jurusan', 'Kategori', 'Ruangan', 'Status']
+    ['Nama Barang', 'Kode QR', 'Jurusan', 'Kategori', 'Tahun', 'Stok', 'Status']
   ]
   for (const g of groups.value) {
-    rows.push([`=== ${g.label} ===`, '', '', '', '', ''])
+    rows.push([`=== ${g.label} ===`, '', '', '', '', '', ''])
     for (const b of g.items) {
       rows.push([
         b.nama,
         b.kode_qr ?? '',
         b.owner_type === 'proli' ? (b.proli?.nama ?? 'Proli') : 'Sarpras',
         b.kategori?.nama ?? '',
-        b.ruangan?.nama ?? '',
+        b.tahunAjaran?.nama ?? '',
+        String(b.jumlah ?? 1),
         b.status
       ])
     }
@@ -377,6 +382,17 @@ onMounted(() => {
             <option v-for="o in optionState.proli" :key="o.value" :value="o.value">{{ o.label }}</option>
           </select>
         </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Jumlah / Stok</label>
+          <input
+            v-model.number="form.jumlah"
+            type="number"
+            min="1"
+            placeholder="1"
+            class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-red-500"
+          />
+          <p class="text-xs text-gray-400 mt-1">Berapa unit barang ini (1 baris = banyak unit).</p>
+        </div>
         <div class="sm:col-span-2">
           <label class="flex items-center gap-2.5 rounded-xl border border-gray-200 px-4 py-3 cursor-pointer hover:bg-gray-50 transition">
             <input
@@ -463,6 +479,8 @@ onMounted(() => {
               <th class="px-5 py-3">Kode QR</th>
               <th class="px-5 py-3">Jurusan</th>
               <th class="px-5 py-3">Kategori</th>
+              <th class="px-5 py-3">Tahun</th>
+              <th class="px-5 py-3">Stok</th>
               <th class="px-5 py-3">Status</th>
               <th class="px-5 py-3 text-right">Aksi</th>
             </tr>
@@ -471,7 +489,7 @@ onMounted(() => {
             <!-- Baris header grup per jurusan (proli) -->
             <template v-for="row in pagedRows" :key="row.kind === 'group' ? 'group-' + row.label : row.item.id">
               <tr v-if="row.kind === 'group'" class="bg-red-50/60">
-                <td colspan="6" class="px-5 py-2.5">
+                <td colspan="8" class="px-5 py-2.5">
                   <div class="flex items-center gap-2">
                     <FolderTree class="w-4 h-4 text-red-600 shrink-0" />
                     <span class="font-semibold text-red-900">{{ row.label }}</span>
@@ -503,6 +521,12 @@ onMounted(() => {
                 <td class="px-5 py-3.5 text-xs text-gray-600">
                   {{ row.item.kategori?.nama ?? 'Tanpa kategori' }}
                 </td>
+                <td class="px-5 py-3.5 text-xs text-gray-600">
+                  {{ row.item.tahunAjaran?.nama ?? '-' }}
+                </td>
+                <td class="px-5 py-3.5">
+                  <span class="text-xs px-2 py-1 rounded bg-gray-100 text-gray-700">{{ row.item.jumlah ?? 1 }} unit</span>
+                </td>
                 <td class="px-5 py-3.5">
                   <div class="flex flex-wrap items-center gap-1.5">
                     <span class="text-xs px-2 py-1 rounded" :class="statusBadge(row.item.status)">
@@ -524,7 +548,7 @@ onMounted(() => {
               </tr>
             </template>
             <tr v-if="!filtered.length && !loading">
-              <td colspan="6" class="px-5 py-12 text-center text-gray-400">
+              <td colspan="8" class="px-5 py-12 text-center text-gray-400">
                 <Boxes class="w-8 h-8 mx-auto mb-2 text-gray-300" />
                 {{ items.length ? 'Tidak ada barang yang cocok.' : 'Belum ada data barang. Klik "Tambah Barang" untuk memulai.' }}
               </td>

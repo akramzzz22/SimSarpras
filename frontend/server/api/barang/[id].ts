@@ -51,6 +51,11 @@ export default defineEventHandler(async (event) => {
       push('status', body.status)
     }
     if (body?.bisa_dipinjam !== undefined) push('bisa_dipinjam', Boolean(body.bisa_dipinjam))
+    if (body?.jumlah !== undefined) {
+      const j = Number(body.jumlah)
+      if (!Number.isInteger(j) || j < 1) throw validationError('Jumlah minimal 1.', { jumlah: ['Jumlah minimal 1.'] })
+      push('jumlah', j)
+    }
 
     if (fields.length) {
       params.push(id)

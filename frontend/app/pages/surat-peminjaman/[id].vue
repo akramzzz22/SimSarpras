@@ -3,7 +3,7 @@ import { ref, computed, onMounted } from 'vue'
 import { Printer, ArrowLeft, Loader2, FileText } from 'lucide-vue-next'
 import { useAuthStore } from '~/stores/auth'
 import { useAdminService, type Peminjaman } from '~/services/api/admin'
-import { fmtJam } from '~/utils/format'
+import { fmtJam, durasiPinjam } from '~/utils/format'
 import { useSekolah } from '~/composables/useSekolah'
 
 definePageMeta({ layout: false, middleware: ['auth'], title: 'Surat Peminjaman' })
@@ -44,6 +44,8 @@ const tanggalPanjang = computed(() => {
     year: 'numeric'
   })
 })
+
+const durasi = computed(() => durasiPinjam(data.value?.jam_mulai, data.value?.jam_selesai))
 
 // Tombol kembali: ke halaman riwayat sesuai role (double job: admin/kaproli/staff prioritas)
 const backTarget = computed(() => {
@@ -188,7 +190,7 @@ onMounted(load)
             <tr>
               <td class="py-1 pr-4 align-top">Waktu</td>
               <td class="py-1 pr-2 align-top">:</td>
-              <td class="py-1 align-top">{{ fmtJam(data.jam_mulai) }} s.d. {{ fmtJam(data.jam_selesai) }} WIB</td>
+              <td class="py-1 align-top">{{ fmtJam(data.jam_mulai) }} s.d. {{ fmtJam(data.jam_selesai) }} WIB<span v-if="durasi"> (durasi {{ durasi }})</span></td>
             </tr>
             <tr>
               <td class="py-1 pr-4 align-top">Keperluan</td>
@@ -216,7 +218,7 @@ onMounted(load)
                 <span v-if="b.barang?.kategori" class="block text-xs text-gray-500">{{ b.barang.kategori.nama }}</span>
               </td>
               <td class="py-2 pr-4 font-mono text-xs">{{ b.barang?.kode_qr ?? '-' }}</td>
-              <td class="py-2">1 unit</td>
+              <td class="py-2">{{ b.jumlah ?? 1 }} unit</td>
             </tr>
           </tbody>
         </table>

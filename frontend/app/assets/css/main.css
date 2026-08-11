@@ -83,6 +83,24 @@
   }
 
   /* ============================================================
+     FOKUS — tanpa outline/ring merah saat diklik mouse.
+     Navigasi keyboard (Tab) tetap menampilkan indikator fokus
+     lewat :focus-visible agar tetap aksesibel.
+     ============================================================ */
+  :focus:not(:focus-visible) {
+    outline: none;
+    box-shadow: none !important;
+  }
+  /* Input/select/textarea selalu dianggap focus-visible di browser,
+     jadi aturan di atas tidak cukup — hilangkan ring merahnya juga. */
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    box-shadow: none !important;
+  }
+
+  /* ============================================================
      HIERARKI UKURAN KETAT — KHUSUS LAYOUT ADMIN (Sistem Sarpras)
      Di-scope ke .admin-app agar tampilan mobile (murid/guru) dan
      kaproli/staff TIDAK ikut mengecil. Layout lain memakai ukuran

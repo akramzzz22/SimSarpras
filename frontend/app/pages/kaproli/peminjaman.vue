@@ -2,7 +2,7 @@
 import { ref, onMounted, computed, watch } from 'vue'
 import { ArrowLeftRight, Inbox } from 'lucide-vue-next'
 import { useAdminService, type Peminjaman } from '~/services/api/admin'
-import { fmtJam } from '~/utils/format'
+import { fmtJam, durasiPinjam } from '~/utils/format'
 import SlotJamIndicator from '~/components/ui/slot-jam-indicator.vue'
 import Pagination from '~/components/ui/pagination.vue'
 
@@ -58,6 +58,7 @@ const badge = (s: string) => {
 }
 
 const fmt = (d?: string) => (d ? new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-')
+const durasi = (p: Peminjaman) => durasiPinjam(p.jam_mulai, p.jam_selesai)
 
 onMounted(load)
 </script>
@@ -91,7 +92,10 @@ onMounted(load)
               <ArrowLeftRight class="w-5 h-5 text-blue-600" />
             </div>
             <div class="min-w-0">
-              <div class="font-semibold text-gray-900 truncate">{{ p.barang?.nama ?? 'Barang #' + p.barang_id }}</div>
+              <div class="flex items-center gap-1.5">
+                <div class="font-semibold text-gray-900 truncate">{{ p.barang?.nama ?? 'Barang #' + p.barang_id }}</div>
+                <span v-if="p.jumlah && p.jumlah > 1" class="shrink-0 text-2xs px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 font-semibold">×{{ p.jumlah }}</span>
+              </div>
               <div class="text-xs text-gray-500 mt-0.5">Peminjam: {{ p.peminjam?.name ?? 'User' }}</div>
             </div>
           </div>
@@ -100,6 +104,7 @@ onMounted(load)
         <div class="mt-3 flex flex-wrap gap-4 text-xs text-gray-500">
           <span>Tanggal: <b class="text-gray-700">{{ fmt(p.tanggal_pinjam) }}</b></span>
           <span>Jam: <b class="text-gray-700">{{ fmtJam(p.jam_mulai) }} – {{ fmtJam(p.jam_selesai) }}</b></span>
+          <span v-if="durasi(p)" class="inline-flex items-center text-2xs px-1.5 py-0.5 rounded bg-gray-100 text-gray-600 font-semibold">{{ durasi(p) }}</span>
         </div>
 
         <!-- Indikator visual slot jam: merah = jam dipesan, hijau = jam tersedia -->

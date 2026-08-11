@@ -40,6 +40,25 @@ export function fmtJam(v?: string | null): string {
   return m ? `${m[1]}:${m[2]}` : v
 }
 
+/**
+ * Hitung durasi pinjam dari jam mulai & selesai ("HH:MM").
+ * Mengembalikan teks ramah, mis. "2 jam", "1 jam 30 mnt", "45 mnt";
+ * null bila waktu tidak valid atau selesai <= mulai.
+ */
+export function durasiPinjam(mulai?: string | null, selesai?: string | null): string | null {
+  if (!mulai || !selesai) return null
+  const a = mulai.match(/^(\d{2}):(\d{2})/)
+  const b = selesai.match(/^(\d{2}):(\d{2})/)
+  if (!a || !b) return null
+  const diff = (Number(b[1]) * 60 + Number(b[2])) - (Number(a[1]) * 60 + Number(a[2]))
+  if (diff <= 0) return null
+  const jam = Math.floor(diff / 60)
+  const mnt = diff % 60
+  if (jam > 0 && mnt > 0) return `${jam} jam ${mnt} mnt`
+  if (jam > 0) return `${jam} jam`
+  return `${mnt} mnt`
+}
+
 /** Badge status peminjaman: label + kelas warna Tailwind */
 export const PINJAM_STATUS: Record<string, { label: string; cls: string }> = {
   menunggu: { label: 'Menunggu', cls: 'bg-amber-100 text-amber-700' },

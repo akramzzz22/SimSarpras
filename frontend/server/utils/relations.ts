@@ -3,9 +3,9 @@ import { q, type Row } from './db'
 // ============ KOLOM (format serialisasi API) ============
 export const USER_COLS = `id, name, email, email_verified_at, kelas, jurusan_id, foto, jenis_kelamin, is_active, failed_login_count, nip, nuptk, tempat_lahir, to_char(tanggal_lahir, 'YYYY-MM-DD') AS tanggal_lahir, alamat, no_hp, created_at, updated_at`
 
-export const BARANG_COLS = `id, nama, kode_qr, owner_type, proli_id, kategori_id, ruangan_id, status, created_at, updated_at, deskripsi, bisa_dipinjam, tahun_ajaran_id, satuan_id, kondisi_id, sumber_dana_id`
+export const BARANG_COLS = `id, nama, kode_qr, owner_type, proli_id, kategori_id, ruangan_id, status, created_at, updated_at, deskripsi, bisa_dipinjam, jumlah, tahun_ajaran_id, satuan_id, kondisi_id, sumber_dana_id`
 
-export const PEMINJAMAN_COLS = `id, barang_id, peminjam_id, status, to_char(tanggal_pinjam, 'YYYY-MM-DD') AS tanggal_pinjam, disetujui_oleh, created_at, updated_at, to_char(jam_mulai, 'HH24:MI') AS jam_mulai, to_char(jam_selesai, 'HH24:MI') AS jam_selesai, foto_pinjam, foto_kembali, keperluan, tahun_ajaran_id, kelompok_id, jenis, penanggung_jawab`
+export const PEMINJAMAN_COLS = `id, barang_id, peminjam_id, status, to_char(tanggal_pinjam, 'YYYY-MM-DD') AS tanggal_pinjam, disetujui_oleh, created_at, updated_at, to_char(jam_mulai, 'HH24:MI') AS jam_mulai, to_char(jam_selesai, 'HH24:MI') AS jam_selesai, foto_pinjam, foto_kembali, keperluan, tahun_ajaran_id, kelompok_id, jenis, penanggung_jawab, jumlah`
 
 export const LAPORAN_COLS = `id, barang_id, pelapor_id, deskripsi, foto_url, status, assigned_to, vendor_id, hasil_perbaikan_url, created_at, updated_at, tahun_ajaran_id, jenis_kerusakan_id, tingkat_kerusakan_id`
 

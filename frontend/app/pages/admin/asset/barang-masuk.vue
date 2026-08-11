@@ -17,8 +17,13 @@ const search = ref('')
 const showForm = ref(false)
 
 const barangOptions = ref<{ value: number; label: string }[]>([])
+// Stok terkini tiap barang (untuk info di form — stok otomatis bertambah saat simpan)
+const stokMap = ref<Record<number, number>>({})
 
 const form = ref({ barang_id: '', tanggal: new Date().toISOString().slice(0, 10), jumlah: '1', keterangan: '' })
+
+const selectedStok = computed(() => stokMap.value[Number(form.value.barang_id)] ?? 0)
+const afterStok = computed(() => selectedStok.value + (Number(form.value.jumlah) || 0))
 
 const filtered = computed(() => {
   const q = search.value.toLowerCase()
@@ -46,6 +51,7 @@ async function load() {
 async function loadOptions() {
   const res = await admin.barang.list({ per_page: 100 })
   barangOptions.value = res.data.map((b: any) => ({ value: b.id, label: b.nama }))
+  stokMap.value = Object.fromEntries(res.data.map((b: any) => [b.id, b.jumlah ?? 1]))
 }
 
 async function submit() {
@@ -113,6 +119,9 @@ onMounted(() => { load(); loadOptions().catch(() => {}) })
             <option value="">— Pilih Barang —</option>
             <option v-for="o in barangOptions" :key="o.value" :value="o.value">{{ o.label }}</option>
           </select>
+          <p v-if="form.barang_id" class="text-xs mt-1.5" style="color: #059669;">
+            Stok saat ini {{ selectedStok }} unit → setelah dicatat masuk: <b>{{ afterStok }} unit</b>
+          </p>
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Masuk</label>
