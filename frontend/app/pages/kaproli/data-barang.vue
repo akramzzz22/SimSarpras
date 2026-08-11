@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { Boxes, Search, RefreshCw, QrCode, Inbox } from 'lucide-vue-next'
 import { useAdminService, type Barang } from '~/services/api/admin'
+import Pagination from '~/components/pagination.vue'
 
-definePageMeta({ layout: 'staff', middleware: ['auth'], title: 'Data Barang' })
+definePageMeta({ layout: 'staff', middleware: ['auth', 'kaproli'], title: 'Data Barang' })
 
 const admin = useAdminService()
 
@@ -19,14 +20,26 @@ const filtered = computed(() => {
   return proliBarang.value.filter((b) => b.nama.toLowerCase().includes(q) || (b.kode_qr ?? '').toLowerCase().includes(q))
 })
 
+// ---- Pagination: 20 barang per halaman ----
+const page = ref(1)
+const PER_PAGE = 20
+
+const pagedFiltered = computed(() =>
+  filtered.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
+)
+
+watch(filtered, () => {
+  page.value = 1
+})
+
 const statusBadge = (s: string) => {
   const map: Record<string, string> = {
-    aktif: 'bg-emerald-100 text-emerald-800',
-    rusak: 'bg-rose-100 text-rose-800',
-    dipinjam: 'bg-blue-100 text-blue-800',
-    maintenance: 'bg-amber-100 text-amber-800'
+    aktif: 'bg-emerald-50 text-emerald-700',
+    rusak: 'bg-rose-50 text-rose-700',
+    dipinjam: 'bg-blue-50 text-blue-700',
+    maintenance: 'bg-amber-50 text-amber-700'
   }
-  return map[s] ?? 'bg-gray-100 text-gray-700'
+  return map[s] ?? 'bg-gray-50 text-gray-700'
 }
 
 async function load() {
@@ -48,7 +61,7 @@ onMounted(load)
 <template>
   <div class="space-y-4">
     <div>
-      <h2 class="text-2xl font-bold text-gray-900">Data Barang Proli</h2>
+      <h2 class="text-sm font-bold text-gray-900">Data Barang Proli</h2>
       <p class="text-sm text-gray-500 mt-1">Seluruh aset yang dimiliki program keahlian Anda.</p>
     </div>
 
@@ -74,7 +87,7 @@ onMounted(load)
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-50">
-            <tr v-for="b in filtered" :key="b.id" class="hover:bg-gray-50/50 transition">
+            <tr v-for="b in pagedFiltered" :key="b.id" class="hover:bg-gray-50/50 transition">
               <td class="px-5 py-3.5">
                 <div class="flex items-center gap-3">
                   <div class="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
@@ -92,7 +105,7 @@ onMounted(load)
                 </span>
               </td>
               <td class="px-5 py-3.5">
-                <span class="text-xs px-2 py-1 rounded-full" :class="statusBadge(b.status)">{{ b.status }}</span>
+                <span class="text-xs px-2 py-1 rounded" :class="statusBadge(b.status)">{{ b.status }}</span>
               </td>
             </tr>
             <tr v-if="!filtered.length && !loading">
@@ -106,5 +119,8 @@ onMounted(load)
       </div>
       <div v-if="loading" class="px-5 py-8 text-center text-sm text-gray-400">Memuat data…</div>
     </div>
+
+    <!-- Pagination: 20 barang per halaman -->
+    <Pagination v-model:page="page" :total="filtered.length" :per-page="PER_PAGE" label="barang" />
   </div>
 </template>

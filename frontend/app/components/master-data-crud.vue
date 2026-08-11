@@ -8,9 +8,11 @@ import {
   Loader2,
   RefreshCw,
   X,
-  Inbox
+  Inbox,
+  Download
 } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
+import Pagination from '~/components/pagination.vue'
 
 export interface CrudOption {
   value: string | number
@@ -90,15 +92,28 @@ const optionDeps = ref<Record<string, Record<string, any>>>({})
 /** Nilai asli field induk saat mode edit (untuk tahu kapan user benar-benar ganti) */
 const originalDeps = ref<Record<string, any>>({})
 
-const filtered = computed(() => {
+function matchesSearch(item: any): boolean {
   const q = search.value.toLowerCase()
-  if (!q) return items.value
+  if (!q) return true
   const keys = props.searchKeys?.length
     ? props.searchKeys
     : props.columns.map((c) => c.key).filter((k) => k !== 'id')
-  return items.value.filter((item) =>
-    keys.some((k) => String(item[k] ?? '').toLowerCase().includes(q))
-  )
+  return keys.some((k) => String(item[k] ?? '').toLowerCase().includes(q))
+}
+
+const filtered = computed(() => items.value.filter(matchesSearch))
+
+// ---- Pagination (20 data per halaman) ----
+const page = ref(1)
+const PER_PAGE = 20
+
+const pagedRows = computed<CrudRow[]>(() =>
+  rows.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
+)
+
+// Reset ke halaman pertama saat pencarian / data berubah
+watch(filtered, () => {
+  page.value = 1
 })
 
 type CrudRow =
@@ -283,6 +298,99 @@ async function remove(item: any) {
   }
 }
 
+/** Sedang mengambil seluruh halaman data untuk export. */
+const exporting = ref(false)
+
+/** Nilai sel untuk export: badge > render > nilai mentah kolom. */
+function cellValue(col: CrudColumn, item: any): string {
+  if (col.badge) return String(col.badge(item).text ?? '')
+  if (col.render) return String(col.render(item) ?? '')
+  const v = item[col.key]
+  return v === null || v === undefined ? '' : String(v)
+}
+
+/**
+ * Export seluruh data (semua halaman, bukan hanya 100 baris pertama yang dimuat)
+ * ke CSV, tetap menghormati pencarian aktif. UTF-8 BOM (\uFEFF) agar karakter
+ * Indonesia terbaca benar di Excel.
+ */
+async function exportCSV() {
+  if (exporting.value) return
+  exporting.value = true
+  try {
+    const all: any[] = []
+    let page = 1
+    for (;;) {
+      const res = await admin.master.list(props.resource, { per_page: 100, page })
+      all.push(...res.data)
+      if (page >= res.last_page) break
+      page++
+    }
+
+    const rows = all.filter(matchesSearch)
+    if (!rows.length) {
+      alert('Tidak ada data yang cocok untuk diexport.')
+      return
+    }
+
+    const header = props.columns.map((c) => c.label)
+    const csv = [
+      header,
+      ...rows.map((item) => props.columns.map((c) => cellValue(c, item)))
+    ]
+      .map((r) => r.map((c) => `"${String(c ?? '').replaceAll('"', '""')}"`).join(','))
+      .join('\n')
+
+    const blob = new Blob([`\uFEFF${csv}`], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${props.resource}-${new Date().toISOString().slice(0, 10)}.csv`
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    URL.revokeObjectURL(url)
+  } finally {
+    exporting.value = false
+  }
+}
+
+/** Fokus input pencarian → border biru + shadow */
+function onSearchFocus(e: FocusEvent) {
+  const el = e.currentTarget as HTMLInputElement
+  el.style.borderColor = '#1D4ED8'
+  el.style.boxShadow = '0 0 0 2px rgba(29,78,216,0.15)'
+}
+function onSearchBlur(e: FocusEvent) {
+  const el = e.currentTarget as HTMLInputElement
+  el.style.borderColor = '#D1D5DB'
+  el.style.boxShadow = 'none'
+}
+
+/** Hover tombol edit → biru */
+function onEditEnter(e: MouseEvent) {
+  const el = e.currentTarget as HTMLElement
+  el.style.color = '#1D4ED8'
+  el.style.backgroundColor = '#EFF6FF'
+}
+function onEditLeave(e: MouseEvent) {
+  const el = e.currentTarget as HTMLElement
+  el.style.color = '#9CA3AF'
+  el.style.backgroundColor = 'transparent'
+}
+
+/** Hover tombol hapus → merah */
+function onDeleteEnter(e: MouseEvent) {
+  const el = e.currentTarget as HTMLElement
+  el.style.color = '#DC2626'
+  el.style.backgroundColor = '#FEF2F2'
+}
+function onDeleteLeave(e: MouseEvent) {
+  const el = e.currentTarget as HTMLElement
+  el.style.color = '#9CA3AF'
+  el.style.backgroundColor = 'transparent'
+}
+
 onMounted(() => {
   load()
   ensureOptions()
@@ -296,11 +404,12 @@ defineExpose({ load })
     <!-- Header + aksi -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div>
-        <h2 class="text-2xl font-bold text-gray-900">{{ title }}</h2>
+        <h2 class="text-sm font-bold text-gray-900">{{ title }}</h2>
         <p v-if="description" class="text-sm text-gray-500 mt-1">{{ description }}</p>
       </div>
       <button
-        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition shadow-sm"
+        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-sm transition shadow-sm"
+        style="background-color: #1D4ED8; color: #ffffff; border: 1px solid #1D4ED8;"
         @click="openCreate"
       >
         <Plus class="w-4 h-4" />
@@ -315,7 +424,10 @@ defineExpose({ load })
         <input
           v-model="search"
           :placeholder="searchPlaceholder ?? 'Cari…'"
-          class="w-full rounded-xl border border-gray-200 pl-9 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full rounded-lg border px-3 py-2.5 text-sm outline-none"
+          style="border-color: #D1D5DB;"
+          @focus="onSearchFocus"
+          @blur="onSearchBlur"
         />
       </div>
       <button
@@ -325,71 +437,87 @@ defineExpose({ load })
       >
         <RefreshCw class="w-4 h-4" />
       </button>
+      <button
+        class="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition w-fit disabled:opacity-50"
+        title="Export seluruh data ke CSV (bisa dibuka di Excel)"
+        :disabled="!items.length || exporting"
+        @click="exportCSV"
+      >
+        <Loader2 v-if="exporting" class="w-4 h-4 animate-spin" />
+        <Download v-else class="w-4 h-4" />
+        {{ exporting ? 'Mengexport…' : 'Export CSV' }}
+      </button>
     </div>
 
     <p v-if="error" class="text-sm text-rose-600 bg-rose-50 border border-rose-100 rounded-xl px-4 py-3">
       {{ error }}
     </p>
 
-    <!-- Tabel -->
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+    <!-- Tabel boxed -->
+    <div class="overflow-hidden" style="border: 1px solid #D1D5DB; border-radius: 8px; background-color: #ffffff;">
       <div class="overflow-x-auto">
-        <table class="w-full text-sm">
+        <table class="w-full" style="border-collapse: collapse;">
           <thead>
-            <tr class="bg-gray-50 text-left text-xs font-semibold uppercase tracking-wider text-gray-500">
-              <th v-for="c in columns" :key="c.key" class="px-5 py-3">{{ c.label }}</th>
-              <th class="px-5 py-3 text-right">Aksi</th>
+            <tr style="background-color: var(--app-surface-2, #F8F9FA);">
+              <th v-for="c in columns" :key="c.key" class="font-semibold" style="padding: 10px 14px; font-size: 14px; color: var(--app-text-2, #374151); border-bottom: 1px solid var(--app-border-light, #E5E7EB); text-align: left;">{{ c.label }}</th>
+              <th class="text-right" style="padding: 10px 14px; font-size: 14px; color: var(--app-text-2, #374151); border-bottom: 1px solid var(--app-border-light, #E5E7EB);">Aksi</th>
             </tr>
           </thead>
-          <tbody class="divide-y divide-gray-50">
-            <template v-for="row in rows" :key="row.kind === 'group' ? 'group-' + row.label : row.item.id">
+          <tbody>
+            <template v-for="row in pagedRows" :key="row.kind === 'group' ? 'group-' + row.label : row.item.id">
               <!-- Header grup (saat prop groupBy dipakai) -->
-              <tr v-if="row.kind === 'group'" class="bg-slate-50">
-                <td :colspan="columns.length + 1" class="px-5 py-2.5">
+              <tr v-if="row.kind === 'group'" style="background-color: #EFF6FF;">
+                <td :colspan="columns.length + 1" style="padding: 8px 14px; border-bottom: 1px solid var(--app-border-light, #E5E7EB);">
                   <div class="flex items-center gap-2">
-                    <span class="text-xs font-bold uppercase tracking-wider text-slate-500">
+                    <span class="text-xs font-bold uppercase tracking-wider" style="color: #1D4ED8;">
                       {{ row.label }}
                     </span>
-                    <span class="text-xs font-medium text-slate-400">{{ row.count }} data</span>
+                    <span class="text-xs font-medium" style="color: #6B7280;">{{ row.count }} data</span>
                   </div>
                 </td>
               </tr>
 
               <!-- Baris item -->
-              <tr v-else class="hover:bg-gray-50/50 transition">
-                <td v-for="c in columns" :key="c.key" class="px-5 py-3.5">
+              <tr v-else class="hover:bg-gray-50/50 transition" style="border-bottom: 1px solid var(--app-border-light, #E5E7EB);">
+                <td v-for="c in columns" :key="c.key" style="padding: 10px 14px;">
                   <span
                     v-if="c.badge"
-                    class="text-xs px-2 py-1 rounded-full inline-block"
+                    class="text-xs px-2 py-1 rounded inline-block"
                     :class="c.badge(row.item).cls"
                   >
                     {{ c.badge(row.item).text }}
                   </span>
                   <span v-else-if="c.render">{{ c.render(row.item) }}</span>
-                  <span v-else class="text-gray-800">{{ row.item[c.key] ?? '—' }}</span>
+                  <span v-else style="color: var(--app-text, #0F172A);">{{ row.item[c.key] ?? '—' }}</span>
                 </td>
-                <td class="px-5 py-3.5 text-right whitespace-nowrap">
+                <td class="text-right whitespace-nowrap" style="padding: 10px 14px;">
                   <button
                     v-for="a in (rowActions ?? []).filter((x) => !x.show || x.show(row.item))"
                     :key="a.title"
                     class="p-1.5 rounded-lg transition ml-1"
-                    :class="a.cls ?? 'text-gray-400 hover:text-blue-600 hover:bg-blue-50'"
+                    :class="a.cls ?? 'text-gray-400 hover:text-red-600 hover:bg-red-50'"
                     :title="a.title"
                     @click="a.onClick(row.item)"
                   >
                     <component :is="a.icon" class="w-4 h-4" />
                   </button>
                   <button
-                    class="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition"
+                    class="p-1.5 rounded-lg transition ml-1"
+                    style="color: #9CA3AF;"
                     title="Edit"
                     @click="openEdit(row.item)"
+                    @mouseenter="onEditEnter"
+                    @mouseleave="onEditLeave"
                   >
                     <Pencil class="w-4 h-4" />
                   </button>
                   <button
-                    class="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition ml-1"
+                    class="p-1.5 rounded-lg transition ml-1"
+                    style="color: #9CA3AF;"
                     title="Hapus"
                     @click="remove(row.item)"
+                    @mouseenter="onDeleteEnter"
+                    @mouseleave="onDeleteLeave"
                   >
                     <Trash2 class="w-4 h-4" />
                   </button>
@@ -397,16 +525,19 @@ defineExpose({ load })
               </tr>
             </template>
             <tr v-if="!filtered.length && !loading">
-              <td :colspan="columns.length + 1" class="px-5 py-12 text-center text-gray-400">
-                <Inbox class="w-8 h-8 mx-auto mb-2 text-gray-300" />
+              <td :colspan="columns.length + 1" style="padding: 40px 14px; text-align: center; color: var(--app-faint, #9CA3AF);">
+                <Inbox class="w-8 h-8 mx-auto mb-2" style="color: #D1D5DB;" />
                 {{ items.length ? 'Tidak ada data yang cocok.' : 'Belum ada data. Klik "Tambah" untuk memulai.' }}
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div v-if="loading" class="px-5 py-8 text-center text-sm text-gray-400">Memuat data…</div>
+      <div v-if="loading" style="padding: 20px 14px; text-align: center; font-size: 14px; color: var(--app-faint, #9CA3AF);">Memuat data…</div>
     </div>
+
+    <!-- Pagination: 20 data per halaman -->
+    <Pagination v-model:page="page" :total="filtered.length" :per-page="PER_PAGE" />
 
     <!-- Modal form -->
     <div
@@ -440,7 +571,7 @@ defineExpose({ load })
             <select
               v-if="f.type === 'select'"
               v-model="form[f.key]"
-              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-red-500 bg-white"
             >
               <option value="">— Pilih —</option>
               <option
@@ -457,7 +588,7 @@ defineExpose({ load })
               v-model="form[f.key]"
               :placeholder="f.placeholder"
               rows="3"
-              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-red-500"
             />
 
             <input
@@ -465,7 +596,7 @@ defineExpose({ load })
               v-model="form[f.key]"
               :type="f.type ?? 'text'"
               :placeholder="f.placeholder"
-              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-red-500"
             />
 
             <p v-if="f.hint" class="mt-1 text-xs text-gray-400">{{ f.hint }}</p>
@@ -486,7 +617,7 @@ defineExpose({ load })
             <button
               type="submit"
               :disabled="saving"
-              class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition disabled:opacity-60"
+              class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition disabled:opacity-60"
             >
               <Loader2 v-if="saving" class="w-4 h-4 animate-spin" />
               {{ saving ? 'Menyimpan…' : 'Simpan' }}

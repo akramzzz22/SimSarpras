@@ -4,9 +4,10 @@ export interface LoginResponse {
   token: string
   user: Record<string, any>
   role: string
+  roles?: string[]
 }
 
-// Service untuk endpoint autentikasi (Laravel Sanctum)
+// Service untuk endpoint autentikasi
 export function useAuthService() {
   const api = useApiClient()
 

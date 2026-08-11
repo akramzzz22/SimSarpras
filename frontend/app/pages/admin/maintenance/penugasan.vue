@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import {
   ClipboardList,
   RefreshCw,
@@ -14,6 +14,7 @@ import {
   Inbox
 } from 'lucide-vue-next'
 import { useAdminService, type LaporanKerusakan } from '~/services/api/admin'
+import Pagination from '~/components/pagination.vue'
 
 definePageMeta({ layout: 'admin', middleware: ['auth', 'admin'], title: 'Penugasan' })
 
@@ -47,6 +48,18 @@ const filtered = computed(() =>
   filterStatus.value === 'all' ? items.value : items.value.filter((l) => l.status === filterStatus.value)
 )
 
+// ---- Pagination: 20 penugasan per halaman ----
+const page = ref(1)
+const PER_PAGE = 20
+
+const pagedFiltered = computed(() =>
+  filtered.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
+)
+
+watch(filtered, () => {
+  page.value = 1
+})
+
 const counts = computed(() => ({
   menunggu: items.value.filter((l) => l.status === 'menunggu').length,
   berjalan: items.value.filter((l) => l.status === 'diverifikasi' || l.status === 'diperbaiki').length,
@@ -55,12 +68,12 @@ const counts = computed(() => ({
 
 const statusBadge = (s: string) => {
   const map: Record<string, string> = {
-    menunggu: 'bg-amber-100 text-amber-800',
-    diverifikasi: 'bg-blue-100 text-blue-800',
-    diperbaiki: 'bg-violet-100 text-violet-800',
-    selesai: 'bg-emerald-100 text-emerald-800'
+    menunggu: 'bg-amber-50 text-amber-700',
+    diverifikasi: 'bg-red-50 text-red-700',
+    diperbaiki: 'bg-violet-50 text-violet-700',
+    selesai: 'bg-emerald-50 text-emerald-700'
   }
-  return map[s] ?? 'bg-gray-100 text-gray-700'
+  return map[s] ?? 'bg-gray-50 text-gray-700'
 }
 
 const formatTanggal = (d?: string) =>
@@ -144,7 +157,7 @@ onMounted(() => {
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div>
-        <h2 class="text-2xl font-bold text-gray-900">Penugasan</h2>
+        <h2 class="text-sm font-bold text-gray-900">Penugasan</h2>
         <p class="text-sm text-gray-500 mt-1">Tugaskan staff atau vendor untuk menangani laporan kerusakan.</p>
       </div>
       <button
@@ -162,9 +175,9 @@ onMounted(() => {
         <div class="text-xs font-medium text-amber-600 uppercase tracking-wide">Menunggu</div>
         <div class="text-2xl font-bold text-amber-700 mt-1">{{ counts.menunggu }}</div>
       </div>
-      <div class="bg-blue-50 rounded-2xl border border-blue-100 p-4">
-        <div class="text-xs font-medium text-blue-600 uppercase tracking-wide">Berjalan</div>
-        <div class="text-2xl font-bold text-blue-700 mt-1">{{ counts.berjalan }}</div>
+      <div class="bg-red-50 rounded-2xl border border-red-100 p-4">
+        <div class="text-xs font-medium text-red-600 uppercase tracking-wide">Berjalan</div>
+        <div class="text-2xl font-bold text-red-700 mt-1">{{ counts.berjalan }}</div>
       </div>
       <div class="bg-emerald-50 rounded-2xl border border-emerald-100 p-4">
         <div class="text-xs font-medium text-emerald-600 uppercase tracking-wide">Selesai</div>
@@ -177,8 +190,8 @@ onMounted(() => {
       <button
         v-for="s in statusOptions"
         :key="s.v"
-        class="px-3 py-1.5 rounded-full text-sm font-medium border transition"
-        :class="filterStatus === s.v ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
+        class="px-3 py-1.5 rounded text-sm font-medium border transition"
+        :class="filterStatus === s.v ? 'bg-red-600 text-white border-red-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
         @click="filterStatus = s.v"
       >
         {{ s.l }}
@@ -190,7 +203,7 @@ onMounted(() => {
     <!-- List -->
     <div class="grid md:grid-cols-2 gap-4">
       <div
-        v-for="l in filtered"
+        v-for="l in pagedFiltered"
         :key="l.id"
         class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition"
       >
@@ -204,7 +217,7 @@ onMounted(() => {
               <div class="text-xs text-gray-500 mt-0.5">{{ formatTanggal(l.created_at) }} • oleh {{ l.pelapor?.name ?? 'User' }}</div>
             </div>
           </div>
-          <span class="text-xs px-2 py-1 rounded-full shrink-0" :class="statusBadge(l.status)">{{ l.status }}</span>
+          <span class="text-xs px-2 py-1 rounded shrink-0" :class="statusBadge(l.status)">{{ l.status }}</span>
         </div>
 
         <p class="mt-3 text-sm text-gray-600 line-clamp-2">{{ l.deskripsi }}</p>
@@ -230,7 +243,7 @@ onMounted(() => {
           <!-- Menunggu: verifikasi & tugaskan -->
           <button
             v-if="l.status === 'menunggu'"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-600 text-white text-xs font-semibold hover:bg-red-700 transition"
             @click="openAssign(l)"
           >
             <ClipboardList class="w-3.5 h-3.5" />
@@ -288,6 +301,9 @@ onMounted(() => {
 
     <div v-if="loading" class="py-12 text-center text-sm text-gray-400">Memuat data…</div>
 
+    <!-- Pagination: 20 penugasan per halaman -->
+    <Pagination v-model:page="page" :total="filtered.length" :per-page="PER_PAGE" label="penugasan" />
+
     <!-- Modal penugasan -->
     <div v-if="showAssign && assignTarget" class="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
       <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" @click="showAssign = false" />
@@ -309,7 +325,7 @@ onMounted(() => {
             <button
               type="button"
               class="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border text-sm font-medium transition"
-              :class="assignType === 'staff' ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
+              :class="assignType === 'staff' ? 'bg-red-600 text-white border-red-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
               @click="setAssignType('staff')"
             >
               <User class="w-4 h-4" />
@@ -318,7 +334,7 @@ onMounted(() => {
             <button
               type="button"
               class="flex items-center justify-center gap-2 px-3 py-2.5 rounded-xl border text-sm font-medium transition"
-              :class="assignType === 'vendor' ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
+              :class="assignType === 'vendor' ? 'bg-red-600 text-white border-red-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
               @click="setAssignType('vendor')"
             >
               <Store class="w-4 h-4" />
@@ -330,7 +346,7 @@ onMounted(() => {
             <label class="block text-sm font-medium text-gray-700 mb-1">{{ assignType === 'staff' ? 'Pilih Staff' : 'Pilih Vendor' }}</label>
             <select
               v-model="assignValue"
-              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-red-500 bg-white"
             >
               <option value="">— Pilih —</option>
               <option
@@ -352,7 +368,7 @@ onMounted(() => {
             <button
               type="submit"
               :disabled="assignSaving"
-              class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition disabled:opacity-60"
+              class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition disabled:opacity-60"
             >
               <Loader2 v-if="assignSaving" class="w-4 h-4 animate-spin" />
               {{ assignSaving ? 'Menyimpan…' : 'Tugaskan' }}

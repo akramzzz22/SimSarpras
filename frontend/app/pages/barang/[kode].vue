@@ -52,11 +52,11 @@ const STATUS: Record<string, StatusInfo> = {
 
 const status = computed<StatusInfo>(() => STATUS[barang.value?.status ?? ''] ?? DEFAULT_STATUS)
 
-// Aksi pinjam/lapor hanya untuk guru & murid yang sudah login
+// Aksi pinjam/lapor hanya untuk guru & murid yang sudah login (double job: murid prioritas)
 const actions = computed<{ lapor: string; pinjam: string } | null>(() => {
   if (!authStore.isAuthenticated) return null
-  if (authStore.role === 'murid') return { lapor: '/murid/lapor', pinjam: '/murid/peminjaman' }
-  if (authStore.role === 'guru') return { lapor: '/guru/lapor-kerusakan', pinjam: '/guru/peminjaman' }
+  if (authStore.hasRole('murid')) return { lapor: '/murid/lapor', pinjam: '/murid/peminjaman' }
+  if (authStore.hasRole('guru')) return { lapor: '/guru/lapor-kerusakan', pinjam: '/guru/peminjaman' }
   return null
 })
 
@@ -117,10 +117,10 @@ onMounted(load)
               <Package class="w-7 h-7 text-blue-600" />
             </div>
             <div class="min-w-0 flex-1">
-              <h1 class="text-lg font-bold text-gray-900 leading-snug">{{ barang.nama }}</h1>
+              <h1 class="text-sm font-bold text-gray-900 leading-snug">{{ barang.nama }}</h1>
               <div class="mt-2 flex items-center gap-2">
                 <span
-                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-semibold"
+                  class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border text-2xs font-semibold"
                   :class="status.badge"
                 >
                   <span class="w-1.5 h-1.5 rounded-full" :class="status.dot" />
@@ -139,14 +139,6 @@ onMounted(load)
               <Tag class="w-4 h-4 text-gray-400 shrink-0" />
               <dt class="text-xs text-gray-500 w-24">Kategori</dt>
               <dd class="flex-1 text-sm font-medium text-gray-800 text-right">{{ barang.kategori?.nama ?? '—' }}</dd>
-            </div>
-            <div v-if="barang.subkategori" class="flex items-center gap-3 px-5 py-3">
-              <Tag class="w-4 h-4 text-gray-400 shrink-0" />
-              <dt class="text-xs text-gray-500 w-24">Subkategori</dt>
-              <dd class="flex-1 text-sm font-medium text-gray-800 text-right">
-                {{ barang.subkategori.nama }}
-                <span v-if="barang.subkategori.proli" class="text-xs text-gray-400">({{ barang.subkategori.proli.nama }})</span>
-              </dd>
             </div>
             <div class="flex items-center gap-3 px-5 py-3">
               <MapPin class="w-4 h-4 text-gray-400 shrink-0" />
@@ -176,20 +168,20 @@ onMounted(load)
           </dl>
 
           <div v-if="barang.deskripsi" class="border-t border-gray-100 px-5 py-4">
-            <div class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Deskripsi</div>
+            <div class="text-2xs font-semibold uppercase tracking-wider text-gray-400 mb-1.5">Deskripsi</div>
             <p class="text-sm text-gray-700 leading-relaxed whitespace-pre-line">{{ barang.deskripsi }}</p>
           </div>
 
           <!-- Riwayat peminjaman & kerusakan -->
           <div class="border-t border-gray-100 bg-gray-50/60 px-5 py-4">
-            <div class="text-[11px] font-semibold uppercase tracking-wider text-gray-400 mb-2">Riwayat</div>
+            <div class="text-2xs font-semibold uppercase tracking-wider text-gray-400 mb-2">Riwayat</div>
             <div v-if="barang.peminjaman?.length || barang.laporanKerusakan?.length" class="space-y-1.5">
               <div v-for="p in barang.peminjaman" :key="'p' + p.id" class="flex items-center gap-2 text-xs">
                 <ArrowLeftRight class="w-3.5 h-3.5 text-blue-500 shrink-0" />
                 <span class="text-gray-600 truncate min-w-0">{{ p.peminjam?.name ?? 'Peminjam' }}</span>
                 <span
-                  class="ml-auto shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full"
-                  :class="PINJAM_STATUS[p.status]?.cls ?? 'bg-gray-100 text-gray-600'"
+                  class="ml-auto shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded"
+                  :class="PINJAM_STATUS[p.status]?.cls ?? 'bg-gray-50 text-gray-700'"
                 >
                   {{ PINJAM_STATUS[p.status]?.label ?? p.status }}
                 </span>
@@ -198,8 +190,8 @@ onMounted(load)
                 <AlertTriangle class="w-3.5 h-3.5 text-rose-500 shrink-0" />
                 <span class="text-gray-600 truncate min-w-0">{{ l.deskripsi }}</span>
                 <span
-                  class="ml-auto shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full"
-                  :class="LAPORAN_STATUS[l.status]?.cls ?? 'bg-gray-100 text-gray-600'"
+                  class="ml-auto shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded"
+                  :class="LAPORAN_STATUS[l.status]?.cls ?? 'bg-gray-50 text-gray-700'"
                 >
                   {{ LAPORAN_STATUS[l.status]?.label ?? l.status }}
                 </span>
@@ -212,12 +204,21 @@ onMounted(load)
         <!-- Aksi saat login sebagai guru/murid -->
         <div v-if="actions" class="mt-4 grid grid-cols-2 gap-2">
           <NuxtLink
+            v-if="barang.bisa_dipinjam !== false"
             :to="{ path: actions.pinjam, query: { kode: barang.kode_qr } }"
             class="inline-flex items-center justify-center gap-1.5 rounded-xl bg-blue-600 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700 transition"
           >
             <ArrowLeftRight class="w-4 h-4" />
             Pinjam
           </NuxtLink>
+          <div
+            v-else
+            class="inline-flex items-center justify-center gap-1.5 rounded-xl bg-gray-100 py-3 text-sm font-semibold text-gray-400"
+            title="Barang ini tidak bisa dipinjam"
+          >
+            <ArrowLeftRight class="w-4 h-4" />
+            Tidak Bisa Dipinjam
+          </div>
           <NuxtLink
             :to="{ path: actions.lapor, query: { kode: barang.kode_qr } }"
             class="inline-flex items-center justify-center gap-1.5 rounded-xl bg-rose-600 py-3 text-sm font-semibold text-white shadow-sm hover:bg-rose-700 transition"
@@ -236,7 +237,7 @@ onMounted(load)
           </NuxtLink>
         </div>
 
-        <p class="mt-4 text-center text-[11px] text-gray-400">Info ini terbuka untuk umum dari scan QR barang.</p>
+        <p class="mt-4 text-center text-2xs text-gray-400">Info ini terbuka untuk umum dari scan QR barang.</p>
       </template>
     </main>
   </div>

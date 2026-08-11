@@ -46,27 +46,35 @@ export default defineNuxtConfig({
     https
   },
 
-  // Proxy /api dan /storage ke backend Laravel di origin yang sama (tidak ada
-  // mixed-content, dan tidak perlu CORS). Berlaku untuk mode HTTP maupun HTTPS.
-  // /storage dipakai untuk gambar hasil upload (foto resi, dokumentasi, dsb)
-  // yang URL-nya disimpan relatif di backend.
-  routeRules: {
-    '/api/**': { proxy: 'http://localhost:8000/api/**' },
-    '/storage/**': { proxy: 'http://localhost:8000/storage/**' }
-  },
+  // API ditangani langsung oleh Nuxt/Nitro (server/api/*) — tidak ada backend
+  // terpisah. File upload disimpan di public/storage/** dan dilayani Nitro
+  // sebagai aset statis pada path /storage/**. URL relatif di database (mis.
+  // /storage/uploads/xxx.png) tetap berfungsi tanpa mixed-content.
 
   // Pendekatan Responsive + PWA: satu codebase untuk
   // Admin/Staff Sarpras/Ketua Proli (desktop & mobile)
   // dan Guru/Murid/Kepala Sekolah (mobile-first)
   app: {
     head: {
-      title: 'Sistem Manajemen Aset Sekolah'
+      title: 'Sistem Manajemen Aset Sekolah',
+      // Favicon: logo SVG Aplikasi Sarpras
+      link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/images/logo-sarpras.svg' },
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'apple-touch-icon', href: '/apple-touch-icon.png' },
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;500;600;700&display=swap'
+        }
+      ]
     }
   },
 
   runtimeConfig: {
     public: {
-      // Relatif → diproxy Nitro ke backend, aman dari mixed-content saat HTTPS.
+      // Relatif → diproxy Nitro ke server API, aman dari mixed-content saat HTTPS.
       apiBase: process.env.NUXT_PUBLIC_API_BASE || '/api',
       // Base URL aplikasi, dipakai untuk membuat link pada QR code.
       // Ikut berubah sesuai mode HTTPS agar link di QR tetap valid.

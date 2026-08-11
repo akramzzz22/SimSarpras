@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { Wrench, CheckCircle2, Play, RefreshCw, Inbox, X, Camera, Loader2, Receipt } from 'lucide-vue-next'
 import { useAdminService, type Maintenance } from '~/services/api/admin'
 import { formatRupiah } from '~/utils/format'
+import Pagination from '~/components/pagination.vue'
 
-definePageMeta({ layout: 'staff', middleware: ['auth'], title: 'Maintenance' })
+definePageMeta({ layout: 'staff', middleware: ['auth', 'staff'], title: 'Maintenance' })
 
 const admin = useAdminService()
 const authStore = useAuthStore()
@@ -29,13 +30,25 @@ const myMaintenance = computed(() =>
   items.value.filter((m) => m.staff_id === authStore.user?.id && m.status !== 'selesai')
 )
 
+// ---- Pagination: 20 jadwal per halaman ----
+const page = ref(1)
+const PER_PAGE = 20
+
+const pagedMaintenance = computed(() =>
+  myMaintenance.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
+)
+
+watch(myMaintenance, () => {
+  page.value = 1
+})
+
 const badge = (s: string) => {
   const map: Record<string, string> = {
-    terjadwal: 'bg-amber-100 text-amber-800',
-    berlangsung: 'bg-blue-100 text-blue-800',
-    selesai: 'bg-emerald-100 text-emerald-800'
+    terjadwal: 'bg-amber-50 text-amber-700',
+    berlangsung: 'bg-blue-50 text-blue-700',
+    selesai: 'bg-emerald-50 text-emerald-700'
   }
-  return map[s] ?? 'bg-gray-100 text-gray-700'
+  return map[s] ?? 'bg-gray-50 text-gray-700'
 }
 
 async function load() {
@@ -131,7 +144,7 @@ onMounted(load)
   <div class="space-y-4">
     <div class="flex items-center justify-between">
       <div>
-        <h2 class="text-2xl font-bold text-gray-900">Maintenance</h2>
+        <h2 class="text-sm font-bold text-gray-900">Maintenance</h2>
         <p class="text-sm text-gray-500 mt-1">Jadwal maintenance yang ditugaskan kepada Anda.</p>
       </div>
       <button class="p-2 rounded-xl border border-gray-200 text-gray-500 hover:bg-gray-50 transition" title="Muat ulang" @click="load">
@@ -142,7 +155,7 @@ onMounted(load)
     <p v-if="error" class="text-sm text-rose-600 bg-rose-50 border border-rose-100 rounded-xl px-4 py-3">{{ error }}</p>
 
     <div class="grid md:grid-cols-2 gap-4">
-      <div v-for="m in myMaintenance" :key="m.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition">
+      <div v-for="m in pagedMaintenance" :key="m.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition">
         <div class="flex items-start justify-between gap-3">
           <div class="flex items-center gap-3 min-w-0">
             <div class="w-10 h-10 rounded-xl bg-violet-50 flex items-center justify-center shrink-0">
@@ -153,7 +166,7 @@ onMounted(load)
               <div class="text-xs text-gray-500 mt-0.5">{{ fmt(m.tanggal_jadwal) }}</div>
             </div>
           </div>
-          <span class="text-xs px-2 py-1 rounded-full shrink-0" :class="badge(m.status)">{{ m.status }}</span>
+          <span class="text-xs px-2 py-1 rounded shrink-0" :class="badge(m.status)">{{ m.status }}</span>
         </div>
 
         <p v-if="m.catatan" class="mt-3 text-sm text-gray-600 line-clamp-2">{{ m.catatan }}</p>
@@ -207,6 +220,9 @@ onMounted(load)
     </div>
 
     <div v-if="loading" class="py-12 text-center text-sm text-gray-400">Memuat data…</div>
+
+    <!-- Pagination: 20 jadwal per halaman -->
+    <Pagination v-model:page="page" :total="myMaintenance.length" :per-page="PER_PAGE" label="jadwal" />
 
     <!-- Modal selesaikan: biaya + foto resi -->
     <div v-if="showComplete && completeTarget" class="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">

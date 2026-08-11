@@ -41,7 +41,7 @@ onMounted(load)
 <template>
   <div class="space-y-4">
     <div>
-      <h2 class="text-xl font-bold text-gray-900">Halo, {{ authStore.user?.name ?? 'Guru' }} 👋</h2>
+      <h2 class="text-sm font-bold text-gray-900">Halo, {{ authStore.user?.name ?? 'Guru' }} 👋</h2>
       <p class="text-sm text-gray-500 mt-0.5">Apa yang ingin Anda lakukan hari ini?</p>
     </div>
 

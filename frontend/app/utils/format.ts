@@ -30,6 +30,16 @@ export function extractKodeFromScan(raw: string | null | undefined): string {
   return value
 }
 
+/**
+ * Format waktu dari "HH:MM:SS" atau "HH:MM" menjadi "HH:MM" (mis. "08:00").
+ * Nilai kosong/null ditampilkan sebagai "—".
+ */
+export function fmtJam(v?: string | null): string {
+  if (!v) return '—'
+  const m = v.match(/^(\d{2}):(\d{2})/)
+  return m ? `${m[1]}:${m[2]}` : v
+}
+
 /** Badge status peminjaman: label + kelas warna Tailwind */
 export const PINJAM_STATUS: Record<string, { label: string; cls: string }> = {
   menunggu: { label: 'Menunggu', cls: 'bg-amber-100 text-amber-700' },

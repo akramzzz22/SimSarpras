@@ -17,12 +17,12 @@ const newRole = ref('')
 const formError = ref<string | null>(null)
 
 const roleColors: Record<string, string> = {
-  admin: 'bg-blue-100 text-blue-800',
-  staff_sarpras: 'bg-teal-100 text-teal-800',
-  kaproli: 'bg-violet-100 text-violet-800',
-  guru: 'bg-emerald-100 text-emerald-800',
-  murid: 'bg-amber-100 text-amber-800',
-  kepsek: 'bg-rose-100 text-rose-800'
+  admin: 'bg-red-50 text-red-700',
+  staff_sarpras: 'bg-teal-50 text-teal-700',
+  kaproli: 'bg-violet-50 text-violet-700',
+  guru: 'bg-emerald-50 text-emerald-700',
+  murid: 'bg-amber-50 text-amber-700',
+  kepsek: 'bg-rose-50 text-rose-700'
 }
 
 async function load() {
@@ -74,7 +74,7 @@ onMounted(load)
   <div class="space-y-4">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div>
-        <h2 class="text-2xl font-bold text-gray-900">Pengaturan Role</h2>
+        <h2 class="text-sm font-bold text-gray-900">Pengaturan Role</h2>
         <p class="text-sm text-gray-500 mt-1">Kelola role pengguna sistem. Role dipakai untuk mengatur hak akses setiap akun.</p>
       </div>
       <div class="flex gap-2">
@@ -82,7 +82,7 @@ onMounted(load)
           <RefreshCw class="w-4 h-4" />
         </button>
         <button
-          class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition shadow-sm"
+          class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition shadow-sm"
           @click="showForm = !showForm"
         >
           <Plus class="w-4 h-4" />
@@ -97,13 +97,13 @@ onMounted(load)
         <input
           v-model="newRole"
           placeholder="Contoh: admin_gudang"
-          class="flex-1 rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+          class="flex-1 rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-red-500"
         />
         <div class="flex gap-2">
           <button
             type="submit"
             :disabled="saving"
-            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition disabled:opacity-60"
+            class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition disabled:opacity-60"
           >
             <Loader2 v-if="saving" class="w-4 h-4 animate-spin" />
             Simpan
@@ -120,11 +120,11 @@ onMounted(load)
 
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
       <div v-for="r in roles" :key="r.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
-        <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-          <ShieldCheck class="w-5 h-5 text-blue-600" />
+        <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center shrink-0">
+          <ShieldCheck class="w-5 h-5 text-red-600" />
         </div>
         <div class="min-w-0 flex-1">
-          <span class="text-xs px-2 py-1 rounded-full font-medium" :class="roleColors[r.name] ?? 'bg-gray-100 text-gray-700'">
+          <span class="text-xs px-2 py-1 rounded font-medium" :class="roleColors[r.name] ?? 'bg-gray-50 text-gray-700'">
             {{ r.name.replace('_', ' ') }}
           </span>
           <div class="mt-1.5 flex items-center gap-1 text-xs text-gray-400">

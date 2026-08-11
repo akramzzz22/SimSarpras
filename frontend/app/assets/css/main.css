@@ -1,10 +1,523 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* Isi konten & data: Open Sans (Google Sans-Serif sesuai brief) */
+  --font-sans: "Open Sans", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  /* Header & judul komponen: Poppins */
+  --font-display: Poppins, "Open Sans", ui-sans-serif, system-ui, sans-serif;
+
+  /* Ukuran teks kecil ala referensi: 10px (tier terendah skala 14/12/10) */
+  --text-2xs: 10px;
+  --text-2xs--line-height: 1.4;
+
+  /* ============================================================
+     PALET WARNA FORMAL — Biru, Kuning, Abu, Putih, Merah, Hitam
+     ============================================================ */
+  --color-blue-primary: #1D4ED8;
+  --color-blue-light: #EFF6FF;
+  --color-blue-border: #BFDBFE;
+  --color-yellow-accent: #D97706;
+  --color-yellow-light: #FFFBEB;
+  --color-yellow-border: #FDE68A;
+  --color-red-primary: #DC2626;
+  --color-red-light: #FEF2F2;
+  --color-red-border: #FECACA;
+  --color-gray-bg: #F8F9FA;
+  --color-gray-border: #D1D5DB;
+  --color-gray-light: #E5E7EB;
+  --color-black-text: #0F172A;
 }
 
 :root {
   --background: #ffffff;
-  --foreground: #0f172a;
+  --foreground: #0F172A;
+
+  /* Token permukaan shell — dipakai layout & komponen bersama */
+  --app-bg: #F8F9FA;
+  --app-surface: #ffffff;
+  --app-surface-2: #F1F5F9;
+  --app-text: #0F172A;
+  --app-text-2: #374151;
+  --app-muted: #6B7280;
+  --app-faint: #9CA3AF;
+  --app-border: #D1D5DB;
+  --app-border-light: #E5E7EB;
 }
+
+/* ============================================================
+   MODE GELAP — kelas `.dark` di <html> (di-toggle lewat switch tema)
+   ============================================================ */
+.dark {
+  --background: #0F172A;
+  --foreground: #E2E8F0;
+  --app-bg: #0B1220;
+  --app-surface: #111C2E;
+  --app-surface-2: #1E293B;
+  --app-text: #F1F5F9;
+  --app-text-2: #CBD5E1;
+  --app-muted: #94A3B8;
+  --app-faint: #64748B;
+  --app-border: #334155;
+  --app-border-light: #1E293B;
+}
+
+/* ============================================================
+   TIPOGRAFI
+   Judul, bar header, navigasi, menu, & header kolom tabel → Poppins
+   Isi konten & data → Open Sans
+   ============================================================ */
+@layer base {
+  h1, h2, h3, h4, h5, h6,
+  header,
+  nav,
+  nav a,
+  nav button,
+  th {
+    font-family: var(--font-display);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--foreground);
+    background: var(--background);
+  }
+
+  /* ============================================================
+     HIERARKI UKURAN KETAT — KHUSUS LAYOUT ADMIN (Sistem Sarpras)
+     Di-scope ke .admin-app agar tampilan mobile (murid/guru) dan
+     kaproli/staff TIDAK ikut mengecil. Layout lain memakai ukuran
+     masing-masing.
+       Header kolom tabel : Poppins 14px semibold
+       Data tabel & kontrol: 12px
+     ============================================================ */
+  .admin-app th {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .admin-app td,
+  .admin-app button,
+  .admin-app select,
+  .admin-app input {
+    font-size: 12px;
+  }
+}
+
+/* ============================================================
+   DESIGN SYSTEM FORMAL — BOXED / BORDERED
+   ============================================================ */
+@layer components {
+  /* Kontrol input boxed — border solid 1px, radius kecil, formal */
+  .control {
+    @apply rounded-md border border-gray-300 px-3 py-1.5 outline-none transition;
+    border-color: var(--color-gray-border);
+    background-color: var(--app-surface);
+    color: var(--app-text);
+  }
+  .control:focus {
+    border-color: var(--color-blue-primary, #1D4ED8);
+    box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.15);
+  }
+
+  /* Tombol primary — biru (formal) */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition disabled:opacity-60;
+    background-color: var(--color-blue-primary, #1D4ED8);
+    color: #ffffff;
+    border: 1px solid var(--color-blue-primary, #1D4ED8);
+  }
+  .btn-primary:hover {
+    background-color: #1E40AF;
+    border-color: #1E40AF;
+  }
+
+  /* Tombol aksi — merah (untuk hapus, logout, dll) */
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition disabled:opacity-60;
+    background-color: var(--color-red-primary, #DC2626);
+    color: #ffffff;
+    border: 1px solid var(--color-red-primary, #DC2626);
+  }
+  .btn-danger:hover {
+    background-color: #B91C1C;
+    border-color: #B91C1C;
+  }
+
+  /* Tombol outline — border abu */
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-semibold transition disabled:opacity-60;
+    border: 1px solid var(--color-gray-border, #D1D5DB);
+    color: #374151;
+    background-color: #ffffff;
+  }
+  .btn-outline:hover {
+    background-color: var(--color-gray-bg, #F8F9FA);
+    border-color: #9CA3AF;
+  }
+
+  /* Kartu boxed — border solid, white bg, shadow minimal */
+  .card-boxed {
+    background-color: var(--app-surface);
+    border: 1px solid var(--app-border, #D1D5DB);
+    border-radius: 8px;
+  }
+
+  /* Tabel boxed — semua sel punya border */
+  .table-boxed {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .table-boxed th,
+  .table-boxed td {
+    border: 1px solid var(--color-gray-light, #E5E7EB);
+    padding: 10px 12px;
+    text-align: left;
+  }
+  .table-boxed th {
+    background-color: var(--app-surface-2, #F1F5F9);
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--app-text-2, #374151);
+  }
+  .table-boxed td {
+    font-size: 12px;
+    color: var(--app-text, #0F172A);
+  }
+  .table-boxed tbody tr:hover {
+    background-color: #F1F5F9;
+  }
+
+  /* ============================================================
+     TABEL DIKOTAKIN — grid penuh (semua sel punya border)
+     Berlaku otomatis ke semua tabel di area admin tanpa perlu
+     menambah class per halaman. Border-collapse menghindari garis
+     dobel dari border baris (border-t) yang sudah ada.
+     ============================================================ */
+  .admin-app table {
+    border-collapse: collapse;
+  }
+  .admin-app table th,
+  .admin-app table td {
+    border: 1px solid var(--app-border-light, #E5E7EB);
+  }
+  .admin-app table thead th {
+    background-color: var(--app-surface-2, #F1F5F9);
+    color: var(--app-text-2, #374151);
+  }
+  .admin-app table tbody tr:hover {
+    background-color: var(--app-surface-2, #F1F5F9);
+  }
+
+  /* Ujung tabel siku (kotak) — wrapper tabel tidak membulat lagi.
+     Berlaku ke semua pola wrapper: div.rounded-* + overflow-hidden, maupun
+     inline style border-radius di master-data-crud. :has() didukung semua
+     browser modern (Chrome 105+, Firefox 121+, Safari 15.4+). */
+  div:has(> .overflow-x-auto > table),
+  div:has(> table) {
+    border-radius: 0 !important;
+  }
+
+  /* Badge status formal */
+  .badge-blue {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-2xs font-semibold;
+    background-color: var(--color-blue-light, #EFF6FF);
+    color: var(--color-blue-primary, #1D4ED8);
+    border: 1px solid var(--color-blue-border, #BFDBFE);
+  }
+  .badge-red {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-2xs font-semibold;
+    background-color: var(--color-red-light, #FEF2F2);
+    color: var(--color-red-primary, #DC2626);
+    border: 1px solid var(--color-red-border, #FECACA);
+  }
+  .badge-yellow {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-2xs font-semibold;
+    background-color: var(--color-yellow-light, #FFFBEB);
+    color: var(--color-yellow-accent, #D97706);
+    border: 1px solid var(--color-yellow-border, #FDE68A);
+  }
+  .badge-gray {
+    @apply inline-flex items-center px-2 py-0.5 rounded text-2xs font-semibold;
+    background-color: #F3F4F6;
+    color: #6B7280;
+    border: 1px solid var(--color-gray-border, #D1D5DB);
+  }
+}
+
+/* ============================================================
+   OVERRIDE MODE GELAP UNTUK KONTEN — utility Tailwind umum
+   (agar kartu, teks, dan border di semua halaman ikut gelap)
+   ============================================================ */
+.dark body {
+  background-color: var(--app-bg);
+  color: var(--app-text);
+}
+.dark .bg-white {
+  background-color: var(--app-surface);
+}
+.dark .bg-gray-50 {
+  background-color: var(--app-bg);
+}
+.dark .bg-gray-100 {
+  background-color: var(--app-surface-2);
+}
+.dark .bg-gray-200 {
+  background-color: #334155;
+}
+/* Header tabel di luar .admin-app (mis. peminjaman-list) tetap lebih terang dari latar */
+.dark tr.bg-gray-50 {
+  background-color: var(--app-surface-2);
+}
+
+/* Kartu navigasi aktif (quick-nav-bar) — varian mode gelap */
+.quick-nav-card-active {
+  background-color: #EFF6FF;
+  border-color: #BFDBFE;
+  color: #1D4ED8;
+}
+.dark .quick-nav-card-active {
+  background-color: #172554;
+  border-color: #1D4ED8;
+  color: #93C5FD;
+}
+.dark .text-gray-900 {
+  color: #F1F5F9;
+}
+.dark .text-gray-800 {
+  color: #E2E8F0;
+}
+.dark .text-gray-700 {
+  color: #CBD5E1;
+}
+.dark .text-gray-600 {
+  color: #94A3B8;
+}
+.dark .text-gray-500 {
+  color: #94A3B8;
+}
+.dark .text-gray-400 {
+  color: #64748B;
+}
+.dark .text-gray-300 {
+  color: #475569;
+}
+.dark .border-gray-100 {
+  border-color: #1E293B;
+}
+.dark .border-gray-200 {
+  border-color: #334155;
+}
+.dark .border-gray-300 {
+  border-color: #475569;
+}
+.dark .divide-gray-50 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #1E293B;
+}
+.dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #1E293B;
+}
+.dark .hover\:bg-gray-50:hover {
+  background-color: var(--app-surface-2);
+}
+.dark .hover\:bg-gray-100:hover {
+  background-color: var(--app-surface-2);
+}
+.dark .hover\:bg-gray-50\/50:hover {
+  background-color: var(--app-surface-2);
+}
+.dark select {
+  background-color: var(--app-surface);
+  color: var(--app-text);
+}
+
+/* ============================================================
+   PITA MERAH-PUTIH — identitas instansi ala bendera Indonesia
+   (merah di atas, putih di bawah; tiap pita 1px; full width)
+   ============================================================ */
+.stripe-merah-putih {
+  height: 2px;
+  width: 100%;
+  flex-shrink: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    #dc2626 0%,
+    #dc2626 50%,
+    #ffffff 50%,
+    #ffffff 100%
+  );
+}
+
+/* ============================================================
+   SCROLLBAR SIDEBAR — selalu terlihat (tipis, membulat)
+   ============================================================ */
+.admin-app aside nav {
+  scrollbar-width: thin;
+  scrollbar-color: #d1d5db transparent;
+}
+
+.admin-app aside nav::-webkit-scrollbar {
+  width: 6px;
+}
+
+.admin-app aside nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-app aside nav::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 9999px;
+}
+
+.admin-app aside nav::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* ============================================================
+   BADGE MODE GELAP — latar pastel terang jadi gelap transparan,
+   teks warna terang. Mencegah badge menyilaukan di mode gelap.
+   ============================================================ */
+.dark .bg-emerald-50 { background-color: rgba(16, 185, 129, 0.12); }
+.dark .bg-emerald-100 { background-color: rgba(16, 185, 129, 0.2); }
+.dark .bg-amber-50 { background-color: rgba(245, 158, 11, 0.12); }
+.dark .bg-amber-100 { background-color: rgba(245, 158, 11, 0.2); }
+.dark .bg-rose-50 { background-color: rgba(244, 63, 94, 0.12); }
+.dark .bg-rose-100 { background-color: rgba(244, 63, 94, 0.2); }
+.dark .bg-red-50 { background-color: rgba(239, 68, 68, 0.12); }
+.dark .bg-red-100 { background-color: rgba(239, 68, 68, 0.2); }
+.dark .bg-blue-50 { background-color: rgba(59, 130, 246, 0.12); }
+.dark .bg-blue-100 { background-color: rgba(59, 130, 246, 0.2); }
+.dark .bg-violet-50 { background-color: rgba(139, 92, 246, 0.12); }
+.dark .bg-violet-100 { background-color: rgba(139, 92, 246, 0.2); }
+.dark .bg-teal-50 { background-color: rgba(20, 184, 166, 0.12); }
+.dark .bg-teal-100 { background-color: rgba(20, 184, 166, 0.2); }
+.dark .bg-purple-50 { background-color: rgba(147, 51, 234, 0.12); }
+.dark .bg-purple-100 { background-color: rgba(147, 51, 234, 0.2); }
+.dark .bg-pink-50 { background-color: rgba(236, 72, 153, 0.12); }
+.dark .bg-pink-100 { background-color: rgba(236, 72, 153, 0.2); }
+.dark .bg-cyan-50 { background-color: rgba(6, 182, 212, 0.12); }
+.dark .bg-cyan-100 { background-color: rgba(6, 182, 212, 0.2); }
+.dark .bg-green-50 { background-color: rgba(34, 197, 94, 0.12); }
+.dark .bg-green-100 { background-color: rgba(34, 197, 94, 0.2); }
+.dark .bg-yellow-50 { background-color: rgba(234, 179, 8, 0.12); }
+.dark .bg-yellow-100 { background-color: rgba(234, 179, 8, 0.2); }
+.dark .bg-orange-50 { background-color: rgba(249, 115, 22, 0.12); }
+.dark .bg-orange-100 { background-color: rgba(249, 115, 22, 0.2); }
+.dark .bg-indigo-50 { background-color: rgba(99, 102, 241, 0.12); }
+.dark .bg-indigo-100 { background-color: rgba(99, 102, 241, 0.2); }
+
+/* Teks warna — versi terang agar kontras di latar gelap */
+.dark .text-emerald-400 { color: #34D399; }
+.dark .text-emerald-500 { color: #34D399; }
+.dark .text-emerald-600 { color: #34D399; }
+.dark .text-emerald-700 { color: #6EE7B7; }
+.dark .text-emerald-800 { color: #A7F3D0; }
+.dark .text-emerald-900 { color: #D1FAE5; }
+.dark .text-amber-500 { color: #FBBF24; }
+.dark .text-amber-600 { color: #FBBF24; }
+.dark .text-amber-700 { color: #FCD34D; }
+.dark .text-amber-800 { color: #FDE68A; }
+.dark .text-amber-900 { color: #FEF3C7; }
+.dark .text-rose-400 { color: #FDA4AF; }
+.dark .text-rose-500 { color: #FB7185; }
+.dark .text-rose-600 { color: #FDA4AF; }
+.dark .text-rose-700 { color: #FDA4AF; }
+.dark .text-rose-800 { color: #FECDD3; }
+.dark .text-rose-900 { color: #FFE4E6; }
+.dark .text-red-500 { color: #F87171; }
+.dark .text-red-600 { color: #F87171; }
+.dark .text-red-700 { color: #FCA5A5; }
+.dark .text-red-800 { color: #FECACA; }
+.dark .text-red-900 { color: #FEE2E2; }
+.dark .text-blue-500 { color: #60A5FA; }
+.dark .text-blue-600 { color: #60A5FA; }
+.dark .text-blue-700 { color: #93C5FD; }
+.dark .text-blue-800 { color: #BFDBFE; }
+.dark .text-blue-900 { color: #DBEAFE; }
+.dark .text-violet-500 { color: #A78BFA; }
+.dark .text-violet-600 { color: #A78BFA; }
+.dark .text-violet-700 { color: #C4B5FD; }
+.dark .text-violet-800 { color: #DDD6FE; }
+.dark .text-violet-900 { color: #EDE9FE; }
+.dark .text-teal-700 { color: #5EEAD4; }
+.dark .text-teal-800 { color: #99F6E4; }
+.dark .text-purple-700 { color: #D8B4FE; }
+.dark .text-purple-800 { color: #E9D5FF; }
+.dark .text-pink-700 { color: #F9A8D4; }
+.dark .text-cyan-700 { color: #67E8F9; }
+.dark .text-green-700 { color: #86EFAC; }
+.dark .text-yellow-700 { color: #FDE047; }
+.dark .text-orange-700 { color: #FDBA74; }
+.dark .text-indigo-500 { color: #A5B4FC; }
+
+/* Border badge — lebih redup di mode gelap */
+.dark .border-emerald-100 { border-color: rgba(16, 185, 129, 0.25); }
+.dark .border-emerald-200 { border-color: rgba(16, 185, 129, 0.35); }
+.dark .border-amber-100 { border-color: rgba(245, 158, 11, 0.25); }
+.dark .border-amber-200 { border-color: rgba(245, 158, 11, 0.35); }
+.dark .border-rose-100 { border-color: rgba(244, 63, 94, 0.25); }
+.dark .border-rose-200 { border-color: rgba(244, 63, 94, 0.35); }
+.dark .border-red-100 { border-color: rgba(239, 68, 68, 0.25); }
+.dark .border-red-200 { border-color: rgba(239, 68, 68, 0.35); }
+.dark .border-blue-100 { border-color: rgba(59, 130, 246, 0.25); }
+.dark .border-blue-200 { border-color: rgba(59, 130, 246, 0.35); }
+.dark .border-violet-100 { border-color: rgba(139, 92, 246, 0.25); }
+.dark .border-violet-200 { border-color: rgba(139, 92, 246, 0.35); }
+
+/* ============================================================
+   LOGO INSTANSI — blend agar latar putih/transparan menyatu
+   (multiply di terang → putih hilang; screen di gelap → gelap hilang)
+   ============================================================ */
+.img-instansi {
+  mix-blend-mode: multiply;
+}
+.dark .img-instansi {
+  mix-blend-mode: screen;
+}
+
+/* ============================================================
+   PATTERN HEADER — garis diagonal halus di latar header
+   ============================================================ */
+.header-pattern {
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(29, 78, 216, 0.045) 0px,
+    rgba(29, 78, 216, 0.045) 1px,
+    transparent 1px,
+    transparent 14px
+  );
+}
+.dark .header-pattern {
+  /* Di mode gelap, pattern image yang didesain untuk latar terang bisa
+     terlihat aneh — jadi paksa pakai garis diagonal bawaan (varian gelap) */
+  background-image: repeating-linear-gradient(
+    -45deg,
+    rgba(147, 197, 253, 0.07) 0px,
+    rgba(147, 197, 253, 0.07) 1px,
+    transparent 1px,
+    transparent 14px
+  ) !important;
+}
+
+/* Badge komponen (.badge-*) — varian gelap */
+.dark .badge-blue {
+  background-color: rgba(29, 78, 216, 0.25);
+  color: #93C5FD;
+  border-color: rgba(59, 130, 246, 0.4);
+}
+.dark .badge-red {
+  background-color: rgba(220, 38, 38, 0.25);
+  color: #FCA5A5;
+  border-color: rgba(239, 68, 68, 0.4);
+}
+.dark .badge-yellow {
+  background-color: rgba(217, 119, 6, 0.25);
+  color: #FCD34D;
+  border-color: rgba(245, 158, 11, 0.4);
+}
+.dark .badge-gray {
+  background-color: #1E293B;
+  color: #CBD5E1;
+  border-color: #334155;
+}

@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { History, AlertTriangle, ArrowLeftRight, RefreshCw, Inbox } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
+import Pagination from '~/components/pagination.vue'
 
-definePageMeta({ layout: 'staff', middleware: ['auth'], title: 'Riwayat' })
+definePageMeta({ layout: 'staff', middleware: ['auth', 'kaproli'], title: 'Riwayat' })
 
 const admin = useAdminService()
 
@@ -30,18 +31,34 @@ async function load() {
   }
 }
 
+// ---- Pagination: 20 data per halaman (per tab) ----
+const page = ref(1)
+const PER_PAGE = 20
+
+const pagedPeminjaman = computed(() =>
+  peminjaman.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
+)
+
+const pagedLaporan = computed(() =>
+  laporan.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
+)
+
+watch(tab, () => {
+  page.value = 1
+})
+
 const badge = (s: string) => {
   const map: Record<string, string> = {
-    menunggu: 'bg-amber-100 text-amber-800',
-    diverifikasi: 'bg-blue-100 text-blue-800',
-    diperbaiki: 'bg-violet-100 text-violet-800',
-    selesai: 'bg-emerald-100 text-emerald-800',
-    disetujui: 'bg-blue-100 text-blue-800',
-    dipinjam: 'bg-violet-100 text-violet-800',
-    dikembalikan: 'bg-emerald-100 text-emerald-800',
-    ditolak: 'bg-rose-100 text-rose-800'
+    menunggu: 'bg-amber-50 text-amber-700',
+    diverifikasi: 'bg-blue-50 text-blue-700',
+    diperbaiki: 'bg-violet-50 text-violet-700',
+    selesai: 'bg-emerald-50 text-emerald-700',
+    disetujui: 'bg-blue-50 text-blue-700',
+    dipinjam: 'bg-violet-50 text-violet-700',
+    dikembalikan: 'bg-emerald-50 text-emerald-700',
+    ditolak: 'bg-rose-50 text-rose-700'
   }
-  return map[s] ?? 'bg-gray-100 text-gray-700'
+  return map[s] ?? 'bg-gray-50 text-gray-700'
 }
 
 const fmt = (d?: string) => (d ? new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-')
@@ -52,7 +69,7 @@ onMounted(load)
 <template>
   <div class="space-y-4">
     <div>
-      <h2 class="text-2xl font-bold text-gray-900">Riwayat</h2>
+      <h2 class="text-sm font-bold text-gray-900">Riwayat</h2>
       <p class="text-sm text-gray-500 mt-1">Riwayat aktivitas aset proli Anda.</p>
     </div>
 
@@ -77,7 +94,7 @@ onMounted(load)
 
     <div class="space-y-3">
       <template v-if="tab === 'peminjaman'">
-        <div v-for="p in peminjaman" :key="p.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
+        <div v-for="p in pagedPeminjaman" :key="p.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
             <ArrowLeftRight class="w-4 h-4 text-blue-600" />
           </div>
@@ -85,7 +102,7 @@ onMounted(load)
             <div class="text-sm font-medium text-gray-900 truncate">{{ p.barang?.nama ?? 'Barang #' + p.barang_id }}</div>
             <div class="text-xs text-gray-400">{{ fmt(p.created_at) }} • {{ p.peminjam?.name ?? 'User' }}</div>
           </div>
-          <span class="text-xs px-2 py-1 rounded-full shrink-0" :class="badge(p.status)">{{ p.status }}</span>
+          <span class="text-xs px-2 py-1 rounded shrink-0" :class="badge(p.status)">{{ p.status }}</span>
         </div>
         <div v-if="!peminjaman.length && !loading" class="py-10 text-center text-gray-400 text-sm">
           <Inbox class="w-8 h-8 mx-auto mb-2 text-gray-300" /> Belum ada riwayat peminjaman.
@@ -93,7 +110,7 @@ onMounted(load)
       </template>
 
       <template v-else>
-        <div v-for="l in laporan" :key="l.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
+        <div v-for="l in pagedLaporan" :key="l.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-rose-50 flex items-center justify-center shrink-0">
             <AlertTriangle class="w-4 h-4 text-rose-500" />
           </div>
@@ -101,7 +118,7 @@ onMounted(load)
             <div class="text-sm font-medium text-gray-900 truncate">{{ l.barang?.nama ?? 'Barang #' + l.barang_id }}</div>
             <div class="text-xs text-gray-400">{{ fmt(l.created_at) }}</div>
           </div>
-          <span class="text-xs px-2 py-1 rounded-full shrink-0" :class="badge(l.status)">{{ l.status }}</span>
+          <span class="text-xs px-2 py-1 rounded shrink-0" :class="badge(l.status)">{{ l.status }}</span>
         </div>
         <div v-if="!laporan.length && !loading" class="py-10 text-center text-gray-400 text-sm">
           <Inbox class="w-8 h-8 mx-auto mb-2 text-gray-300" /> Belum ada riwayat kerusakan.
@@ -110,5 +127,13 @@ onMounted(load)
     </div>
 
     <div v-if="loading" class="py-12 text-center text-sm text-gray-400">Memuat data…</div>
+
+    <!-- Pagination: 20 data per halaman -->
+    <Pagination
+      v-model:page="page"
+      :total="tab === 'peminjaman' ? peminjaman.length : laporan.length"
+      :per-page="PER_PAGE"
+      :label="tab === 'peminjaman' ? 'peminjaman' : 'laporan'"
+    />
   </div>
 </template>

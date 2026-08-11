@@ -38,60 +38,105 @@ onMounted(load)
 </script>
 
 <template>
-  <div class="space-y-4">
+  <div>
+    <!-- Greeting -->
     <div>
-      <h2 class="text-xl font-bold text-gray-900">Halo, {{ authStore.user?.name ?? 'Murid' }} 👋</h2>
-      <p class="text-sm text-gray-500 mt-0.5">Apa yang ingin Anda lakukan hari ini?</p>
+      <h2 class="text-sm font-bold" style="color: #0F172A;">Halo, {{ authStore.user?.name ?? 'Murid' }} 👋</h2>
+      <p class="text-xs mt-0.5" style="color: #6B7280;">Apa yang ingin Anda lakukan hari ini?</p>
     </div>
 
-    <div class="grid grid-cols-2 gap-3">
-      <NuxtLink to="/murid/lapor" class="bg-rose-50 rounded-2xl border border-rose-100 p-4 flex flex-col items-start gap-2 hover:shadow-md transition">
-        <div class="w-10 h-10 rounded-xl bg-rose-100 flex items-center justify-center"><AlertTriangle class="w-5 h-5 text-rose-600" /></div>
-        <div class="font-semibold text-sm text-gray-900">Lapor Kerusakan</div>
-        <div class="text-xs text-gray-500">Laporkan barang rusak</div>
+    <!-- Quick actions (boxed, konsisten palet) -->
+    <div class="grid grid-cols-2 gap-2">
+      <NuxtLink
+        to="/murid/lapor"
+        class="bg-white p-3 transition"
+        style="border: 1px solid #D1D5DB; border-radius: 8px;"
+      >
+        <div class="w-9 h-9 rounded-md flex items-center justify-center" style="background-color: #FEF2F2;">
+          <AlertTriangle class="w-4 h-4" style="color: #DC2626;" />
+        </div>
+        <div class="mt-2 font-semibold text-xs" style="color: #0F172A;">Lapor Kerusakan</div>
+        <div class="text-2xs mt-0.5" style="color: #6B7280;">Laporkan barang rusak</div>
       </NuxtLink>
-      <NuxtLink to="/murid/peminjaman" class="bg-blue-50 rounded-2xl border border-blue-100 p-4 flex flex-col items-start gap-2 hover:shadow-md transition">
-        <div class="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center"><ArrowLeftRight class="w-5 h-5 text-blue-600" /></div>
-        <div class="font-semibold text-sm text-gray-900">Peminjaman</div>
-        <div class="text-xs text-gray-500">Pinjam barang sekolah</div>
+
+      <NuxtLink
+        to="/murid/peminjaman"
+        class="bg-white p-3 transition"
+        style="border: 1px solid #D1D5DB; border-radius: 8px;"
+      >
+        <div class="w-9 h-9 rounded-md flex items-center justify-center" style="background-color: #EFF6FF;">
+          <ArrowLeftRight class="w-4 h-4" style="color: #1D4ED8;" />
+        </div>
+        <div class="mt-2 font-semibold text-xs" style="color: #0F172A;">Peminjaman</div>
+        <div class="text-2xs mt-0.5" style="color: #6B7280;">Pinjam barang sekolah</div>
       </NuxtLink>
-      <NuxtLink to="/murid/scan-qr" class="bg-violet-50 rounded-2xl border border-violet-100 p-4 flex flex-col items-start gap-2 hover:shadow-md transition">
-        <div class="w-10 h-10 rounded-xl bg-violet-100 flex items-center justify-center"><QrCode class="w-5 h-5 text-violet-600" /></div>
-        <div class="font-semibold text-sm text-gray-900">Scan QR</div>
-        <div class="text-xs text-gray-500">Pindai kode barang</div>
+
+      <NuxtLink
+        to="/murid/scan-qr"
+        class="bg-white p-3 transition"
+        style="border: 1px solid #D1D5DB; border-radius: 8px;"
+      >
+        <div class="w-9 h-9 rounded-md flex items-center justify-center" style="background-color: #FFFBEB;">
+          <QrCode class="w-4 h-4" style="color: #D97706;" />
+        </div>
+        <div class="mt-2 font-semibold text-xs" style="color: #0F172A;">Scan QR</div>
+        <div class="text-2xs mt-0.5" style="color: #6B7280;">Pindai kode barang</div>
       </NuxtLink>
-      <NuxtLink to="/murid/riwayat" class="bg-emerald-50 rounded-2xl border border-emerald-100 p-4 flex flex-col items-start gap-2 hover:shadow-md transition">
-        <div class="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center"><History class="w-5 h-5 text-emerald-600" /></div>
-        <div class="font-semibold text-sm text-gray-900">Riwayat</div>
-        <div class="text-xs text-gray-500">Aktivitas saya</div>
+
+      <NuxtLink
+        to="/murid/riwayat"
+        class="bg-white p-3 transition"
+        style="border: 1px solid #D1D5DB; border-radius: 8px;"
+      >
+        <div class="w-9 h-9 rounded-md flex items-center justify-center" style="background-color: #F3F4F6;">
+          <History class="w-4 h-4" style="color: #374151;" />
+        </div>
+        <div class="mt-2 font-semibold text-xs" style="color: #0F172A;">Riwayat</div>
+        <div class="text-2xs mt-0.5" style="color: #6B7280;">Aktivitas saya</div>
       </NuxtLink>
     </div>
 
-    <p v-if="error" class="text-sm text-rose-600 bg-rose-50 border border-rose-100 rounded-xl px-4 py-3">{{ error }}</p>
+    <!-- Error -->
+    <div
+      v-if="error"
+      class="px-3 py-2 rounded-md text-xs font-medium"
+      style="border: 1px solid #FECACA; background-color: #FEF2F2; color: #DC2626;"
+    >{{ error }}</div>
 
-    <div class="grid grid-cols-2 gap-3">
-      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-        <div class="text-xs text-gray-400">Laporan Saya</div>
-        <div class="text-2xl font-bold text-gray-900 mt-1">{{ myLaporan.length }}</div>
+    <!-- Stat cards (boxed) -->
+    <div class="grid grid-cols-2 gap-2">
+      <div class="bg-white p-3" style="border: 1px solid #D1D5DB; border-radius: 8px;">
+        <div class="text-2xs" style="color: #9CA3AF;">Laporan Saya</div>
+        <div class="text-xl font-bold mt-0.5" style="color: #0F172A;">{{ myLaporan.length }}</div>
       </div>
-      <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-        <div class="text-xs text-gray-400">Peminjaman Saya</div>
-        <div class="text-2xl font-bold text-gray-900 mt-1">{{ myPeminjaman.length }}</div>
+      <div class="bg-white p-3" style="border: 1px solid #D1D5DB; border-radius: 8px;">
+        <div class="text-2xs" style="color: #9CA3AF;">Peminjaman Saya</div>
+        <div class="text-xl font-bold mt-0.5" style="color: #0F172A;">{{ myPeminjaman.length }}</div>
       </div>
     </div>
 
-    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
-      <div class="px-4 py-3 border-b border-gray-100 flex items-center justify-between">
-        <h3 class="font-semibold text-gray-900 text-sm">Aktivitas Terbaru</h3>
-        <button class="text-gray-400 hover:text-gray-600" title="Muat ulang" @click="load">
-          <RefreshCw class="w-4 h-4" :class="loading ? 'animate-spin' : ''" />
+    <!-- Aktivitas terbaru (boxed) -->
+    <div class="bg-white" style="border: 1px solid #D1D5DB; border-radius: 8px; overflow: hidden;">
+      <div class="flex items-center justify-between px-3 py-2.5" style="border-bottom: 1px solid #E5E7EB;">
+        <h3 class="font-semibold text-xs" style="color: #0F172A;">Aktivitas Terbaru</h3>
+        <button class="transition" style="color: #9CA3AF;" title="Muat ulang" @click="load">
+          <RefreshCw class="w-3.5 h-3.5" :class="loading ? 'animate-spin' : ''" />
         </button>
       </div>
-      <div class="divide-y divide-gray-50">
-        <div v-for="item in [...myLaporan.map((x) => ({ ...x, kind: 'l' })), ...myPeminjaman.map((x) => ({ ...x, kind: 'p' }))].slice(0, 5)" :key="item.kind + item.id" class="px-4 py-3 text-sm text-gray-600">
+      <div>
+        <div
+          v-for="item in [...myLaporan.map((x) => ({ ...x, kind: 'l' })), ...myPeminjaman.map((x) => ({ ...x, kind: 'p' }))].slice(0, 5)"
+          :key="item.kind + item.id"
+          class="px-3 py-2.5 text-xs flex items-center gap-2"
+          style="border-bottom: 1px solid #F3F4F6; color: #6B7280;"
+        >
+          <div
+            class="w-1.5 h-1.5 rounded-full shrink-0"
+            :style="{ backgroundColor: item.kind === 'l' ? '#DC2626' : '#1D4ED8' }"
+          />
           {{ item.deskripsi ?? `Peminjaman ${item.barang?.nama ?? 'barang'}` }}
         </div>
-        <div v-if="!myLaporan.length && !myPeminjaman.length" class="px-4 py-8 text-center text-sm text-gray-400">
+        <div v-if="!myLaporan.length && !myPeminjaman.length" class="px-3 py-6 text-center text-xs" style="color: #9CA3AF;">
           Belum ada aktivitas.
         </div>
       </div>

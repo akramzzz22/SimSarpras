@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { Wallet, Store, Wrench, RefreshCw, Inbox, ArrowLeftRight } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
+import Pagination from '~/components/pagination.vue'
 
-definePageMeta({ layout: 'mobile', middleware: ['auth'], title: 'Approval Biaya' })
+definePageMeta({ layout: 'mobile', middleware: ['auth', 'kepsek'], title: 'Approval Biaya' })
 
 const admin = useAdminService()
 
@@ -16,6 +17,26 @@ const tab = ref<'maintenance' | 'peminjaman'>('maintenance')
 const maintenanceWithVendor = computed(() => maintenance.value.filter((m) => m.vendor_id))
 
 const peminjamanMenunggu = computed(() => peminjaman.value.filter((p) => p.status === 'menunggu'))
+
+// ---- Pagination: 20 data per halaman (per tab) ----
+const page = ref(1)
+const PER_PAGE = 20
+
+const pagedMaintenance = computed(() =>
+  maintenanceWithVendor.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
+)
+
+const pagedPeminjaman = computed(() =>
+  peminjamanMenunggu.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
+)
+
+watch(tab, () => {
+  page.value = 1
+})
+
+watch([maintenanceWithVendor, peminjamanMenunggu], () => {
+  page.value = 1
+})
 
 async function load() {
   loading.value = true
@@ -36,12 +57,12 @@ async function load() {
 
 const badge = (s: string) => {
   const map: Record<string, string> = {
-    terjadwal: 'bg-amber-100 text-amber-800',
-    berlangsung: 'bg-blue-100 text-blue-800',
-    selesai: 'bg-emerald-100 text-emerald-800',
-    menunggu: 'bg-amber-100 text-amber-800'
+    terjadwal: 'bg-amber-50 text-amber-700',
+    berlangsung: 'bg-blue-50 text-blue-700',
+    selesai: 'bg-emerald-50 text-emerald-700',
+    menunggu: 'bg-amber-50 text-amber-700'
   }
-  return map[s] ?? 'bg-gray-100 text-gray-700'
+  return map[s] ?? 'bg-gray-50 text-gray-700'
 }
 
 const fmt = (d?: string) => (d ? new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-')
@@ -53,7 +74,7 @@ onMounted(load)
   <div class="space-y-4">
     <div class="flex items-center justify-between">
       <div>
-        <h2 class="text-lg font-bold text-gray-900">Approval Biaya</h2>
+        <h2 class="text-sm font-bold text-gray-900">Approval Biaya</h2>
         <p class="text-xs text-gray-500 mt-0.5">Pantau biaya vendor & persetujuan yang menunggu.</p>
       </div>
       <button class="p-2 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 transition" title="Muat ulang" @click="load">
@@ -92,7 +113,7 @@ onMounted(load)
       </div>
 
       <div class="space-y-3">
-        <div v-for="m in maintenanceWithVendor" :key="m.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+        <div v-for="m in pagedMaintenance" :key="m.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
           <div class="flex items-start justify-between gap-2">
             <div class="flex items-center gap-3 min-w-0">
               <div class="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
@@ -103,7 +124,7 @@ onMounted(load)
                 <div class="text-xs text-gray-400">Vendor: {{ m.vendor?.nama ?? '—' }} • {{ fmt(m.tanggal_jadwal) }}</div>
               </div>
             </div>
-            <span class="text-xs px-2 py-1 rounded-full shrink-0" :class="badge(m.status)">{{ m.status }}</span>
+            <span class="text-xs px-2 py-1 rounded shrink-0" :class="badge(m.status)">{{ m.status }}</span>
           </div>
         </div>
         <div v-if="!maintenanceWithVendor.length && !loading" class="py-12 text-center text-gray-400 text-sm">
@@ -114,7 +135,7 @@ onMounted(load)
 
     <template v-else>
       <div class="space-y-3">
-        <div v-for="p in peminjamanMenunggu" :key="p.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+        <div v-for="p in pagedPeminjaman" :key="p.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
           <div class="flex items-start justify-between gap-2">
             <div class="flex items-center gap-3 min-w-0">
               <div class="w-9 h-9 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
@@ -125,7 +146,7 @@ onMounted(load)
                 <div class="text-xs text-gray-400">Peminjam: {{ p.peminjam?.name ?? 'User' }}</div>
               </div>
             </div>
-            <span class="text-xs px-2 py-1 rounded-full shrink-0" :class="badge(p.status)">{{ p.status }}</span>
+            <span class="text-xs px-2 py-1 rounded shrink-0" :class="badge(p.status)">{{ p.status }}</span>
           </div>
         </div>
         <div v-if="!peminjamanMenunggu.length && !loading" class="py-12 text-center text-gray-400 text-sm">
@@ -135,5 +156,13 @@ onMounted(load)
     </template>
 
     <div v-if="loading" class="py-12 text-center text-sm text-gray-400">Memuat data…</div>
+
+    <!-- Pagination: 20 data per halaman -->
+    <Pagination
+      v-model:page="page"
+      :total="tab === 'maintenance' ? maintenanceWithVendor.length : peminjamanMenunggu.length"
+      :per-page="PER_PAGE"
+      :label="tab === 'maintenance' ? 'pekerjaan' : 'peminjaman'"
+    />
   </div>
 </template>

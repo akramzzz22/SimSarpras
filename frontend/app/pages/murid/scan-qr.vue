@@ -6,7 +6,7 @@ import {
 } from 'lucide-vue-next'
 import QrScanner from '~/components/qr-scanner.vue'
 import { useAdminService, type Barang } from '~/services/api/admin'
-import { formatTanggal, PINJAM_STATUS, LAPORAN_STATUS, extractKodeFromScan } from '~/utils/format'
+import { formatTanggal, extractKodeFromScan } from '~/utils/format'
 
 definePageMeta({ layout: 'mobile', middleware: ['auth'], title: 'Scan QR' })
 
@@ -98,7 +98,7 @@ function reset() {
         <div class="min-w-0 flex-1">
           <div class="font-semibold text-gray-900">{{ result.nama }}</div>
           <div class="text-xs text-gray-400 font-mono">{{ result.kode_qr }}</div>
-          <span class="mt-1.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full border text-[11px] font-semibold" :class="status.badge">
+          <span class="mt-1.5 inline-flex items-center gap-1.5 px-2.5 py-1 rounded border text-2xs font-semibold" :class="status.badge">
             <span class="w-1.5 h-1.5 rounded-full" :class="status.dot" />
             {{ status.label }}
           </span>
@@ -142,36 +142,8 @@ function reset() {
       </dl>
 
       <div v-if="result.deskripsi" class="border-t border-gray-100 bg-slate-50 px-4 py-3">
-        <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-1">Deskripsi Barang</div>
+        <div class="text-2xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Deskripsi Barang</div>
         <p class="text-sm text-gray-700 leading-relaxed">{{ result.deskripsi }}</p>
-      </div>
-
-      <!-- Riwayat peminjaman & kerusakan -->
-      <div class="border-t border-gray-100 bg-slate-50 px-4 py-3">
-        <div class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 mb-2">Riwayat</div>
-        <div v-if="result.peminjaman?.length || result.laporanKerusakan?.length" class="space-y-1.5">
-          <div v-for="p in result.peminjaman" :key="'p' + p.id" class="flex items-center gap-2 text-xs">
-            <ArrowLeftRight class="w-3.5 h-3.5 text-blue-500 shrink-0" />
-            <span class="text-gray-600 truncate min-w-0">{{ p.peminjam?.name ?? 'Peminjam' }}</span>
-            <span
-              class="ml-auto shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full"
-              :class="PINJAM_STATUS[p.status]?.cls ?? 'bg-gray-100 text-gray-600'"
-            >
-              {{ PINJAM_STATUS[p.status]?.label ?? p.status }}
-            </span>
-          </div>
-          <div v-for="l in result.laporanKerusakan" :key="'l' + l.id" class="flex items-center gap-2 text-xs">
-            <AlertTriangle class="w-3.5 h-3.5 text-rose-500 shrink-0" />
-            <span class="text-gray-600 truncate min-w-0">{{ l.deskripsi }}</span>
-            <span
-              class="ml-auto shrink-0 text-[10px] font-semibold px-2 py-0.5 rounded-full"
-              :class="LAPORAN_STATUS[l.status]?.cls ?? 'bg-gray-100 text-gray-600'"
-            >
-              {{ LAPORAN_STATUS[l.status]?.label ?? l.status }}
-            </span>
-          </div>
-        </div>
-        <p v-else class="text-xs text-gray-400">Belum ada riwayat peminjaman atau kerusakan.</p>
       </div>
 
       <div class="grid grid-cols-2 gap-2 p-4">
@@ -182,11 +154,19 @@ function reset() {
           <AlertTriangle class="w-4 h-4" /> Lapor Rusak
         </NuxtLink>
         <NuxtLink
+          v-if="result.bisa_dipinjam !== false"
           :to="{ path: '/murid/peminjaman', query: { kode: result.kode_qr } }"
           class="inline-flex items-center justify-center gap-1.5 rounded-xl bg-blue-600 py-2.5 text-sm font-semibold text-white hover:bg-blue-700 transition"
         >
           <ArrowLeftRight class="w-4 h-4" /> Pinjam
         </NuxtLink>
+        <div
+          v-else
+          class="inline-flex items-center justify-center gap-1.5 rounded-xl bg-gray-100 py-2.5 text-sm font-semibold text-gray-400"
+          title="Barang ini tidak bisa dipinjam"
+        >
+          <ArrowLeftRight class="w-4 h-4" /> Tidak Bisa Dipinjam
+        </div>
       </div>
     </div>
 

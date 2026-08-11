@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { History, AlertTriangle, Wrench, RefreshCw, Inbox, CheckCircle2 } from 'lucide-vue-next'
 import { useAdminService, type LaporanKerusakan, type Maintenance } from '~/services/api/admin'
+import Pagination from '~/components/pagination.vue'
 
-definePageMeta({ layout: 'staff', middleware: ['auth'], title: 'Riwayat' })
+definePageMeta({ layout: 'staff', middleware: ['auth', 'staff'], title: 'Riwayat' })
 
 const admin = useAdminService()
 const authStore = useAuthStore()
@@ -20,6 +21,22 @@ const doneLaporan = computed(() =>
 const doneMaintenance = computed(() =>
   maintenance.value.filter((m) => m.staff_id === authStore.user?.id && m.status === 'selesai')
 )
+
+// ---- Pagination: 20 data per halaman (per tab) ----
+const page = ref(1)
+const PER_PAGE = 20
+
+const pagedLaporan = computed(() =>
+  doneLaporan.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
+)
+
+const pagedMaintenance = computed(() =>
+  doneMaintenance.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
+)
+
+watch(tab, () => {
+  page.value = 1
+})
 
 async function load() {
   loading.value = true
@@ -47,7 +64,7 @@ onMounted(load)
   <div class="space-y-4">
     <div class="flex items-center justify-between">
       <div>
-        <h2 class="text-2xl font-bold text-gray-900">Riwayat</h2>
+        <h2 class="text-sm font-bold text-gray-900">Riwayat</h2>
         <p class="text-sm text-gray-500 mt-1">Pekerjaan yang telah Anda selesaikan.</p>
       </div>
       <button class="p-2 rounded-xl border border-gray-200 text-gray-500 hover:bg-gray-50 transition" title="Muat ulang" @click="load">
@@ -76,7 +93,7 @@ onMounted(load)
 
     <div class="space-y-3">
       <template v-if="tab === 'laporan'">
-        <div v-for="l in doneLaporan" :key="l.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
+        <div v-for="l in pagedLaporan" :key="l.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
             <CheckCircle2 class="w-4 h-4 text-emerald-600" />
           </div>
@@ -84,7 +101,7 @@ onMounted(load)
             <div class="text-sm font-medium text-gray-900 truncate">{{ l.barang?.nama ?? 'Barang #' + l.barang_id }}</div>
             <div class="text-xs text-gray-400">{{ fmt(l.created_at) }}</div>
           </div>
-          <span class="text-xs px-2 py-1 rounded-full bg-emerald-100 text-emerald-800 shrink-0">selesai</span>
+          <span class="text-xs px-2 py-1 rounded bg-emerald-50 text-emerald-700 shrink-0">selesai</span>
         </div>
         <div v-if="!doneLaporan.length && !loading" class="py-10 text-center text-gray-400 text-sm">
           <Inbox class="w-8 h-8 mx-auto mb-2 text-gray-300" /> Belum ada riwayat kerusakan selesai.
@@ -92,7 +109,7 @@ onMounted(load)
       </template>
 
       <template v-else>
-        <div v-for="m in doneMaintenance" :key="m.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
+        <div v-for="m in pagedMaintenance" :key="m.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 flex items-center gap-3">
           <div class="w-9 h-9 rounded-xl bg-emerald-50 flex items-center justify-center shrink-0">
             <Wrench class="w-4 h-4 text-emerald-600" />
           </div>
@@ -100,7 +117,7 @@ onMounted(load)
             <div class="text-sm font-medium text-gray-900 truncate">{{ m.barang?.nama ?? 'Barang #' + m.barang_id }}</div>
             <div class="text-xs text-gray-400">{{ fmt(m.tanggal_jadwal) }}</div>
           </div>
-          <span class="text-xs px-2 py-1 rounded-full bg-emerald-100 text-emerald-800 shrink-0">selesai</span>
+          <span class="text-xs px-2 py-1 rounded bg-emerald-50 text-emerald-700 shrink-0">selesai</span>
         </div>
         <div v-if="!doneMaintenance.length && !loading" class="py-10 text-center text-gray-400 text-sm">
           <Inbox class="w-8 h-8 mx-auto mb-2 text-gray-300" /> Belum ada riwayat maintenance selesai.
@@ -109,5 +126,13 @@ onMounted(load)
     </div>
 
     <div v-if="loading" class="py-12 text-center text-sm text-gray-400">Memuat data…</div>
+
+    <!-- Pagination: 20 data per halaman -->
+    <Pagination
+      v-model:page="page"
+      :total="tab === 'laporan' ? doneLaporan.length : doneMaintenance.length"
+      :per-page="PER_PAGE"
+      :label="tab === 'laporan' ? 'laporan' : 'maintenance'"
+    />
   </div>
 </template>

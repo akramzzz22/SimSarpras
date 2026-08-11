@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Logo Aplikasi Sarpras">
+  <defs>
+    <linearGradient id="sp-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#1E3A8A"/>
+    </linearGradient>
+  </defs>
+  <!-- Badge -->
+  <rect x="1.5" y="1.5" width="61" height="61" rx="15" fill="url(#sp-bg)"/>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="15" fill="none" stroke="#0F2557" stroke-opacity="0.4" stroke-width="1.5"/>
+  <!-- Atap kuning -->
+  <path d="M8.5 30 L32 13.5 L55.5 30 Z" fill="#FACC15" stroke="#F59E0B" stroke-width="1" stroke-linejoin="round"/>
+  <!-- Badan gedung -->
+  <rect x="13" y="29.5" width="38" height="23" rx="2.5" fill="#FFFFFF"/>
+  <rect x="13" y="29.5" width="38" height="23" rx="2.5" fill="none" stroke="#E2E8F0" stroke-width="1"/>
+  <!-- Jendela -->
+  <rect x="17.5" y="34" width="7" height="5.5" rx="1.2" fill="#BFDBFE" stroke="#93C5FD" stroke-width="0.8"/>
+  <rect x="39.5" y="34" width="7" height="5.5" rx="1.2" fill="#BFDBFE" stroke="#93C5FD" stroke-width="0.8"/>
+  <!-- Pintu -->
+  <path d="M27.5 52.5 v-9 a4.5 4.5 0 0 1 9 0 v9 Z" fill="#1E40AF"/>
+</svg>

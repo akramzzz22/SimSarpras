@@ -10,13 +10,27 @@ import {
   FileText,
   Wallet,
   LogOut,
-  ShieldCheck
+  ShieldCheck,
+  ChevronLeft
 } from 'lucide-vue-next'
 import { useAuthService } from '~/services/api/auth'
+import { useSekolah } from '~/composables/useSekolah'
 
 const authStore = useAuthStore()
 const { logout } = useAuthService()
+const { sekolah } = useSekolah()
 const route = useRoute()
+
+// Pattern header dari Pengaturan → Logo & Identitas (opsional, fallback polos)
+const patternStyle = computed(() =>
+  sekolah.value.patternHeader
+    ? {
+        backgroundImage: `url('${sekolah.value.patternHeader}')`,
+        backgroundRepeat: 'repeat',
+        backgroundSize: '40px'
+      }
+    : undefined
+)
 
 const navMap: Record<string, { title: string; to: string; icon: any }[]> = {
   guru: [
@@ -41,7 +55,17 @@ const navMap: Record<string, { title: string; to: string; icon: any }[]> = {
   ]
 }
 
-const nav = computed(() => navMap[authStore.role ?? ''] ?? navMap.guru)
+// Role aktif ditentukan dari path (mis. /guru/... → guru, /kepsek/... → kepsek)
+// agar user double job melihat menu sesuai dashboard yang sedang dibuka.
+const activeRole = computed(() => {
+  const seg = route.path.split('/')[1]
+  if (seg === 'murid') return 'murid'
+  if (seg === 'kepsek') return 'kepsek'
+  if (seg === 'guru') return 'guru'
+  return authStore.role ?? 'guru'
+})
+
+const nav = computed(() => navMap[activeRole.value] ?? navMap.guru)
 const pageTitle = computed(() => (route.meta.title as string | undefined) || 'Beranda')
 
 function isActive(to: string) {
@@ -62,35 +86,58 @@ async function handleLogout() {
 
 <template>
   <div class="min-h-screen flex flex-col bg-gray-50 max-w-md mx-auto">
-    <!-- Header -->
-    <header class="h-14 bg-white border-b border-gray-100 flex items-center gap-3 px-4 sticky top-0 z-10">
-      <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-        <ShieldCheck class="w-4 h-4 text-white" />
-      </div>
-      <div class="flex-1 min-w-0">
-        <h1 class="text-base font-semibold text-gray-900 truncate">{{ pageTitle }}</h1>
-      </div>
-      <button class="p-2 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition" title="Keluar" @click="handleLogout">
-        <LogOut class="w-4 h-4" />
+    <!-- Garis merah-putih 1px full width (identitas instansi) -->
+    <div class="stripe-merah-putih" />
+
+    <!-- Bar identitas sekolah (tipis, formal) -->
+    <div class="h-7 flex items-center gap-1.5 px-4" style="background-color: #1D4ED8;" :style="patternStyle">
+      <img
+        v-if="sekolah.fotoAplikasi"
+        :src="sekolah.fotoAplikasi"
+        class="w-3.5 h-3.5 object-contain shrink-0"
+        alt="Logo sekolah"
+      />
+      <ShieldCheck v-else class="w-3 h-3 text-white/80 shrink-0" />
+      <span class="text-2xs font-medium text-white/80 truncate">{{ sekolah.nama }}</span>
+      <div class="flex-1" />
+      <RoleSwitcher />
+      <ThemeSwitcher tone="light" />
+      <button class="p-0.5 rounded text-white/60 hover:text-white transition" title="Keluar" @click="handleLogout">
+        <LogOut class="w-3 h-3" />
       </button>
+    </div>
+
+    <!-- Header : judul halaman + nama aplikasi -->
+    <header class="h-12 bg-white flex items-center gap-2 px-4 sticky top-0 z-10" style="border-bottom: 1px solid var(--app-border-light, #E5E7EB);">
+      <h1 class="font-display text-sm font-semibold truncate" style="color: var(--app-text, #0F172A);">{{ pageTitle }}</h1>
+      <div class="flex-1" />
+      <span class="text-2xs" style="color: var(--app-faint, #9CA3AF);">{{ sekolah.namaAplikasi }}</span>
     </header>
 
     <!-- Konten -->
-    <main class="flex-1 p-4 pb-24">
+    <main class="flex-1 p-3 pb-20 space-y-3">
       <slot />
     </main>
 
-    <!-- Bottom nav -->
-    <nav class="h-16 bg-white border-t border-gray-100 fixed bottom-0 left-0 right-0 max-w-md mx-auto flex items-stretch">
+    <!-- Bottom nav (boxed) -->
+    <nav
+      class="h-14 fixed bottom-0 left-0 right-0 max-w-md mx-auto flex items-stretch z-10"
+      style="background-color: var(--app-surface, #ffffff); border-top: 1px solid var(--app-border, #D1D5DB);"
+    >
       <NuxtLink
         v-for="item in nav"
         :key="item.to"
         :to="item.to"
-        class="flex-1 flex flex-col items-center justify-center gap-1 text-[10px] font-medium transition"
-        :class="isActive(item.to) ? 'text-blue-600' : 'text-gray-400'"
+        class="flex-1 flex flex-col items-center justify-center gap-0.5 text-[10px] font-medium transition relative"
+        :style="isActive(item.to) ? { color: '#1D4ED8' } : { color: '#9CA3AF' }"
       >
         <component :is="item.icon" class="w-5 h-5" />
-        {{ item.title }}
+        <span>{{ item.title }}</span>
+        <span
+          v-if="isActive(item.to)"
+          class="absolute -top-px left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-b"
+          style="background-color: #1D4ED8;"
+        />
       </NuxtLink>
     </nav>
   </div>

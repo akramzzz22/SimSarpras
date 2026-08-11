@@ -3,7 +3,7 @@ import { ref, onMounted, computed } from 'vue'
 import { Boxes, ArrowLeftRight, RefreshCw, AlertTriangle, ClipboardCheck } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
 
-definePageMeta({ layout: 'staff', middleware: ['auth'], title: 'Dashboard' })
+definePageMeta({ layout: 'staff', middleware: ['auth', 'kaproli'], title: 'Dashboard' })
 
 const admin = useAdminService()
 const authStore = useAuthStore()
@@ -49,7 +49,7 @@ onMounted(load)
   <div class="space-y-4">
     <div class="flex items-center justify-between">
       <div>
-        <h2 class="text-2xl font-bold text-gray-900">Selamat datang, {{ authStore.user?.name ?? 'Ketua Proli' }} 👋</h2>
+        <h2 class="text-sm font-bold text-gray-900">Selamat datang, {{ authStore.user?.name ?? 'Ketua Proli' }} 👋</h2>
         <p class="text-sm text-gray-500 mt-1">Ringkasan aset proli dan persetujuan yang menunggu.</p>
       </div>
       <button class="p-2 rounded-xl border border-gray-200 text-gray-500 hover:bg-gray-50 transition" title="Muat ulang" @click="load">

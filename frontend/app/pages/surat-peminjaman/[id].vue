@@ -3,15 +3,25 @@ import { ref, computed, onMounted } from 'vue'
 import { Printer, ArrowLeft, Loader2, FileText } from 'lucide-vue-next'
 import { useAuthStore } from '~/stores/auth'
 import { useAdminService, type Peminjaman } from '~/services/api/admin'
-import { sekolah } from '~/config/sekolah'
+import { fmtJam } from '~/utils/format'
+import { useSekolah } from '~/composables/useSekolah'
 
 definePageMeta({ layout: false, middleware: ['auth'], title: 'Surat Peminjaman' })
 
 const route = useRoute()
 const admin = useAdminService()
 const authStore = useAuthStore()
+const { sekolah } = useSekolah()
 
 const data = ref<Peminjaman | null>(null)
+
+// Barang yang ditampilkan di surat: seluruh anggota kelompok paket bila ada,
+// selain itu cukup barang pada peminjaman ini.
+const daftarBarang = computed(() => {
+  if (!data.value) return []
+  if (data.value.kelompok?.length) return data.value.kelompok
+  return [data.value]
+})
 const loading = ref(true)
 const error = ref<string | null>(null)
 
@@ -21,7 +31,7 @@ const id = computed(() => Number(route.params.id))
 const nomorSurat = computed(() => {
   if (!data.value) return ''
   const tahun = new Date().getFullYear()
-  return `SPB/${String(data.value.id).padStart(3, '0')}/${sekolah.kodeSurat}/${tahun}`
+  return `SPB/${String(data.value.id).padStart(3, '0')}/${sekolah.value.kodeSurat}/${tahun}`
 })
 
 const tanggalPanjang = computed(() => {
@@ -35,11 +45,10 @@ const tanggalPanjang = computed(() => {
   })
 })
 
-// Tombol kembali: ke halaman riwayat sesuai role, atau history browser
+// Tombol kembali: ke halaman riwayat sesuai role (double job: admin/kaproli/staff prioritas)
 const backTarget = computed(() => {
-  const role = authStore.role
-  if (role === 'admin' || role === 'kaproli' || role === 'staff_sarpras') return '/admin/peminjaman/approval'
-  if (role === 'murid') return '/murid/riwayat'
+  if (authStore.hasRole('admin') || authStore.hasRole('kaproli') || authStore.hasRole('staff_sarpras')) return '/admin/peminjaman/approval'
+  if (authStore.hasRole('murid')) return '/murid/riwayat'
   return '/guru/riwayat'
 })
 
@@ -101,10 +110,26 @@ onMounted(load)
         class="bg-white max-w-3xl mx-auto rounded-2xl shadow-sm p-8 sm:p-12 print:rounded-none print:shadow-none print:p-8"
       >
         <!-- Kop surat -->
-        <header class="text-center border-b-4 border-double border-gray-900 pb-4">
-          <h1 class="text-2xl font-bold text-gray-900 uppercase tracking-wide">{{ sekolah.nama }}</h1>
-          <p class="text-sm text-gray-600 mt-1">{{ sekolah.alamat }}</p>
-          <p class="text-xs text-gray-500 mt-0.5">NPSN: {{ sekolah.npsn }} • Telp: {{ sekolah.telepon }}</p>
+        <header class="border-b-4 border-double border-gray-900 pb-4">
+          <div class="flex items-center justify-center gap-4">
+            <img
+              v-if="sekolah.fotoDinas"
+              :src="sekolah.fotoDinas"
+              class="h-12 w-auto max-w-[56px] object-contain shrink-0"
+              alt="Logo Dinas Pendidikan"
+            />
+            <div class="text-center">
+              <h1 class="text-xl font-bold text-gray-900 uppercase tracking-wide">{{ sekolah.nama }}</h1>
+              <p class="text-sm text-gray-600 mt-1">{{ sekolah.alamat }}</p>
+              <p class="text-xs text-gray-500 mt-0.5">NPSN: {{ sekolah.npsn }} • Telp: {{ sekolah.telepon }}</p>
+            </div>
+            <img
+              v-if="sekolah.fotoSekolah"
+              :src="sekolah.fotoSekolah"
+              class="h-12 w-auto max-w-[56px] object-contain shrink-0"
+              alt="Logo Sekolah"
+            />
+          </div>
         </header>
 
         <!-- Nomor & perihal -->
@@ -141,6 +166,16 @@ onMounted(load)
               <td class="py-1 pr-2 align-top">:</td>
               <td class="py-1 align-top">{{ data.peminjam.kelas }}</td>
             </tr>
+            <tr v-if="data.penanggung_jawab">
+              <td class="py-1 pr-4 align-top">Penanggung Jawab</td>
+              <td class="py-1 pr-2 align-top">:</td>
+              <td class="py-1 align-top">{{ data.penanggung_jawab }}</td>
+            </tr>
+            <tr v-if="data.jenis === 'eskul'">
+              <td class="py-1 pr-4 align-top">Jenis</td>
+              <td class="py-1 pr-2 align-top">:</td>
+              <td class="py-1 align-top">Peminjaman Eskul / Kegiatan</td>
+            </tr>
             <tr>
               <td class="py-1 pr-4 align-top">Tanggal</td>
               <td class="py-1 pr-2 align-top">:</td>
@@ -149,7 +184,7 @@ onMounted(load)
             <tr>
               <td class="py-1 pr-4 align-top">Waktu</td>
               <td class="py-1 pr-2 align-top">:</td>
-              <td class="py-1 align-top">Jam ke-{{ data.jam_mulai }} s.d. Jam ke-{{ data.jam_selesai }}</td>
+              <td class="py-1 align-top">{{ fmtJam(data.jam_mulai) }} s.d. {{ fmtJam(data.jam_selesai) }} WIB</td>
             </tr>
             <tr>
               <td class="py-1 pr-4 align-top">Keperluan</td>
@@ -159,7 +194,7 @@ onMounted(load)
           </tbody>
         </table>
 
-        <!-- Data barang -->
+        <!-- Data barang (seluruh anggota paket bila ada) -->
         <table class="mt-4 w-full text-sm text-gray-800">
           <thead>
             <tr class="border-y border-gray-800">
@@ -170,13 +205,13 @@ onMounted(load)
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="py-2 pr-4">1</td>
+            <tr v-for="(b, i) in daftarBarang" :key="b.id">
+              <td class="py-2 pr-4">{{ i + 1 }}</td>
               <td class="py-2 pr-4">
-                {{ data.barang?.nama ?? 'Barang #' + data.barang_id }}
-                <span v-if="data.barang?.kategori" class="block text-xs text-gray-500">{{ data.barang.kategori.nama }}</span>
+                {{ b.barang?.nama ?? 'Barang #' + b.barang_id }}
+                <span v-if="b.barang?.kategori" class="block text-xs text-gray-500">{{ b.barang.kategori.nama }}</span>
               </td>
-              <td class="py-2 pr-4 font-mono text-xs">{{ data.barang?.kode_qr ?? '-' }}</td>
+              <td class="py-2 pr-4 font-mono text-xs">{{ b.barang?.kode_qr ?? '-' }}</td>
               <td class="py-2">1 unit</td>
             </tr>
           </tbody>
@@ -192,8 +227,8 @@ onMounted(load)
         <!-- Tanda tangan -->
         <div class="mt-10 grid grid-cols-2 gap-8 text-sm text-gray-800">
           <div class="text-center">
-            <p class="mb-16">Pemohon,</p>
-            <p class="font-semibold underline">{{ data.peminjam?.name ?? '................' }}</p>
+          <p class="mb-16">{{ data.penanggung_jawab ? 'Penanggung Jawab,' : 'Pemohon,' }}</p>
+          <p class="font-semibold underline">{{ data.penanggung_jawab || data.peminjam?.name || '................' }}</p>
           </div>
           <div class="text-center">
             <p class="mb-16">{{ sekolah.pjSarpras }}</p>

@@ -1,4 +1,4 @@
-// Middleware dasar: memastikan user sudah login (Sanctum authenticated)
+// Middleware dasar: memastikan user sudah login (authenticated)
 export default defineNuxtRouteMiddleware((to) => {
   const authStore = useAuthStore()
 

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { QrCode, Search, RefreshCw, Printer, Inbox, Download, ExternalLink } from 'lucide-vue-next'
 import { useAdminService, type Barang } from '~/services/api/admin'
+import Pagination from '~/components/pagination.vue'
 
 definePageMeta({ layout: 'admin', middleware: ['auth', 'admin'], title: 'QR Code' })
 
@@ -16,6 +17,18 @@ const search = ref('')
 const filtered = computed(() => {
   const q = search.value.toLowerCase()
   return items.value.filter((b) => b.nama.toLowerCase().includes(q) || (b.kode_qr ?? '').toLowerCase().includes(q))
+})
+
+// ---- Pagination: 20 barang per halaman ----
+const page = ref(1)
+const PER_PAGE = 20
+
+const pagedFiltered = computed(() =>
+  filtered.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
+)
+
+watch(filtered, () => {
+  page.value = 1
 })
 
 // QR berisi link publik ke halaman info barang, sehingga bisa di-scan
@@ -46,12 +59,12 @@ onMounted(load)
   <div class="space-y-4">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div>
-        <h2 class="text-2xl font-bold text-gray-900">QR Code Barang</h2>
+        <h2 class="text-sm font-bold text-gray-900">QR Code Barang</h2>
         <p class="text-sm text-gray-500 mt-1">Tampilkan & cetak QR code setiap barang untuk ditempel.</p>
       </div>
       <div class="flex gap-2">
         <button
-          class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition shadow-sm"
+          class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition shadow-sm"
           onclick="window.print()"
         >
           <Printer class="w-4 h-4" />
@@ -68,7 +81,7 @@ onMounted(load)
       <input
         v-model="search"
         placeholder="Cari barang…"
-        class="w-full rounded-xl border border-gray-200 pl-9 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+        class="w-full rounded-xl border border-gray-200 pl-9 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-red-500"
       />
     </div>
 
@@ -76,7 +89,7 @@ onMounted(load)
 
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
       <div
-        v-for="b in filtered"
+        v-for="b in pagedFiltered"
         :key="b.id"
         class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4 text-center"
       >
@@ -87,14 +100,14 @@ onMounted(load)
           loading="lazy"
         />
         <div class="mt-3 font-medium text-sm text-gray-900 line-clamp-1">{{ b.nama }}</div>
-        <div class="mt-1 inline-flex items-center gap-1 text-[11px] font-mono text-gray-400">
+        <div class="mt-1 inline-flex items-center gap-1 text-2xs font-mono text-gray-400">
           <QrCode class="w-3 h-3" />
           {{ b.kode_qr }}
         </div>
         <NuxtLink
           :to="`/barang/${encodeURIComponent(b.kode_qr ?? '')}`"
           target="_blank"
-          class="mt-2 inline-flex items-center gap-1 text-[11px] font-medium text-blue-600 hover:text-blue-700"
+          class="mt-2 inline-flex items-center gap-1 text-2xs font-medium text-red-600 hover:text-red-700"
         >
           <ExternalLink class="w-3 h-3" />
           Lihat info saat di-scan
@@ -108,6 +121,9 @@ onMounted(load)
     </div>
 
     <div v-if="loading" class="py-12 text-center text-sm text-gray-400">Memuat data…</div>
+
+    <!-- Pagination: 20 barang per halaman -->
+    <Pagination v-model:page="page" :total="filtered.length" :per-page="PER_PAGE" label="barang" />
 
     <p class="text-xs text-gray-400 flex items-center gap-1">
       <Download class="w-3 h-3" />

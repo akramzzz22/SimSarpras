@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Monogram Aplikasi Sarpras">
+  <defs>
+    <linearGradient id="sp-bg3" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#1E3A8A"/>
+    </linearGradient>
+  </defs>
+  <!-- Badge -->
+  <rect x="1.5" y="1.5" width="61" height="61" rx="15" fill="url(#sp-bg3)"/>
+  <rect x="1.5" y="1.5" width="61" height="61" rx="15" fill="none" stroke="#0F2557" stroke-opacity="0.4" stroke-width="1.5"/>
+  <!-- Huruf S -->
+  <path d="M40 21.5 H25.5 a5.5 5.5 0 0 0 0 11 h13 a5.5 5.5 0 0 1 0 11 H23" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-linecap="round"/>
+  <!-- Garis kuning -->
+  <rect x="18" y="49.5" width="28" height="4" rx="2" fill="#FACC15"/>
+</svg>

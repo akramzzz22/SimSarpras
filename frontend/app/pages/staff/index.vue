@@ -3,7 +3,7 @@ import { ref, onMounted, computed } from 'vue'
 import { AlertTriangle, ArrowLeftRight, Wrench, RefreshCw, Boxes } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
 
-definePageMeta({ layout: 'staff', middleware: ['auth'], title: 'Dashboard' })
+definePageMeta({ layout: 'staff', middleware: ['auth', 'staff'], title: 'Dashboard' })
 
 const admin = useAdminService()
 const authStore = useAuthStore()
@@ -53,7 +53,7 @@ onMounted(load)
   <div class="space-y-4">
     <div class="flex items-center justify-between">
       <div>
-        <h2 class="text-2xl font-bold text-gray-900">Selamat datang, {{ authStore.user?.name ?? 'Staff' }} 👋</h2>
+        <h2 class="text-sm font-bold text-gray-900">Selamat datang, {{ authStore.user?.name ?? 'Staff' }} 👋</h2>
         <p class="text-sm text-gray-500 mt-1">Ringkasan kondisi aset dan tugas Anda.</p>
       </div>
       <button class="p-2 rounded-xl border border-gray-200 text-gray-500 hover:bg-gray-50 transition" title="Muat ulang" @click="load">
@@ -97,7 +97,7 @@ onMounted(load)
             <div class="text-sm font-medium text-gray-900 truncate">{{ m.barang?.nama ?? 'Barang #' + m.barang_id }}</div>
             <div class="text-xs text-gray-400">{{ m.tanggal_jadwal }}</div>
           </div>
-          <span class="text-xs px-2 py-1 rounded-full bg-violet-100 text-violet-800 shrink-0">{{ m.status }}</span>
+          <span class="text-xs px-2 py-1 rounded bg-violet-50 text-violet-700 shrink-0">{{ m.status }}</span>
         </div>
         <div v-if="!maintenance.filter((x) => x.status !== 'selesai').length" class="px-5 py-8 text-center text-sm text-gray-400">
           Tidak ada maintenance aktif.

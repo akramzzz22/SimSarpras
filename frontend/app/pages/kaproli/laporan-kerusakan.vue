@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { AlertTriangle, CheckCircle2, RefreshCw, Inbox, Wrench } from 'lucide-vue-next'
 import { useAdminService, type LaporanKerusakan } from '~/services/api/admin'
+import Pagination from '~/components/pagination.vue'
 
-definePageMeta({ layout: 'staff', middleware: ['auth'], title: 'Laporan Kerusakan' })
+definePageMeta({ layout: 'staff', middleware: ['auth', 'kaproli'], title: 'Laporan Kerusakan' })
 
 const admin = useAdminService()
 
@@ -13,6 +14,18 @@ const error = ref<string | null>(null)
 const verifyingId = ref<number | null>(null)
 
 const filtered = computed(() => items.value.filter((l) => l.barang?.owner_type === 'proli' || !l.barang))
+
+// ---- Pagination: 20 laporan per halaman ----
+const page = ref(1)
+const PER_PAGE = 20
+
+const pagedFiltered = computed(() =>
+  filtered.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
+)
+
+watch(filtered, () => {
+  page.value = 1
+})
 
 async function load() {
   loading.value = true
@@ -41,12 +54,12 @@ async function verifikasi(id: number) {
 
 const badge = (s: string) => {
   const map: Record<string, string> = {
-    menunggu: 'bg-amber-100 text-amber-800',
-    diverifikasi: 'bg-blue-100 text-blue-800',
-    diperbaiki: 'bg-violet-100 text-violet-800',
-    selesai: 'bg-emerald-100 text-emerald-800'
+    menunggu: 'bg-amber-50 text-amber-700',
+    diverifikasi: 'bg-blue-50 text-blue-700',
+    diperbaiki: 'bg-violet-50 text-violet-700',
+    selesai: 'bg-emerald-50 text-emerald-700'
   }
-  return map[s] ?? 'bg-gray-100 text-gray-700'
+  return map[s] ?? 'bg-gray-50 text-gray-700'
 }
 
 const fmt = (d?: string) => (d ? new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-')
@@ -57,14 +70,14 @@ onMounted(load)
 <template>
   <div class="space-y-4">
     <div>
-      <h2 class="text-2xl font-bold text-gray-900">Laporan Kerusakan</h2>
+      <h2 class="text-sm font-bold text-gray-900">Laporan Kerusakan</h2>
       <p class="text-sm text-gray-500 mt-1">Laporan kerusakan untuk barang proli.</p>
     </div>
 
     <p v-if="error" class="text-sm text-rose-600 bg-rose-50 border border-rose-100 rounded-xl px-4 py-3">{{ error }}</p>
 
     <div class="grid md:grid-cols-2 gap-4">
-      <div v-for="l in filtered" :key="l.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition">
+      <div v-for="l in pagedFiltered" :key="l.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition">
         <div class="flex items-start justify-between gap-3">
           <div class="flex items-center gap-3 min-w-0">
             <div class="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center shrink-0">
@@ -75,7 +88,7 @@ onMounted(load)
               <div class="text-xs text-gray-500 mt-0.5">{{ fmt(l.created_at) }} • oleh {{ l.pelapor?.name ?? 'User' }}</div>
             </div>
           </div>
-          <span class="text-xs px-2 py-1 rounded-full shrink-0" :class="badge(l.status)">{{ l.status }}</span>
+          <span class="text-xs px-2 py-1 rounded shrink-0" :class="badge(l.status)">{{ l.status }}</span>
         </div>
 
         <p class="mt-3 text-sm text-gray-600 line-clamp-2">{{ l.deskripsi }}</p>
@@ -104,5 +117,8 @@ onMounted(load)
     </div>
 
     <div v-if="loading" class="py-12 text-center text-sm text-gray-400">Memuat data…</div>
+
+    <!-- Pagination: 20 laporan per halaman -->
+    <Pagination v-model:page="page" :total="filtered.length" :per-page="PER_PAGE" label="laporan" />
   </div>
 </template>

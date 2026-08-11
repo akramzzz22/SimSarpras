@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { AlertTriangle, RefreshCw, Inbox, Download } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
+import Pagination from '~/components/pagination.vue'
 
-definePageMeta({ layout: 'mobile', middleware: ['auth'], title: 'Laporan' })
+definePageMeta({ layout: 'mobile', middleware: ['auth', 'kepsek'], title: 'Laporan' })
 
 const admin = useAdminService()
 
@@ -15,6 +16,18 @@ const filterStatus = ref('all')
 const filtered = computed(() =>
   filterStatus.value === 'all' ? laporan.value : laporan.value.filter((l) => l.status === filterStatus.value)
 )
+
+// ---- Pagination: 20 laporan per halaman ----
+const page = ref(1)
+const PER_PAGE = 20
+
+const pagedFiltered = computed(() =>
+  filtered.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
+)
+
+watch(filtered, () => {
+  page.value = 1
+})
 
 const statusOptions = ['all', 'menunggu', 'diverifikasi', 'diperbaiki', 'selesai'] as const
 
@@ -33,12 +46,12 @@ async function load() {
 
 const badge = (s: string) => {
   const map: Record<string, string> = {
-    menunggu: 'bg-amber-100 text-amber-800',
-    diverifikasi: 'bg-blue-100 text-blue-800',
-    diperbaiki: 'bg-violet-100 text-violet-800',
-    selesai: 'bg-emerald-100 text-emerald-800'
+    menunggu: 'bg-amber-50 text-amber-700',
+    diverifikasi: 'bg-blue-50 text-blue-700',
+    diperbaiki: 'bg-violet-50 text-violet-700',
+    selesai: 'bg-emerald-50 text-emerald-700'
   }
-  return map[s] ?? 'bg-gray-100 text-gray-700'
+  return map[s] ?? 'bg-gray-50 text-gray-700'
 }
 
 const fmt = (d?: string) => (d ? new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-')
@@ -66,7 +79,7 @@ onMounted(load)
 <template>
   <div class="space-y-4">
     <div class="flex items-center justify-between">
-      <h2 class="text-lg font-bold text-gray-900">Laporan Kerusakan</h2>
+      <h2 class="text-sm font-bold text-gray-900">Laporan Kerusakan</h2>
       <div class="flex gap-2">
         <button
           class="inline-flex items-center gap-1.5 px-3 py-2 rounded-lg bg-emerald-600 text-white text-xs font-medium hover:bg-emerald-700 transition"
@@ -85,7 +98,7 @@ onMounted(load)
       <button
         v-for="s in statusOptions"
         :key="s"
-        class="px-3 py-1.5 rounded-full text-xs font-medium border transition"
+        class="px-3 py-1.5 rounded text-xs font-medium border transition"
         :class="filterStatus === s ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
         @click="filterStatus = s"
       >
@@ -96,13 +109,13 @@ onMounted(load)
     <p v-if="error" class="text-sm text-rose-600 bg-rose-50 border border-rose-100 rounded-xl px-4 py-3">{{ error }}</p>
 
     <div class="space-y-3">
-      <div v-for="l in filtered" :key="l.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+      <div v-for="l in pagedFiltered" :key="l.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
         <div class="flex items-start justify-between gap-2">
           <div class="min-w-0">
             <div class="text-sm font-medium text-gray-900 truncate">{{ l.barang?.nama ?? 'Barang #' + l.barang_id }}</div>
             <div class="text-xs text-gray-400">{{ fmt(l.created_at) }} • {{ l.pelapor?.name ?? 'User' }}</div>
           </div>
-          <span class="text-xs px-2 py-1 rounded-full shrink-0" :class="badge(l.status)">{{ l.status }}</span>
+          <span class="text-xs px-2 py-1 rounded shrink-0" :class="badge(l.status)">{{ l.status }}</span>
         </div>
         <p class="mt-2 text-sm text-gray-600 line-clamp-2">{{ l.deskripsi }}</p>
       </div>
@@ -113,5 +126,8 @@ onMounted(load)
     </div>
 
     <div v-if="loading" class="py-12 text-center text-sm text-gray-400">Memuat data…</div>
+
+    <!-- Pagination: 20 laporan per halaman -->
+    <Pagination v-model:page="page" :total="filtered.length" :per-page="PER_PAGE" label="laporan" />
   </div>
 </template>

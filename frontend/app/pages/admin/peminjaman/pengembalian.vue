@@ -1,7 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { PackageCheck, RefreshCw, Loader2, Inbox, Camera, X, AlertTriangle } from 'lucide-vue-next'
 import { useAdminService, type Peminjaman } from '~/services/api/admin'
+import { fmtJam } from '~/utils/format'
+import SlotJamIndicator from '~/components/slot-jam-indicator.vue'
+import Pagination from '~/components/pagination.vue'
 
 definePageMeta({ layout: 'admin', middleware: ['auth', 'admin'], title: 'Pengembalian' })
 
@@ -22,6 +25,18 @@ const savingReturn = ref(false)
 const filtered = computed(() =>
   filterStatus.value === 'all' ? items.value : items.value.filter((p) => p.status === filterStatus.value)
 )
+
+// ---- Pagination: 20 data per halaman ----
+const page = ref(1)
+const PER_PAGE = 20
+
+const pagedFiltered = computed(() =>
+  filtered.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
+)
+
+watch(filtered, () => {
+  page.value = 1
+})
 
 const statusOptions = ['all', 'menunggu', 'disetujui', 'dipinjam', 'dikembalikan', 'ditolak'] as const
 
@@ -98,13 +113,13 @@ async function confirmReturn() {
 
 const badge = (s: string) => {
   const map: Record<string, string> = {
-    menunggu: 'bg-amber-100 text-amber-800',
-    disetujui: 'bg-blue-100 text-blue-800',
-    dipinjam: 'bg-violet-100 text-violet-800',
-    dikembalikan: 'bg-emerald-100 text-emerald-800',
-    ditolak: 'bg-rose-100 text-rose-800'
+    menunggu: 'bg-amber-50 text-amber-700',
+    disetujui: 'bg-red-50 text-red-700',
+    dipinjam: 'bg-violet-50 text-violet-700',
+    dikembalikan: 'bg-emerald-50 text-emerald-700',
+    ditolak: 'bg-rose-50 text-rose-700'
   }
-  return map[s] ?? 'bg-gray-100 text-gray-700'
+  return map[s] ?? 'bg-gray-50 text-gray-700'
 }
 
 const fmt = (d?: string) => (d ? new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-')
@@ -116,7 +131,7 @@ onMounted(load)
   <div class="space-y-4">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div>
-        <h2 class="text-2xl font-bold text-gray-900">Pengembalian</h2>
+        <h2 class="text-sm font-bold text-gray-900">Pengembalian</h2>
         <p class="text-sm text-gray-500 mt-1">Kelola pengembalian barang — wajib upload foto barang.</p>
       </div>
       <button class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition w-fit" @click="load">
@@ -130,8 +145,8 @@ onMounted(load)
       <button
         v-for="s in statusOptions"
         :key="s"
-        class="px-3 py-1.5 rounded-full text-sm font-medium border transition"
-        :class="filterStatus === s ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
+        class="px-3 py-1.5 rounded text-sm font-medium border transition"
+        :class="filterStatus === s ? 'bg-red-600 text-white border-red-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
         @click="filterStatus = s"
       >
         {{ s }}
@@ -142,24 +157,27 @@ onMounted(load)
 
     <!-- List -->
     <div class="grid md:grid-cols-2 gap-4">
-      <div v-for="p in filtered" :key="p.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition">
+      <div v-for="p in pagedFiltered" :key="p.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition">
         <div class="flex items-start justify-between gap-3">
           <div class="flex items-center gap-3 min-w-0">
-            <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-              <PackageCheck class="w-5 h-5 text-blue-600" />
+            <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center shrink-0">
+              <PackageCheck class="w-5 h-5 text-red-600" />
             </div>
             <div class="min-w-0">
               <div class="font-semibold text-gray-900 truncate">{{ p.barang?.nama ?? 'Barang #' + p.barang_id }}</div>
               <div class="text-xs text-gray-500 mt-0.5">Peminjam: {{ p.peminjam?.name ?? 'User' }}</div>
             </div>
           </div>
-          <span class="text-xs px-2 py-1 rounded-full shrink-0" :class="badge(p.status)">{{ p.status }}</span>
+          <span class="text-xs px-2 py-1 rounded shrink-0" :class="badge(p.status)">{{ p.status }}</span>
         </div>
 
         <div class="mt-3 flex flex-wrap gap-4 text-xs text-gray-500">
           <span>Tanggal: <b class="text-gray-700">{{ fmt(p.tanggal_pinjam) }}</b></span>
-          <span>Jam: <b class="text-gray-700">ke-{{ p.jam_mulai }} – {{ p.jam_selesai }}</b></span>
+          <span>Jam: <b class="text-gray-700">{{ fmtJam(p.jam_mulai) }} – {{ fmtJam(p.jam_selesai) }}</b></span>
         </div>
+
+        <!-- Indikator visual slot jam: merah = jam dipesan, hijau = jam tersedia -->
+        <SlotJamIndicator :jam-mulai="p.jam_mulai" :jam-selesai="p.jam_selesai" />
 
         <div class="mt-4 flex items-center gap-3">
           <button
@@ -176,7 +194,7 @@ onMounted(load)
           </span>
           <button
             v-if="p.foto_pinjam"
-            class="text-xs text-blue-600 hover:underline"
+            class="text-xs text-red-600 hover:underline"
             @click="p.showFoto = !p.showFoto"
           >
             {{ p.showFoto ? 'Sembunyikan foto pinjam' : 'Lihat foto saat pinjam' }}
@@ -198,6 +216,9 @@ onMounted(load)
 
     <div v-if="loading" class="py-12 text-center text-sm text-gray-400">Memuat data…</div>
 
+    <!-- Pagination: 20 data per halaman -->
+    <Pagination v-model:page="page" :total="filtered.length" :per-page="PER_PAGE" label="peminjaman" />
+
     <!-- Modal pengembalian (foto wajib) -->
     <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
       <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" @click="!savingReturn && (showModal = false)" />
@@ -210,12 +231,12 @@ onMounted(load)
         </div>
 
         <p class="text-sm text-gray-600 mb-1">Barang: <b>{{ modalTarget?.barang?.nama }}</b></p>
-        <p class="text-xs text-gray-400 mb-4">Tanggal {{ fmt(modalTarget?.tanggal_pinjam) }} • Jam ke-{{ modalTarget?.jam_mulai }} – {{ modalTarget?.jam_selesai }}</p>
+        <p class="text-xs text-gray-400 mb-4">Tanggal {{ fmt(modalTarget?.tanggal_pinjam) }} • {{ fmtJam(modalTarget?.jam_mulai) }} – {{ fmtJam(modalTarget?.jam_selesai) }}</p>
 
         <label class="block text-sm font-medium text-gray-700 mb-1">Foto Barang Dikembalikan <span class="text-rose-500">*</span></label>
         <div
           class="relative rounded-xl border-2 border-dashed p-3 text-center transition cursor-pointer"
-          :class="fotoKembali ? 'border-emerald-300 bg-emerald-50/50' : 'border-gray-300 hover:border-blue-400 hover:bg-blue-50/30'"
+          :class="fotoKembali ? 'border-emerald-300 bg-emerald-50/50' : 'border-gray-300 hover:border-red-400 hover:bg-red-50/30'"
           @click="pickFoto"
         >
           <img v-if="fotoKembali" :src="fotoKembali" class="max-h-40 mx-auto rounded-lg object-cover" alt="Foto pengembalian" />

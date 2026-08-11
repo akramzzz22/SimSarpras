@@ -3,7 +3,7 @@ import { ref, onMounted, computed } from 'vue'
 import { BarChart3, Boxes, AlertTriangle, RefreshCw, Inbox } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
 
-definePageMeta({ layout: 'mobile', middleware: ['auth'], title: 'Monitoring' })
+definePageMeta({ layout: 'mobile', middleware: ['auth', 'kepsek'], title: 'Monitoring' })
 
 const admin = useAdminService()
 
@@ -39,12 +39,12 @@ async function load() {
 
 const badge = (s: string) => {
   const map: Record<string, string> = {
-    menunggu: 'bg-amber-100 text-amber-800',
-    diverifikasi: 'bg-blue-100 text-blue-800',
-    diperbaiki: 'bg-violet-100 text-violet-800',
-    selesai: 'bg-emerald-100 text-emerald-800'
+    menunggu: 'bg-amber-50 text-amber-700',
+    diverifikasi: 'bg-blue-50 text-blue-700',
+    diperbaiki: 'bg-violet-50 text-violet-700',
+    selesai: 'bg-emerald-50 text-emerald-700'
   }
-  return map[s] ?? 'bg-gray-100 text-gray-700'
+  return map[s] ?? 'bg-gray-50 text-gray-700'
 }
 
 const fmt = (d?: string) => (d ? new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-')
@@ -55,7 +55,7 @@ onMounted(load)
 <template>
   <div class="space-y-4">
     <div class="flex items-center justify-between">
-      <h2 class="text-lg font-bold text-gray-900">Monitoring Aset</h2>
+      <h2 class="text-sm font-bold text-gray-900">Monitoring Aset</h2>
       <button class="p-2 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 transition" title="Muat ulang" @click="load">
         <RefreshCw class="w-4 h-4" :class="loading ? 'animate-spin' : ''" />
       </button>
@@ -103,7 +103,7 @@ onMounted(load)
               <div class="text-sm font-medium text-gray-900 truncate">{{ l.barang?.nama ?? 'Barang #' + l.barang_id }}</div>
               <div class="text-xs text-gray-400">{{ fmt(l.created_at) }} • {{ l.pelapor?.name ?? 'User' }}</div>
             </div>
-            <span class="text-xs px-2 py-1 rounded-full shrink-0" :class="badge(l.status)">{{ l.status }}</span>
+            <span class="text-xs px-2 py-1 rounded shrink-0" :class="badge(l.status)">{{ l.status }}</span>
           </div>
         </div>
         <div v-if="!laporan.length && !loading" class="px-4 py-8 text-center text-sm text-gray-400">

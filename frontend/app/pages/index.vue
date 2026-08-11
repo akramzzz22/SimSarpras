@@ -2,7 +2,7 @@
 const authStore = useAuthStore()
 
 if (authStore.isAuthenticated) {
-  await navigateTo(roleHome(authStore.role))
+  await navigateTo(rolesHome(authStore.roles))
 } else {
   await navigateTo('/login')
 }

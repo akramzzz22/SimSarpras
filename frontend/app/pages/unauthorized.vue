@@ -10,13 +10,13 @@ const authStore = useAuthStore()
       <div class="w-16 h-16 mx-auto rounded-2xl bg-rose-100 flex items-center justify-center mb-4">
         <ShieldX class="w-8 h-8 text-rose-500" />
       </div>
-      <h1 class="text-2xl font-bold text-gray-900">Akses Ditolak</h1>
+      <h1 class="text-sm font-bold text-gray-900">Akses Ditolak</h1>
       <p class="text-sm text-gray-500 mt-2">
         Anda tidak memiliki izin untuk mengakses halaman ini.
       </p>
       <div class="mt-6 flex flex-col gap-2">
         <NuxtLink
-          :to="roleHome(authStore.role)"
+          :to="rolesHome(authStore.roles)"
           class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition"
         >
           <ArrowLeft class="w-4 h-4" />

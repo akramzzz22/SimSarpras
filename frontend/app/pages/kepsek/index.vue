@@ -3,7 +3,7 @@ import { ref, onMounted, computed } from 'vue'
 import { BarChart3, Boxes, AlertTriangle, ArrowLeftRight, RefreshCw, ClipboardCheck } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
 
-definePageMeta({ layout: 'mobile', middleware: ['auth'], title: 'Monitoring' })
+definePageMeta({ layout: 'mobile', middleware: ['auth', 'kepsek'], title: 'Monitoring' })
 
 const admin = useAdminService()
 const authStore = useAuthStore()
@@ -53,7 +53,7 @@ onMounted(load)
   <div class="space-y-4">
     <div class="flex items-center justify-between">
       <div>
-        <h2 class="text-xl font-bold text-gray-900">Selamat datang, {{ authStore.user?.name ?? 'Kepala Sekolah' }} 👋</h2>
+        <h2 class="text-sm font-bold text-gray-900">Selamat datang, {{ authStore.user?.name ?? 'Kepala Sekolah' }} 👋</h2>
         <p class="text-sm text-gray-500 mt-0.5">Ringkasan kondisi aset sekolah.</p>
       </div>
       <button class="p-2 rounded-lg border border-gray-200 text-gray-500 hover:bg-gray-50 transition" title="Muat ulang" @click="load">

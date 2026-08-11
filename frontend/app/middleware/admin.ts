@@ -2,7 +2,7 @@
 export default defineNuxtRouteMiddleware((to) => {
   const authStore = useAuthStore()
 
-  if (authStore.role !== 'admin') {
+  if (!authStore.hasRole('admin')) {
     return navigateTo('/unauthorized')
   }
 })

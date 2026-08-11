@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { ClipboardList, Wrench, AlertTriangle, CheckCircle2, RefreshCw, Inbox } from 'lucide-vue-next'
 import { useAdminService, type LaporanKerusakan } from '~/services/api/admin'
+import Pagination from '~/components/pagination.vue'
 
-definePageMeta({ layout: 'staff', middleware: ['auth'], title: 'Tugas Saya' })
+definePageMeta({ layout: 'staff', middleware: ['auth', 'staff'], title: 'Tugas Saya' })
 
 const admin = useAdminService()
 const authStore = useAuthStore()
@@ -17,6 +18,18 @@ const actionId = ref<number | null>(null)
 const myTasks = computed(() =>
   laporan.value.filter((l) => l.assigned_to === authStore.user?.id && l.status !== 'selesai')
 )
+
+// ---- Pagination: 20 tugas per halaman ----
+const page = ref(1)
+const PER_PAGE = 20
+
+const pagedTasks = computed(() =>
+  myTasks.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
+)
+
+watch(myTasks, () => {
+  page.value = 1
+})
 
 async function load() {
   loading.value = true
@@ -45,10 +58,10 @@ async function changeStatus(l: LaporanKerusakan, status: 'diperbaiki' | 'selesai
 
 const badge = (s: string) => {
   const map: Record<string, string> = {
-    diverifikasi: 'bg-blue-100 text-blue-800',
-    diperbaiki: 'bg-violet-100 text-violet-800'
+    diverifikasi: 'bg-blue-50 text-blue-700',
+    diperbaiki: 'bg-violet-50 text-violet-700'
   }
-  return map[s] ?? 'bg-gray-100 text-gray-700'
+  return map[s] ?? 'bg-gray-50 text-gray-700'
 }
 
 onMounted(load)
@@ -58,7 +71,7 @@ onMounted(load)
   <div class="space-y-4">
     <div class="flex items-center justify-between">
       <div>
-        <h2 class="text-2xl font-bold text-gray-900">Tugas Saya</h2>
+        <h2 class="text-sm font-bold text-gray-900">Tugas Saya</h2>
         <p class="text-sm text-gray-500 mt-1">Laporan kerusakan yang ditugaskan kepada Anda.</p>
       </div>
       <button class="p-2 rounded-xl border border-gray-200 text-gray-500 hover:bg-gray-50 transition" title="Muat ulang" @click="load">
@@ -69,7 +82,7 @@ onMounted(load)
     <p v-if="error" class="text-sm text-rose-600 bg-rose-50 border border-rose-100 rounded-xl px-4 py-3">{{ error }}</p>
 
     <div class="grid md:grid-cols-2 gap-4">
-      <div v-for="l in myTasks" :key="l.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition">
+      <div v-for="l in pagedTasks" :key="l.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition">
         <div class="flex items-start justify-between gap-3">
           <div class="flex items-center gap-3 min-w-0">
             <div class="w-10 h-10 rounded-xl bg-amber-50 flex items-center justify-center shrink-0">
@@ -80,7 +93,7 @@ onMounted(load)
               <div class="text-xs text-gray-500 mt-0.5">oleh {{ l.pelapor?.name ?? 'User' }}</div>
             </div>
           </div>
-          <span class="text-xs px-2 py-1 rounded-full shrink-0" :class="badge(l.status)">{{ l.status }}</span>
+          <span class="text-xs px-2 py-1 rounded shrink-0" :class="badge(l.status)">{{ l.status }}</span>
         </div>
 
         <p class="mt-3 text-sm text-gray-600 line-clamp-2">{{ l.deskripsi }}</p>
@@ -116,5 +129,8 @@ onMounted(load)
     <div v-if="loading" class="py-12 text-center text-sm text-gray-400 flex items-center justify-center gap-2">
       <Inbox class="w-4 h-4 animate-pulse" /> Memuat data…
     </div>
+
+    <!-- Pagination: 20 tugas per halaman -->
+    <Pagination v-model:page="page" :total="myTasks.length" :per-page="PER_PAGE" label="tugas" />
   </div>
 </template>

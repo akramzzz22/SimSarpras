@@ -1,12 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { User, Mail, ShieldCheck, LogOut, Loader2 } from 'lucide-vue-next'
 import { useAuthService } from '~/services/api/auth'
 
-definePageMeta({ layout: 'staff', middleware: ['auth'], title: 'Profil' })
+definePageMeta({ layout: 'staff', middleware: ['auth', 'staff'], title: 'Profil' })
 
 const authStore = useAuthStore()
 const { logout } = useAuthService()
+
+// Semua role user (double job), mis. guru + kaproli
+const displayRoles = computed(() => {
+  const list = authStore.roles.length ? authStore.roles : authStore.role ? [authStore.role] : []
+  return list.map((r) => String(r)).filter(Boolean)
+})
 
 const loading = ref(false)
 
@@ -29,11 +35,17 @@ async function handleLogout() {
       <div class="w-20 h-20 rounded-full bg-emerald-100 mx-auto flex items-center justify-center text-2xl font-bold text-emerald-700">
         {{ (authStore.user?.name ?? 'U').charAt(0).toUpperCase() }}
       </div>
-      <h2 class="mt-3 text-xl font-bold text-gray-900">{{ authStore.user?.name ?? 'User' }}</h2>
-      <span class="inline-flex items-center gap-1 mt-1 text-xs px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">
-        <ShieldCheck class="w-3.5 h-3.5" />
-        {{ (authStore.role ?? '').replace('_', ' ') }}
-      </span>
+      <h2 class="mt-3 text-sm font-bold text-gray-900">{{ authStore.user?.name ?? 'User' }}</h2>
+      <div class="flex flex-wrap items-center justify-center gap-1 mt-1">
+        <span
+          v-for="r in displayRoles"
+          :key="r"
+          class="inline-flex items-center gap-1 text-xs px-2.5 py-1 rounded bg-emerald-50 text-emerald-700"
+        >
+          <ShieldCheck class="w-3.5 h-3.5" />
+          {{ r.replace('_', ' ') }}
+        </span>
+      </div>
     </div>
 
     <div class="bg-white rounded-2xl border border-gray-100 shadow-sm divide-y divide-gray-50">

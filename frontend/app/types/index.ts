@@ -6,6 +6,7 @@ export interface Barang {
   owner_type: 'sarpras' | 'proli'
   proli_id?: number
   status: 'aktif' | 'rusak' | 'dipinjam' | 'maintenance'
+  bisa_dipinjam?: boolean
 }
 
 export interface LaporanKerusakan {
@@ -23,8 +24,8 @@ export interface Peminjaman {
   peminjam_id: number
   status: 'menunggu' | 'disetujui' | 'ditolak' | 'dipinjam' | 'dikembalikan'
   tanggal_pinjam?: string
-  jam_mulai?: number | null
-  jam_selesai?: number | null
+  jam_mulai?: string | null
+  jam_selesai?: string | null
   foto_pinjam?: string | null
   foto_kembali?: string | null
 }

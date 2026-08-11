@@ -19,11 +19,25 @@ import {
 } from 'lucide-vue-next'
 import { useAuthService } from '~/services/api/auth'
 import { useAdminService, type AppNotification } from '~/services/api/admin'
+import { useSekolah } from '~/composables/useSekolah'
 
 const authStore = useAuthStore()
 const { logout } = useAuthService()
 const admin = useAdminService()
 const route = useRoute()
+const { sekolah } = useSekolah()
+
+// Pattern header dari image yang diunggah (Pengaturan → Logo & Identitas).
+// Kosong → pakai garis diagonal bawaan dari CSS.
+const patternStyle = computed(() =>
+  sekolah.value.patternHeader
+    ? {
+        backgroundImage: `url('${sekolah.value.patternHeader}')`,
+        backgroundRepeat: 'repeat',
+        backgroundSize: '40px'
+      }
+    : undefined
+)
 
 const sidebarOpen = ref(false)
 
@@ -115,8 +129,21 @@ const navMap: Record<string, { title: string; to: string; icon: any }[]> = {
   ]
 }
 
-const nav = computed(() => navMap[authStore.role ?? ''] ?? navMap.staff_sarpras)
+// Role aktif ditentukan dari path (mis. /kaproli/... → kaproli, /staff/... → staff_sarpras)
+// agar user double job melihat menu sesuai dashboard yang sedang dibuka.
+const activeRole = computed(() => {
+  const seg = route.path.split('/')[1]
+  if (seg === 'kaproli') return 'kaproli'
+  if (seg === 'staff') return 'staff_sarpras'
+  return authStore.role ?? 'staff_sarpras'
+})
+
+const nav = computed(() => navMap[activeRole.value] ?? navMap.staff_sarpras)
 const pageTitle = computed(() => (route.meta.title as string | undefined) || 'Dashboard')
+
+// Primary bar: kartu navigasi modul di atas konten (gaya Skoria) — ikut role aktif
+// Setiap kartu adalah halaman daun berbeda → tanpa activePrefix (exact match).
+const quickNav = computed(() => nav.value ?? [])
 
 function isActive(to: string) {
   return route.path === to
@@ -150,7 +177,7 @@ async function handleLogout() {
         </div>
         <div class="min-w-0">
           <div class="font-semibold text-gray-900 truncate">Aset Sekolah</div>
-          <div class="text-xs text-gray-400 capitalize">{{ authStore.role?.replace('_', ' ') }}</div>
+          <div class="text-xs text-gray-400 capitalize">{{ activeRole.replace('_', ' ') }}</div>
         </div>
         <button class="ml-auto md:hidden text-gray-400" @click="sidebarOpen = false">
           <X class="w-5 h-5" />
@@ -177,7 +204,7 @@ async function handleLogout() {
           </div>
           <div class="min-w-0 flex-1">
             <div class="text-sm font-medium text-gray-900 truncate">{{ authStore.user?.name ?? 'User' }}</div>
-            <div class="text-xs text-gray-400 capitalize">{{ authStore.role?.replace('_', ' ') }}</div>
+            <div class="text-xs text-gray-400 capitalize">{{ (authStore.roles[0] ?? authStore.role)?.replace('_', ' ') }}</div>
           </div>
           <button class="p-2 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition" title="Keluar" @click="handleLogout">
             <LogOut class="w-4 h-4" />
@@ -188,13 +215,25 @@ async function handleLogout() {
 
     <!-- Main -->
     <div class="md:pl-64 flex flex-col min-h-screen">
-      <header class="h-16 bg-white border-b border-gray-200 flex items-center gap-4 px-4 lg:px-8 sticky top-0 z-20">
+      <div class="sticky top-0 z-20">
+        <!-- Pita merah-putih ala bendera di atas header (tetap ada saat scroll) -->
+        <div class="stripe-merah-putih" />
+        <header
+          class="h-16 bg-white header-pattern border-b border-gray-200 flex items-center gap-4 px-4 lg:px-8"
+          :style="patternStyle"
+        >
         <button class="md:hidden p-2 rounded-lg hover:bg-gray-100" @click="sidebarOpen = true">
           <Menu class="w-5 h-5" />
         </button>
         <div class="flex-1">
-          <h1 class="text-lg font-semibold text-gray-900">{{ pageTitle }}</h1>
+          <h1 class="text-sm font-semibold text-gray-900">{{ pageTitle }}</h1>
         </div>
+
+        <!-- Role switcher: pindah dashboard antar peran (double job) -->
+        <RoleSwitcher class="mr-1" />
+
+        <!-- Switch mode tampilan (Default / Terang / Gelap) -->
+        <ThemeSwitcher class="mr-1" />
 
         <!-- Bell notifikasi -->
         <div class="relative" data-notif>
@@ -249,7 +288,7 @@ async function handleLogout() {
                     {{ n.data?.message ?? 'Jadwal maintenance baru.' }}
                     <template v-if="n.data?.tanggal_jadwal">• {{ n.data.tanggal_jadwal }}</template>
                   </div>
-                  <div class="text-[11px] text-gray-400 mt-0.5">
+                  <div class="text-2xs text-gray-400 mt-0.5">
                     {{ n.created_at ? new Date(n.created_at).toLocaleString('id-ID', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' }) : '' }}
                   </div>
                 </div>
@@ -262,7 +301,10 @@ async function handleLogout() {
           </div>
         </div>
       </header>
+      </div>
 
+      <!-- Primary bar: kartu navigasi modul di atas konten (bukan bagian header) -->
+      <QuickNavBar :items="quickNav" />
       <main class="flex-1 p-4 lg:p-8">
         <slot />
       </main>

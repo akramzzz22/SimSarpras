@@ -16,7 +16,7 @@ const columns: CrudColumn[] = [
   {
     key: 'jurusan',
     label: 'Jurusan',
-    badge: (item: any) => ({ text: item.jurusan?.nama ?? '—', cls: 'bg-blue-100 text-blue-800' })
+    badge: (item: any) => ({ text: item.jurusan?.nama ?? '—', cls: 'bg-red-50 text-red-700' })
   }
 ]
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import {
   CalendarClock,
   Plus,
@@ -19,6 +19,7 @@ import {
 } from 'lucide-vue-next'
 import { useAdminService, type Maintenance } from '~/services/api/admin'
 import { formatRupiah } from '~/utils/format'
+import Pagination from '~/components/pagination.vue'
 
 definePageMeta({ layout: 'admin', middleware: ['auth', 'admin'], title: 'Jadwal Maintenance' })
 
@@ -37,6 +38,7 @@ const formError = ref<string | null>(null)
 // assign_type: 'staff' | 'vendor' — wajib pilih salah satu
 const form = ref({
   barang_id: '',
+  jenis_maintenance_id: '',
   tanggal_jadwal: '',
   assign_type: 'staff' as 'staff' | 'vendor',
   assign_value: '',
@@ -48,6 +50,7 @@ const form = ref({
 const barangOptions = ref<{ value: number; label: string }[]>([])
 const staffOptions = ref<{ value: number; label: string }[]>([])
 const vendorOptions = ref<{ value: number; label: string }[]>([])
+const jenisMaintOptions = ref<{ value: number; label: string }[]>([])
 const statusLoadingId = ref<number | null>(null)
 
 // Modal "Selesaikan" — input biaya + foto resi
@@ -79,6 +82,18 @@ const filtered = computed(() => {
   })
 })
 
+// ---- Pagination: 20 jadwal per halaman ----
+const page = ref(1)
+const PER_PAGE = 20
+
+const pagedFiltered = computed(() =>
+  filtered.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
+)
+
+watch(filtered, () => {
+  page.value = 1
+})
+
 const counts = computed(() => ({
   total: items.value.length,
   terjadwal: items.value.filter((m) => m.status === 'terjadwal').length,
@@ -88,11 +103,11 @@ const counts = computed(() => ({
 
 const statusBadge = (s: string) => {
   const map: Record<string, string> = {
-    terjadwal: 'bg-amber-100 text-amber-800',
-    berlangsung: 'bg-blue-100 text-blue-800',
-    selesai: 'bg-emerald-100 text-emerald-800'
+    terjadwal: 'bg-amber-50 text-amber-700',
+    berlangsung: 'bg-red-50 text-red-700',
+    selesai: 'bg-emerald-50 text-emerald-700'
   }
-  return map[s] ?? 'bg-gray-100 text-gray-700'
+  return map[s] ?? 'bg-gray-50 text-gray-700'
 }
 
 const formatTanggal = (d?: string) =>
@@ -112,18 +127,20 @@ async function load() {
 }
 
 async function loadOptions() {
-  const [barang, staff, vendor] = await Promise.all([
+  const [barang, staff, vendor, jenisMaint] = await Promise.all([
     admin.barang.list({ per_page: 100 }),
     admin.master.list('users', { role: 'staff_sarpras', per_page: 100 }),
-    admin.master.list('vendor', { per_page: 100 })
+    admin.master.list('vendor', { per_page: 100 }),
+    admin.master.list('jenis-maintenance', { per_page: 100 })
   ])
   barangOptions.value = barang.data.map((b: any) => ({ value: b.id, label: b.nama }))
   staffOptions.value = staff.data.map((u: any) => ({ value: u.id, label: u.name }))
   vendorOptions.value = vendor.data.map((v: any) => ({ value: v.id, label: v.nama }))
+  jenisMaintOptions.value = jenisMaint.data.map((j: any) => ({ value: j.id, label: j.nama }))
 }
 
 function resetForm() {
-  form.value = { barang_id: '', tanggal_jadwal: '', assign_type: 'staff', assign_value: '', catatan: '', biaya: '', resi_url: '' }
+  form.value = { barang_id: '', jenis_maintenance_id: '', tanggal_jadwal: '', assign_type: 'staff', assign_value: '', catatan: '', biaya: '', resi_url: '' }
   formError.value = null
 }
 
@@ -145,6 +162,7 @@ function openEdit(m: Maintenance) {
   const hasStaff = !!m.staff_id
   form.value = {
     barang_id: String(m.barang_id ?? ''),
+    jenis_maintenance_id: m.jenis_maintenance_id != null ? String(m.jenis_maintenance_id) : '',
     tanggal_jadwal: m.tanggal_jadwal ?? '',
     assign_type: hasStaff ? 'staff' : 'vendor',
     assign_value: String(hasStaff ? m.staff_id : m.vendor_id ?? ''),
@@ -220,6 +238,7 @@ async function submit() {
     const isStaff = form.value.assign_type === 'staff'
     const body = {
       barang_id: Number(form.value.barang_id),
+      jenis_maintenance_id: form.value.jenis_maintenance_id ? Number(form.value.jenis_maintenance_id) : null,
       tanggal_jadwal: form.value.tanggal_jadwal,
       staff_id: isStaff ? Number(form.value.assign_value) : null,
       vendor_id: !isStaff ? Number(form.value.assign_value) : null,
@@ -308,11 +327,11 @@ onMounted(() => {
     <!-- Header -->
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div>
-        <h2 class="text-2xl font-bold text-gray-900">Jadwal Maintenance</h2>
+        <h2 class="text-sm font-bold text-gray-900">Jadwal Maintenance</h2>
         <p class="text-sm text-gray-500 mt-1">Kelola jadwal maintenance berkala barang — pilih salah satu penanggung jawab (staff atau vendor).</p>
       </div>
       <button
-        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition shadow-sm"
+        class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition shadow-sm"
         @click="openCreate"
       >
         <Plus class="w-4 h-4" />
@@ -330,9 +349,9 @@ onMounted(() => {
         <div class="text-xs font-medium text-amber-600 uppercase tracking-wide">Terjadwal</div>
         <div class="text-2xl font-bold text-amber-700 mt-1">{{ counts.terjadwal }}</div>
       </div>
-      <div class="bg-blue-50 rounded-2xl border border-blue-100 p-4">
-        <div class="text-xs font-medium text-blue-600 uppercase tracking-wide">Berlangsung</div>
-        <div class="text-2xl font-bold text-blue-700 mt-1">{{ counts.berlangsung }}</div>
+      <div class="bg-red-50 rounded-2xl border border-red-100 p-4">
+        <div class="text-xs font-medium text-red-600 uppercase tracking-wide">Berlangsung</div>
+        <div class="text-2xl font-bold text-red-700 mt-1">{{ counts.berlangsung }}</div>
       </div>
       <div class="bg-emerald-50 rounded-2xl border border-emerald-100 p-4">
         <div class="text-xs font-medium text-emerald-600 uppercase tracking-wide">Selesai</div>
@@ -347,15 +366,15 @@ onMounted(() => {
         <input
           v-model="search"
           placeholder="Cari barang atau staff…"
-          class="w-full rounded-xl border border-gray-200 pl-9 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+          class="w-full rounded-xl border border-gray-200 pl-9 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-red-500"
         />
       </div>
       <div class="flex flex-wrap gap-2">
         <button
           v-for="s in statusOptions"
           :key="s.v"
-          class="px-3 py-1.5 rounded-full text-sm font-medium border transition"
-          :class="filterStatus === s.v ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
+          class="px-3 py-1.5 rounded text-sm font-medium border transition"
+          :class="filterStatus === s.v ? 'bg-red-600 text-white border-red-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
           @click="filterStatus = s.v"
         >
           {{ s.l }}
@@ -371,21 +390,21 @@ onMounted(() => {
     <!-- List -->
     <div class="grid md:grid-cols-2 gap-4">
       <div
-        v-for="m in filtered"
+        v-for="m in pagedFiltered"
         :key="m.id"
         class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition"
       >
         <div class="flex items-start justify-between gap-3">
           <div class="flex items-center gap-3 min-w-0">
-            <div class="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center shrink-0">
-              <CalendarClock class="w-5 h-5 text-blue-600" />
+            <div class="w-10 h-10 rounded-xl bg-red-50 flex items-center justify-center shrink-0">
+              <CalendarClock class="w-5 h-5 text-red-600" />
             </div>
             <div class="min-w-0">
               <div class="font-semibold text-gray-900 truncate">{{ m.barang?.nama ?? 'Barang #' + m.barang_id }}</div>
               <div class="text-xs text-gray-500 mt-0.5">{{ formatTanggal(m.tanggal_jadwal) }}</div>
             </div>
           </div>
-          <span class="text-xs px-2 py-1 rounded-full shrink-0" :class="statusBadge(m.status)">{{ m.status }}</span>
+          <span class="text-xs px-2 py-1 rounded shrink-0" :class="statusBadge(m.status)">{{ m.status }}</span>
         </div>
 
         <div class="mt-3 flex flex-wrap gap-2 text-xs">
@@ -432,7 +451,7 @@ onMounted(() => {
         <div class="mt-4 flex items-center gap-2">
           <button
             v-if="m.status === 'terjadwal'"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition disabled:opacity-60"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-600 text-white text-xs font-semibold hover:bg-red-700 transition disabled:opacity-60"
             :disabled="statusLoadingId === m.id"
             @click="changeStatus(m, 'berlangsung')"
           >
@@ -453,7 +472,7 @@ onMounted(() => {
             Maintenance selesai
           </span>
           <div class="ml-auto flex items-center gap-1">
-            <button class="p-1.5 rounded-lg text-gray-400 hover:text-blue-600 hover:bg-blue-50 transition" title="Edit" @click="openEdit(m)">
+            <button class="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 transition" title="Edit" @click="openEdit(m)">
               <Pencil class="w-4 h-4" />
             </button>
             <button class="p-1.5 rounded-lg text-gray-400 hover:text-rose-600 hover:bg-rose-50 transition" title="Hapus" @click="remove(m)">
@@ -473,6 +492,9 @@ onMounted(() => {
 
     <div v-if="loading" class="py-12 text-center text-sm text-gray-400">Memuat data…</div>
 
+    <!-- Pagination: 20 jadwal per halaman -->
+    <Pagination v-model:page="page" :total="filtered.length" :per-page="PER_PAGE" label="jadwal" />
+
     <!-- Modal form -->
     <div v-if="showForm" class="fixed inset-0 z-50 flex items-center justify-center p-4" role="dialog" aria-modal="true">
       <div class="absolute inset-0 bg-black/40 backdrop-blur-sm" @click="showForm = false" />
@@ -490,7 +512,7 @@ onMounted(() => {
             <select
               v-model="form.barang_id"
               required
-              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-red-500 bg-white"
             >
               <option value="">— Pilih Barang —</option>
               <option v-for="b in barangOptions" :key="b.value" :value="b.value">{{ b.label }}</option>
@@ -503,8 +525,19 @@ onMounted(() => {
               v-model="form.tanggal_jadwal"
               type="date"
               required
-              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-red-500"
             />
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Jenis Maintenance</label>
+            <select
+              v-model="form.jenis_maintenance_id"
+              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-red-500 bg-white"
+            >
+              <option value="">— Pilih —</option>
+              <option v-for="o in jenisMaintOptions" :key="o.value" :value="o.value">{{ o.label }}</option>
+            </select>
           </div>
 
           <!-- Penanggung jawab: pilih salah satu staff ATAU vendor -->
@@ -517,7 +550,7 @@ onMounted(() => {
               <button
                 type="button"
                 class="flex items-center justify-center gap-2 px-3 py-2 rounded-xl border text-sm font-medium transition"
-                :class="form.assign_type === 'staff' ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
+                :class="form.assign_type === 'staff' ? 'bg-red-600 text-white border-red-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
                 @click="setAssignType('staff')"
               >
                 <User class="w-4 h-4" />
@@ -526,7 +559,7 @@ onMounted(() => {
               <button
                 type="button"
                 class="flex items-center justify-center gap-2 px-3 py-2 rounded-xl border text-sm font-medium transition"
-                :class="form.assign_type === 'vendor' ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
+                :class="form.assign_type === 'vendor' ? 'bg-red-600 text-white border-red-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
                 @click="setAssignType('vendor')"
               >
                 <Store class="w-4 h-4" />
@@ -535,7 +568,7 @@ onMounted(() => {
             </div>
             <select
               v-model="form.assign_value"
-              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500 bg-white"
+              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-red-500 bg-white"
             >
               <option value="">— Pilih {{ form.assign_type === 'staff' ? 'Staff' : 'Vendor' }} —</option>
               <option
@@ -558,7 +591,7 @@ onMounted(() => {
                 type="number"
                 min="0"
                 placeholder="0"
-                class="w-full rounded-lg border border-gray-300 pl-9 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+                class="w-full rounded-lg border border-gray-300 pl-9 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-red-500"
               />
             </div>
           </div>
@@ -567,7 +600,7 @@ onMounted(() => {
             <label class="block text-sm font-medium text-gray-700 mb-1">Foto Resi</label>
             <div
               class="relative rounded-xl border-2 border-dashed p-2 text-center transition cursor-pointer"
-              :class="form.resi_url ? 'border-emerald-300 bg-emerald-50/50' : 'border-gray-300 hover:border-blue-400 hover:bg-blue-50/30'"
+              :class="form.resi_url ? 'border-emerald-300 bg-emerald-50/50' : 'border-gray-300 hover:border-red-400 hover:bg-red-50/30'"
               @click="pickResiForm"
             >
               <img v-if="form.resi_url" :src="form.resi_url" class="max-h-28 mx-auto rounded-lg object-cover" alt="Foto resi" />
@@ -594,7 +627,7 @@ onMounted(() => {
               v-model="form.catatan"
               rows="3"
               placeholder="Catatan untuk staff / vendor…"
-              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+              class="w-full rounded-lg border border-gray-300 px-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-red-500"
             />
           </div>
 
@@ -607,7 +640,7 @@ onMounted(() => {
             <button
               type="submit"
               :disabled="saving"
-              class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-blue-600 text-white text-sm font-semibold hover:bg-blue-700 transition disabled:opacity-60"
+              class="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-red-600 text-white text-sm font-semibold hover:bg-red-700 transition disabled:opacity-60"
             >
               <Loader2 v-if="saving" class="w-4 h-4 animate-spin" />
               {{ saving ? 'Menyimpan…' : 'Simpan' }}
@@ -639,14 +672,14 @@ onMounted(() => {
             type="number"
             min="0"
             placeholder="0"
-            class="w-full rounded-lg border border-gray-300 pl-9 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+            class="w-full rounded-lg border border-gray-300 pl-9 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-red-500"
           />
         </div>
 
         <label class="block text-sm font-medium text-gray-700 mb-1">Foto Resi <span v-if="Number(completeBiaya) > 0" class="text-rose-500">*</span></label>
         <div
           class="relative rounded-xl border-2 border-dashed p-3 text-center transition cursor-pointer"
-          :class="completeResi ? 'border-emerald-300 bg-emerald-50/50' : 'border-gray-300 hover:border-blue-400 hover:bg-blue-50/30'"
+          :class="completeResi ? 'border-emerald-300 bg-emerald-50/50' : 'border-gray-300 hover:border-red-400 hover:bg-red-50/30'"
           @click="pickResiComplete"
         >
           <img v-if="completeResi" :src="completeResi" class="max-h-40 mx-auto rounded-lg object-cover" alt="Foto resi" />

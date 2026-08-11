@@ -1,23 +1,60 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import { FileText, AlertTriangle, RefreshCw, Wrench, CheckCircle2, XCircle } from 'lucide-vue-next'
 import { useAdminService } from '~/services/api/admin'
+import Pagination from '~/components/pagination.vue'
 
 definePageMeta({ layout: 'admin', middleware: ['auth', 'admin'], title: 'Laporan Kerusakan' })
 
 const admin = useAdminService()
+const route = useRoute()
 
 const items = ref<any[]>([])
 const loading = ref(true)
 const error = ref<string | null>(null)
-const filterStatus = ref('all')
+// 'diproses' = gabungan diverifikasi + diperbaiki (menu Pelaporan → Diproses)
+const filterStatus = ref<'all' | 'menunggu' | 'diproses' | 'diverifikasi' | 'diperbaiki' | 'selesai'>('all')
 const verifyingId = ref<number | null>(null)
 
-const filtered = computed(() =>
-  filterStatus.value === 'all' ? items.value : items.value.filter((l) => l.status === filterStatus.value)
+const filtered = computed(() => {
+  if (filterStatus.value === 'all') return items.value
+  if (filterStatus.value === 'diproses') {
+    return items.value.filter((l) => ['diverifikasi', 'diperbaiki'].includes(l.status))
+  }
+  return items.value.filter((l) => l.status === filterStatus.value)
+})
+
+// ---- Pagination: 20 laporan per halaman ----
+const page = ref(1)
+const PER_PAGE = 20
+
+const pagedFiltered = computed(() =>
+  filtered.value.slice((page.value - 1) * PER_PAGE, page.value * PER_PAGE)
 )
 
-const statusOptions = ['all', 'menunggu', 'diverifikasi', 'diperbaiki', 'selesai']
+watch(filtered, () => {
+  page.value = 1
+})
+
+// Menu Pelaporan mengarah dengan query ?status=… — map ke filter lokal.
+function applyQueryStatus() {
+  const s = String(route.query.status ?? '')
+  if (!s) return
+  if (s === 'menunggu' || s === 'selesai' || s === 'diverifikasi' || s === 'diperbaiki') {
+    filterStatus.value = s
+  } else if (s === 'diverifikasi,diperbaiki') {
+    filterStatus.value = 'diproses'
+  }
+}
+
+const statusOptions = [
+  { v: 'all', l: 'Semua' },
+  { v: 'menunggu', l: 'Menunggu' },
+  { v: 'diproses', l: 'Diproses' },
+  { v: 'diverifikasi', l: 'Diverifikasi' },
+  { v: 'diperbaiki', l: 'Diperbaiki' },
+  { v: 'selesai', l: 'Selesai' }
+] as const
 
 async function load() {
   loading.value = true
@@ -46,25 +83,33 @@ async function verifikasi(id: number) {
 
 const statusBadge = (s: string) => {
   const map: Record<string, string> = {
-    menunggu: 'bg-amber-100 text-amber-800',
-    diverifikasi: 'bg-blue-100 text-blue-800',
-    diperbaiki: 'bg-violet-100 text-violet-800',
-    selesai: 'bg-emerald-100 text-emerald-800'
+    menunggu: 'bg-amber-50 text-amber-700',
+    diverifikasi: 'bg-red-50 text-red-700',
+    diperbaiki: 'bg-violet-50 text-violet-700',
+    selesai: 'bg-emerald-50 text-emerald-700'
   }
-  return map[s] ?? 'bg-gray-100 text-gray-700'
+  return map[s] ?? 'bg-gray-50 text-gray-700'
 }
 
 const formatTanggal = (d?: string) =>
   d ? new Date(d).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' }) : '-'
 
-onMounted(load)
+// Reaktif terhadap navigasi antar menu Pelaporan (query berubah tanpa remount).
+watch(
+  () => route.query.status,
+  () => {
+    applyQueryStatus()
+    load()
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
   <div class="space-y-4">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <div>
-        <h2 class="text-2xl font-bold text-gray-900">Laporan Kerusakan</h2>
+        <h2 class="text-sm font-bold text-gray-900">Laporan Kerusakan</h2>
         <p class="text-sm text-gray-500 mt-1">Laporan kerusakan dari guru/murid dan status penanganannya.</p>
       </div>
       <button class="inline-flex items-center gap-2 px-3 py-2 rounded-xl border border-gray-200 text-sm font-medium text-gray-600 hover:bg-gray-50 transition" @click="load">
@@ -77,12 +122,12 @@ onMounted(load)
     <div class="flex flex-wrap gap-2">
       <button
         v-for="s in statusOptions"
-        :key="s"
-        class="px-3 py-1.5 rounded-full text-sm font-medium border transition"
-        :class="filterStatus === s ? 'bg-blue-600 text-white border-blue-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
-        @click="filterStatus = s"
+        :key="s.v"
+        class="px-3 py-1.5 rounded text-sm font-medium border transition"
+        :class="filterStatus === s.v ? 'bg-red-600 text-white border-red-600' : 'border-gray-200 text-gray-600 hover:bg-gray-50'"
+        @click="filterStatus = s.v"
       >
-        {{ s }}
+        {{ s.l }}
       </button>
     </div>
 
@@ -90,7 +135,7 @@ onMounted(load)
 
     <!-- Cards -->
     <div class="grid md:grid-cols-2 gap-4">
-      <div v-for="l in filtered" :key="l.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition">
+      <div v-for="l in pagedFiltered" :key="l.id" class="bg-white rounded-2xl border border-gray-100 shadow-sm p-5 hover:shadow-md transition">
         <div class="flex items-start justify-between gap-3">
           <div class="flex items-center gap-3 min-w-0">
             <div class="w-10 h-10 rounded-xl bg-rose-50 flex items-center justify-center shrink-0">
@@ -101,7 +146,7 @@ onMounted(load)
               <div class="text-xs text-gray-500 mt-0.5">{{ formatTanggal(l.created_at) }} • oleh {{ l.pelapor?.name ?? 'User' }}</div>
             </div>
           </div>
-          <span class="text-xs px-2 py-1 rounded-full shrink-0" :class="statusBadge(l.status)">{{ l.status }}</span>
+          <span class="text-xs px-2 py-1 rounded shrink-0" :class="statusBadge(l.status)">{{ l.status }}</span>
         </div>
 
         <p class="mt-3 text-sm text-gray-600 line-clamp-2">{{ l.deskripsi }}</p>
@@ -109,7 +154,7 @@ onMounted(load)
         <div class="mt-4 flex items-center gap-2">
           <button
             v-if="l.status === 'menunggu'"
-            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-blue-600 text-white text-xs font-semibold hover:bg-blue-700 transition disabled:opacity-60"
+            class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-red-600 text-white text-xs font-semibold hover:bg-red-700 transition disabled:opacity-60"
             :disabled="verifyingId === l.id"
             @click="verifikasi(l.id)"
           >
@@ -131,5 +176,8 @@ onMounted(load)
     </div>
 
     <div v-if="loading" class="py-12 text-center text-sm text-gray-400">Memuat data…</div>
+
+    <!-- Pagination: 20 laporan per halaman -->
+    <Pagination v-model:page="page" :total="filtered.length" :per-page="PER_PAGE" label="laporan" />
   </div>
 </template>
